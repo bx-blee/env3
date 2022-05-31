@@ -42,7 +42,7 @@
 
 ;;; (blee:env:here-directory)
 (defun blee:env:here-directory ()
-  "Eg /bisos/blee/env/boot"
+  "Eg /bisos/blee/env3/boot"
   (file-name-directory
    (directory-file-name
      (if buffer-file-name
@@ -57,9 +57,6 @@
 
 (load-file  (expand-file-name (concat (blee:env:here-directory)
 				      "blee-bases.el")))
-
-(load-file  (expand-file-name (concat (blee:env:here-directory)
-				      "blee-elpa-packages.el")))
 
 ;; (load-file  (expand-file-name (concat (blee:env:here-directory)
 ;; 				      "compile-time-function-name.el")))

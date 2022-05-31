@@ -27,15 +27,14 @@
 ;;;#+END:
 
 
-
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  Requires                    :: Requires [[elisp:(org-cycle)][| ]]
 ")
 
-(require 'blee-elpa-packages)          ;;; elpa packages have already been loaded and prepared
+;;(require 'blee-elpa-packages)          ;;; elpa packages have already been loaded and prepared
 
 (require 'cl-lib)                      ;;; Needed for blee:ann
-(require 'compile-time-function-name)  ;;; Provides blee:ann -- used here
+;;(require 'compile-time-function-name)  ;;; Provides blee:ann -- used here
 
 
 (lambda () "
