@@ -1,110 +1,72 @@
-;;; -*- Mode: Emacs-Lisp; -*-
+;;; boot-blee.el --- Loaded from init.el  -*- lexical-binding: t; -*-
+
 
 (lambda () "
-*  [[elisp:(org-cycle)][| ]]  *Short Desription*  :: Top-Level Booting Of Blee [[elisp:(org-cycle)][| ]]
-* 
+* ~boot-blee.el Top-Level Booting Of Blee~ Loaded from init.el
+* See Bleow link as this module's documentation:
+* [[/bisos/git/auth/bxRepos/blee-binders/blee-core/blee-boot/_nodeBase_/fullUsagePanel-en.org::boot-blee]]
 ")
 
-
-;;;#+BEGIN: bx:dblock:global:org-controls :disabledP "false" :mode "auto"
-(lambda () "
-* [[elisp:(show-all)][(>]] [[elisp:(describe-function 'org-dblock-write:bx:dblock:global:org-controls)][dbf]]
-*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][|O]]  [[elisp:(progn (org-shifttab) (org-content))][|C]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][|N]] | [[elisp:(delete-other-windows)][|1]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
-*  /Maintain/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-This]] [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-This]] | [[elisp:(bx:org:agenda:these-files-otherWin)][Agenda-These]] [[elisp:(bx:org:todo:these-files-otherWin)][ToDo-These]]
-
-* [[elisp:(org-shifttab)][<)]] [[elisp:(describe-function 'org-dblock-write:bx:dblock:global:org-controls)][dbFunc)]]  E|
-
-")
-;;;#+END:
-
-;;;#+BEGIN: bx:global:org-contents-list :disabledP "false" :mode "auto"
-(lambda () "
-*      ################ CONTENTS-LIST   ###############
-")
-;;;#+END:
-
-
-;;; -----------------------------------------------------------------
-;;; BLEE  -- ByStar Libre-Halaal Emacs Environment
-;;; -----------------------------------------------------------------
-
-(setq debug-on-error t) 
-
+;; For speedups and optimization
 ;; https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/
-(defvar blee:gc-cons-threshold--orig gc-cons-threshold)
+(defvar b:stash:gc-cons-threshold--orig gc-cons-threshold) ; we'll restore back to original
 (setq gc-cons-threshold (* 100 1024 1024)) ;100 MB before garbage collection
 
 
-
-(lambda () "
-*  [[elisp:(org-cycle)][| ]]  Load boot-setup.el [[elisp:(org-cycle)][| ]]
-")
-
-;;; (blee:env:here-directory)
-(defun blee:env:here-directory ()
-  "Eg /bisos/blee/env3/boot"
-  (file-name-directory
-   (directory-file-name
+;;; ($:b|hereDirectory)
+(defun $:b|hereDirectory ()
+  "Either of buffer-file-name or load-file-name.
+buffer-file-name is useful for dev and testing."
+  (file-name-directory (directory-file-name
      (if buffer-file-name
 	 buffer-file-name
-       load-file-name)
-     ))
+       load-file-name))))
+
+(load-file (expand-file-name "blee-version.el" ($:b|hereDirectory)))
+
+(defun $:b:boot|loadControlCentral ()
+  "For example. b:g:dev:mode? can become true in control/central."
+  (let* (
+         ($targetFile (expand-file-name "../control/central.el" ($:b|hereDirectory)))
+         )
+    (when (file-exists-p $targetFile)
+      (load $targetFile)
+      (b:g|setup)
+      )))
+($:b:boot|loadControlCentral)
+
+(defun $:b:boot|prepForComeega ()
+  "Require needed libraries to allow for furture loads and requires to be in COMEEGA.
+s.el and loop.el are used in blee-libs. We consider those external local libraries."
+
+  (add-to-list 'load-path "/bisos/git/anon/ext/blee3/s.el")
+  (require 's)
+
+  (add-to-list 'load-path "/bisos/git/anon/ext/blee3/loop.el")
+  (require 'loop)
+
+  (add-to-list 'load-path (expand-file-name "../libs" ($:b|hereDirectory)))
+
+  (require 'bnpa-comment-block)
+  (bnpa:comment-block:full|update)
+
+  (require 'comment-block)
+
+  (require 'bnpa:blee-libs)
+  (bnpa:blee-libs|fullUpdate)
   )
+($:b:boot|prepForComeega)
 
+(defun $:b:boot|loadMainInit ()
+  "main-init.el and all descendants can be in COMEEGA."
+  (let* (
+         ($targetFile (expand-file-name "../main/main-init.el" ($:b|hereDirectory)))
+         )
+    (when (file-exists-p $targetFile)
+      (load $targetFile)
+      (b:base:main|init)
+      )))
+($:b:boot|loadMainInit)
 
-(load-file  (expand-file-name (concat (blee:env:here-directory)
-				      "blee-version.el")))
-
-(load-file  (expand-file-name (concat (blee:env:here-directory)
-				      "blee-bases.el")))
-
-;; (load-file  (expand-file-name (concat (blee:env:here-directory)
-;; 				      "compile-time-function-name.el")))
-
-(lambda () "
-*  [[elisp:(org-cycle)][| ]]  Boot Components Of Blee [[elisp:(org-cycle)][| ]]
-")
-
-;;;
-;;; NOTYET, This does not belong here
-;;;
-(message "Emacs version: %s %d.%d  -- Blee-Emacs Type: %s"
-	 *emacs-type* emacs-major-version emacs-minor-version *eoe-emacs-type*)
-
-(defvar blee:boot:common
-  (expand-file-name (concat (blee:env:here-directory) "boot-common.el"))
-  "Common part of Blee boot.")
-
-(defvar blee:boot:typed
-  (expand-file-name (concat (blee:env:here-directory) (format "/boot-%s.el" *eoe-emacs-type*)))
-  "Emacs-version and type specific part of Blee boot.")
-
-(defvar blee:boot:devel
-  (expand-file-name (concat (blee:env:here-directory) "/boot-devel.el"))  
-  "Development and extras experimentation part of Blee boot.")
-
-(lambda () " org-mode
-* file:/libre/ByStar/InitialTemplates/activeDocs/blee/bleeActivities/fullUsagePanel-en.org::BleeBootProcess
-")
-
-(when (file-exists-p blee:boot:common)
-  (load blee:boot:common)
-  (boot:common|main-init)
-  )
-
-
-(when (file-exists-p blee:boot:typed) (load blee:boot:typed))
-;;(when (file-exists-p blee:boot:devel) (load blee:boot:devel))
-
-(when blee:gc-cons-threshold--orig
-  (run-with-idle-timer 5 nil (lambda () (setq gc-cons-threshold blee:gc-cons-threshold--orig))))
-
-
-(lambda () "
-*  [[elisp:(org-cycle)][| ]]  Common        :: /[dblock] -- End-Of-File Controls/ [[elisp:(org-cycle)][| ]]
-#+STARTUP: showall
-")
-
-;;; local variables:
-;;; no-byte-compile: t
-;;; end:
+(when b:stash:gc-cons-threshold--orig
+  (run-with-idle-timer 5 nil (lambda () (setq gc-cons-threshold b:stash:gc-cons-threshold--orig))))

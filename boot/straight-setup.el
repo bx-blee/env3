@@ -1,7 +1,8 @@
-;;; straight-setup.el --- Initial Straight.el Setup  -*- lexical-binding: t; -*-
+;;; straight-setup.el --- Initial Straight.el Bootstrap  -*- lexical-binding: t; -*-
 
+(message (format "Loaded: %s" load-file-name))
 
-(defun b:straight:setup|preBootstarpInit ()
+(defun b:straight:setup|preBootstrapInit ()
   "Sets up straight environment and controlling params.
 These must be set before straight.el is bootstrapped.
 These are similar but different from how does the same."
@@ -22,42 +23,35 @@ These are similar but different from how does the same."
   ;; To consume less space and be faster.  Some packages break when shallow cloned
   ;; (like magit and org), but we'll deal with that elsewhere.
   ;; (setq straight-vc-git-default-clone-depth '(1 single-branch))
-  (setq straight-vc-git-default-clone-depth 'full)
-  )
-(b:straight:setup|preBootstarpInit)
+  (setq straight-vc-git-default-clone-depth 'full))
+(b:straight:setup|preBootstrapInit)
 
 
-;; (with-eval-after-load 'straight
-;;   ;; `let-alist' is built into Emacs 26 and onwards
-;;   (add-to-list 'straight-built-in-pseudo-packages 'let-alist))
+;;; '(:host "github" :repo "raxod502/straight.el" :branch "develop" :local-repo "straight.el" :files ("straight*.el"))
+;;;  "b45dd00408ff8e922f2d7f75441fd5603e5222fa")
+;;;
 
-;; (defadvice! doom--read-pinned-packages-a (fn &rest args)
-;;   "Read `:pin's in `doom-packages' on top of straight's lockfiles."
-;;   :around #'straight--lockfile-read-all
-;;   (append (apply fn args) ; lockfiles still take priority
-;;           (doom-package-pinned-list)))
-
-
- ;; '(:host "github" :repo "raxod502/straight.el" :branch "develop" :local-repo "straight.el" :files ("straight*.el"))
- ;;  "b45dd00408ff8e922f2d7f75441fd5603e5222fa")
-;;
-;;; Bootstrappers
 
 (defvar bootstrap-version)
 (defun b:straight:doom3|bootstrap ()
-  "Bootstrap
-/bisos/git/anon/ext/blee3/straight.el/bootstrap.el
+  "Bootstrap from /bisos/git/anon/ext/blee3/straight.el/bootstrap.el
+bootstrap.el with commitHash of b45dd00408ff8e922f2d7f75441fd5603e5222fa
+which matches doom3, has been installed with  doomPkgsProfile.sh.
  "
   (let ((bootstrap-file "/bisos/git/anon/ext/blee3/straight.el/bootstrap.el")
         (bootstrap-version 5))
     (if (file-exists-p bootstrap-file)
-        (load bootstrap-file nil 'nomessage)
+        (progn
+          (message (format "Loading %s" bootstrap-file))
+          (load bootstrap-file nil 'nomessage)
+          )
       (error "Missing bootstrap-file"))))
 (b:straight:doom3|bootstrap)
 
 
 (defun b:straight|setRecipies ()
-    (message "Initializing recipes")
+  "This comes after straight bootstrap."
+    (message "b:straight|setRecipies :: Initializing recipes")
     (mapc #'straight-use-recipes
           '((org-elpa :local-repo nil)
             (melpa              :type git :host github
@@ -73,6 +67,8 @@ These are similar but different from how does the same."
                                 :repo "emacs-straight/emacsmirror-mirror"
                                 :build nil))))
 (b:straight|setRecipies)
+
+
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'straight-setup)
