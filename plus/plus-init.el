@@ -51,11 +51,11 @@
 " orgCmntEnd)
 ;;;#+END:
 
-;;;#+BEGIN:  b:elisp:defs/defun :defName "b:base:libs|init"
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:base:plus|init"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<b:base:libs|init>> [[elisp:(org-shifttab)][<)]] E|
+* [[elisp:(show-all)][(>]]  =defun= <<b:base:plus|init>> [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
-(defun b:base:libs|init (
+(defun b:base:plus|init (
 ;;;#+END:
                         )
    " #+begin_org
@@ -63,57 +63,35 @@
 and side-effects are documented here
 #+end_org "
 
-   (require 'blee-lib-general)   ;; Transitional
-   
-   (require 'bnpa:pkgs-profile)
-   (bnpa:pkgs-profile|fullUpdate)
+   (require 'bcpg:orgPlus)
+   (bcpg:orgPlus|fullUpdate)
 
-   (require 'bnpa:blee3-pkgs-profile)
+   (require 'bcpg:magitPlus)
+   (bcpg:magitPlus|fullUpdate)
 
-   (bnpa:blee3-pkgs-profile|fullUpdate)
+   (require 'bcpg:shellPlus)
+   (bcpg:shellPlus|fullUpdate)
 
-   (progn  ;;; All of this should move to bnpa:blee3-pkgs-profile.el
-     (require 'blee3-pkgs-profile)
+   (require 'bcpg:calcPlus)
+   (bcpg:calcPlus|fullUpdate)
 
-     (setq b:pkgsProfile:collection:default b:pkgsProfile:collection:blee3)
-     (setq b:pkgsProfile:orphan 'b:pkgsProfile:blee3:orphan)
-     (setq b:pkgsProfile:native 'b:pkgsProfile:blee3:native)
-     (b:pkgsProfile:collection|prepare)
-     (b:pkgsProfile:collection:straight--lockfile-read-all|advice-add)
-     )
-
-   ;; (b:pkg:straight|install 'tide)
-   ;; (b:pkg:straight|install 's)
-   ;; (straight-use-package 's)
-   ;; (straight-use-package 'tide)
-
-   (require 'bcpa:polymode)
-   (bcpa:polymode|fullUpdate)
-
-   (require 'bnpa:comeega)
-   (bnpa:comeega|fullUpdate)
-
-   (require 'bcpg:commonLibs)
-   (bcpg:commonLibs|fullUpdate)
-
-   ;; (require 'bcpg:orgPlus)
-   ;; (bcpg:orgPlus|fullUpdate)
-
+   (require 'bcpg:calendarPlus)
+   (bcpg:calendarPlus|fullUpdate)
    )
 
 (orgCmntBegin "
 ** Basic Usage:
 #+BEGIN_SRC emacs-lisp
-(b:base:libs|init)
+(b:base:plus|init)
 #+END_SRC
 
 #+RESULTS:
-| bnpa:comeega:config | main | /bisos/git/auth/bxRepos/blee/env3/libs/libs-init.el | 72 |
+| bnpa:comeega:config | main | /bisos/git/auth/bxRepos/blee/env3/plus/plus-init.el | 72 |
 
 " orgCmntEnd)
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
-(provide 'libs-init)
+(provide 'plus-init)
 ;;;#+END:
 
 ;;;#+BEGIN: b:elisp:file/endOf :outLevel 1

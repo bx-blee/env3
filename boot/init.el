@@ -34,3 +34,24 @@
   )
 
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   '((eval bx:load-file:ifOneExists "./panelActions.el")
+     (eval blee:fill-column-indicator/enable)
+     (eval set-fill-column 115)
+     (eval img-link-overlays)
+     (eval setq-local ~blee:dblockController "interactive")
+     (eval setq-local ~blee:dblockEnabler nil)
+     (eval setq-local ~blee:panelUpdater nil)
+     (eval setq-local ~primaryMajorMode 'org-mode)
+     (eval setq-local ~selectedSubject "noSubject"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
