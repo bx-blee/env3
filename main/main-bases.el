@@ -101,10 +101,54 @@ buffer-file-name is useful for dev and testing.
 #+end_org "
   )
 
+(defconst b:base:env:inputs (expand-file-name "inputs" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:inputs= plus directory containing adoption files for featurePlus.
+#+end_org "
+  )
+
 
 (defconst b:base:env:ipcs (expand-file-name "ipcs" (b:base:env|obtain))
    " #+begin_org
 ** =b:base:env:ipcs= (inter-personal communication services) dir for adoption and customization of mail, news, irc.
+#+end_org "
+  )
+
+(defconst b:base:env:completion (expand-file-name "completion" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:completion= .
+#+end_org "
+  )
+
+(defconst b:base:env:syntax (expand-file-name "syntax" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:syntax= .
+#+end_org "
+  )
+
+(defconst b:base:env:auto-complete (expand-file-name "auto-complete" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:auto-complete= .
+#+end_org "
+  )
+
+(defconst b:base:env:legacy (expand-file-name "legacy" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:legacy= .
+#+end_org "
+  )
+
+
+
+(defconst b:base:env:ui (expand-file-name "ui" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:ui= .
+#+end_org "
+  )
+
+(defconst b:base:env:m17n (expand-file-name "m17n" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:m17n= .
 #+end_org "
   )
 
@@ -114,6 +158,13 @@ buffer-file-name is useful for dev and testing.
     ,b:base:env:display
     ,b:base:env:plus
     ,b:base:env:ipcs
+    ,b:base:env:completion
+    ,b:base:env:syntax
+    ,b:base:env:auto-complete
+    ,b:base:env:m17n
+    ,b:base:env:ui
+    ,b:base:env:inputs
+    ,b:base:env:legacy
     )
    " #+begin_org
 ** =b:base:env:basesList= list of blee/env bases.

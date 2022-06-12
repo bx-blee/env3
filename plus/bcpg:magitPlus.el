@@ -113,6 +113,8 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  ;;(setq magit-git-standard-options
  ;; (append magit-git-standard-options '("-c") '("http.sslVerify=false")))
 
+ (setq vc-follow-symlinks nil)   ;;; Following symlinks messes up /lcnt assumptions for example
+
  (setq magit-repolist-columns
 	'(("Name"    25 magit-repolist-column-ident ())
           ("Version" 25 magit-repolist-column-version ())

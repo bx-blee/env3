@@ -69,6 +69,15 @@ and side-effects are documented here
   (require 'eoeLsip)               ;; Transitional, to be eliminated
   (require 'blee-nested-menus)     ;; Transitional, to be absorbed.
 
+  (require 'bcpg:color-theme-modern)
+  (bcpg:color-theme-modern|fullUpdate)
+
+  (require 'bcpg:toolbar)
+  (bcpg:toolbar|fullUpdate)
+  
+  (require 'bcpg:tabbar)
+  (bcpg:tabbar|fullUpdate)
+  
    )
 
 (orgCmntBegin "

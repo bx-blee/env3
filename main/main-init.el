@@ -78,6 +78,26 @@ and side-effects are documented here
    (require 'plus-init)
    (b:base:plus|init)
 
+   (require 'inputs-init)
+   (b:base:inputs|init)
+
+   (require 'completion-init)
+   (b:base:completion|init)
+   
+   (require 'syntax-init)
+   (b:base:syntax|init)
+
+   (require 'auto-complete-init)
+   (b:base:auto-complete|init)
+
+   (require 'm17n-init)
+   (b:base:m17n|init)
+
+   (require 'ui-init)
+   (b:base:ui|init)
+
+   (require 'legacy-init)
+   (b:base:legacy|init)
    )
 
 (orgCmntBegin "

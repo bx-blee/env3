@@ -195,11 +195,11 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 ;;;(setq appt-announce-method 'newFunctionToBe Written)
 (setq appt-announce-method 'appt-persistant-message-announce)
 
-(appt-activate 1)
+;;(appt-activate 1)
 
 ;;; More Diary Paramters
-(setq view-diary-entries-initially t)
-;;(setq view-diary-entries-initially nil)
+;;(setq view-diary-entries-initially t)
+(setq view-diary-entries-initially nil)
 
 (add-hook 'list-diary-entries-hook 'sort-diary-entries t)
 ;;(calendar)
@@ -557,7 +557,6 @@ Driven by the variable `calendar-date-display-form'."
 ;                                        ))
 ;      (diary)
 ;      ))
-
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'bcpg:calendarPlus)
