@@ -744,7 +744,7 @@ For use in delimiters in easy-menu-define"
 	 t
 	 ]	 ;;; Notyet, should point to panel instead
 	"---"
-	[,(format "Visit %s" $thisFuncName)
+	[(format "Visit %s" ,$thisFuncName)
 	 (find-function (intern ,$thisFuncName))
 	 t
 	 ]	
@@ -926,7 +926,7 @@ For use in delimiters in easy-menu-define"
 	  ]
 	 )
 	"---"
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     'nafm:menu:xinf:browse-url:at-point
     ))
@@ -952,7 +952,7 @@ For use in delimiters in easy-menu-define"
 	["ByStar Overview Presentation" (find-file-at-point "http://www.by-star.net/PLPC/180054") t]	 
 	 )
 	"---"
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     'nafm:menu:destinations
     ))
@@ -1012,7 +1012,7 @@ For use in delimiters in easy-menu-define"
 	  ]	 
 	 )
 	"---"
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     'nafm:menu:search-engines
     ))

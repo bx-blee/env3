@@ -101,7 +101,7 @@ Instead of ,<active I got it working with $:org-roam-server:menu:active.
 	 t
 	 ]	 ;;; Notyet, should point to panel instead
 	"---"
-	[,(format "Visit %s" $thisFuncName)
+	[(format "Visit %s" ,$thisFuncName)
 	 (find-function (intern ,$thisFuncName))
 	 t
 	 ]	

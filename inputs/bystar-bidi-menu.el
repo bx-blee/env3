@@ -18,7 +18,7 @@
       bidi-menu 
       nil 
       "Global BIDI Menu"
-      '("Bi-Directional -- BIDI"
+      `("Bi-Directional -- BIDI"
 	"---"
 	["يک طرفه -- reordering off" bidi-display-reordering-off t]
 	["دو طرفه -- reordering on" bidi-display-reordering-on t]
@@ -32,7 +32,7 @@
 	["Visibility  -- Hide Bidi Markers" (blee:bidi:markers/hide) t]
 	["Visibility  -- Show Bidi Markers" (blee:bidi:markers/show) t]
 	"---"	
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]
 	)
       )
   ))

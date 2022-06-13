@@ -577,7 +577,7 @@ Some Comment under current
 	["Beauty  -- Hide Block BEGIN/END" (blee:org:blocks:beginEnd/hide) t]
 	["Beauty  -- Show Block BEGIN/END" (blee:org:blocks:beginEnd/show) t]
 	"---"	
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
 
@@ -747,7 +747,7 @@ Some Comment under current
 	["To Do Linked These" bx:org:todo:linkWith-otherWin t]
 	["Agenda Linked These" bx:org:agenda:linkWith-otherWin t]
 	"---"	
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]		
 	))
     ))
 
@@ -787,7 +787,7 @@ Some Comment under current
 	["Navigation -- (>) -- Indirect Other" bx:orgm:indirectBufOther t]
 	["Navigation -- (I) -- Indirect Here" bx:orgm:indirectBufMain t]	
 	"---"	
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
 

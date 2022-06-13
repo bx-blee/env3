@@ -257,7 +257,7 @@ For use in delimiters in easy-menu-define"
 	 t
 	 ]	 ;;; Notyet, should point to panel instead
 	"---"
-	[,(format "Visit %s" $thisFuncName)
+	[(format "Visit %s" ,$thisFuncName)
 	 (find-function (intern ,$thisFuncName))
 	 t
 	 ]
@@ -419,7 +419,7 @@ For use in delimiters in easy-menu-define"
 	  ]
 	 )
 	"---"
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]
 	))
     'modes:menu:search-engines
     ))

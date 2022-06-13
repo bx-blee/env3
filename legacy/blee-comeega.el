@@ -85,7 +85,7 @@
 	["Magit" magit t]
 	["CVS Update" (cvs-update "." t) t]	
 	"---"	
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     )
   )
@@ -123,7 +123,7 @@
 	["Replace Button Front Controls" blee:comeega:panel:modernize t]
 	["Replace Menu Front Controls" blee:comeega:panel:menuModernize t]	
 	"---"	
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	[(format "Visit %s" ,$thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     )
   )

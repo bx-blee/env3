@@ -243,7 +243,7 @@ As such what happens below should be exactly what is necessary and no more."
 	 t
 	 ]	 ;;; Notyet, should point to panel instead
 	"---"
-	[,(format "Visit %s" $thisFuncName)
+	[(format "Visit %s" ,$thisFuncName)
 	 (find-function (intern ,$thisFuncName))
 	 t
 	 ]	
