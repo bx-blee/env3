@@ -87,8 +87,14 @@ and side-effects are documented here
   (require 'bap-bbdb)
   (bap:bbdb:full/update)
 
+  (require 'bcg-org-roam)
+  (bcg:org:roam:full/update)
+  
   (require 'bcg-web-search)
   (bcg:web:search:full/update)
+
+  (require 'bap-emms)
+  (bap:emms:full/update)
 
   (require 'bap-markdown)
   (bap:markdown:full/update)
@@ -193,6 +199,12 @@ and side-effects are documented here
   (require 'supercite)
   (load "supercite-user")
 
+  ;; -----------------------------------------------------------------
+  ;; EMMS
+  ;; -----------------------------------------------------------------
+  (load "bystar-emms")  ;;; NOTYET, package is needed
+
+  
 ;; -----------------------------------------------------------------
   ;; Mozilla Browser integration
   ;; -----------------------------------------------------------------
@@ -291,6 +303,161 @@ and side-effects are documented here
   (autoload 'mwheel-install "mwheel" "Enabal mouse wheel support.")
   (mwheel-install)
 
+  (require 'eoeKbdMenuSupport)
+
+  (require 'blee-kbd-global)    ;;; NOTYET -- Messes up magit and other stuff
+
+  (eoe-kbd)
+
+  (autoload 'babel "babel"
+    "Use a web translation service to translate the message MSG." t)
+  (autoload 'babel-region "babel"
+    "Use a web translation service to translate the current region." t)
+  (autoload 'babel-as-string "babel"
+    "Use a web translation service to translate MSG, returning a string." t)
+  (autoload 'babel-buffer "babel"
+    "Use a web translation service to translate the current buffer." t)
+
+  (setq babel-preferred-to-language "French")
+
+  (setq google-license-key "Q1n7eV5QFHLUgKEGMzcVQr9bX34Rv7SP")
+
+  (require 'recentf)
+  (setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
+  (setq recentf-save-file (recentf-expand-file-name "~/BUE/emacs/recentf.el"))
+  (recentf-mode 1)
+
+  ;; iswitchb + recentf
+  (require 'bx-iswitch)
+  (bx:iswitch:all-defaults-set)
+  
+  
+  (require 'bx-dblock)
+  (require 'blee-org-panel)
+
+  ;; ./bystar-m17n.el
+  ;;(load "bystar-m17n.el")   ;;; NOTYET, emacs version problem -- likely simple to fix
+
+  (require 'apps-menu)
+  (apps:menu-bar|install)
+
+  (require 'modes-menu)
+  (modes:menu-bar|install)
+
+  ;; (require 'blee-menu-xia)
+  ;; (blee:menu:top:xia|define)
+
+  ;; (require 'gmmp-menu)
+  ;; (gmmp:menu-bar/install)  
+ 
+  ;; (require 'nafm-menu)
+  ;; (nafm:menu:global|define)
+  
+  (require 'blee-menu-activities)
+  (blee:activities:menu)
+
+  (require 'blee-menu-blee)
+  (blee:blee:menu)
+
+
+  (require 'blee-menu-my)
+  (blee:my:menu)
+
+  (require 'org-roam-menu)
+  (require 'org-roam-server-menu)  
+  ;; (org-roam:menu-bar/install)
+
+
+  (when (blee:bue:base-obtain)
+    (require 'bue-acct-main)
+    (if (fboundp 'bue:acct:main)
+	(bue:acct:main))
+    )
+
+  (setq-default lpr-switches '("-2P -t"))
+  (setq-default lpr-command "mpage")
+
+  ;; /bisos/blee/env/main/murl-base.el /bisos/blee/env/main/murl-craigslist.el /bisos/blee/env/main/murl-slink.el /bisos/blee/env/main/murl-bbdb.el
+
+  (load "murl-base.el")
+  ;;(load "murl-bbdb.el")            ;;; Captures mailto: into bbdb  -- Moved into bapbbdb.e
+
+  ;; -----------------------------------------------------------------
+  ;; GNU Server -- Should Run Last  after all else that is needed 
+  ;; -----------------------------------------------------------------
+  ;;(require 'mozmail)
+
+
+  (require 'bystar-init-screen)
+  (bystar:init:startup-message)
+
+
+  ;; NOTYET --- Merge in display
+  ;;(bystar:mail:faces:background-dark)
+
+  ;;(require 'color-theme)
+  ;; emacsPlus/22Plus/themes/color-theme-library.el 
+  ;;(load-library "themes/color-theme-library")
+
+  ;;(require 'bystar-color-themes)
+  ;;(color-theme:bystar:black-green)
+
+   ;;(require 'setup-tabbar)
+
+  (require 'bystar-printing-lib)
+  (bystar:printing:all-defaults-set)
+
+    (funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *festival -- TTS -- Say* [[elisp:(org-cycle)][| ]]
+	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
+"
+	       (load-file "/bisos/blee/env/main/festival.el")  ;;; NOTYET should not be absolute file.
+	       ))
+
+  (funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *ISPELL* [[elisp:(org-cycle)][| ]]
+	Just Load. 
+"
+	       ;;(load "bystar-ispell")  NOTYET, Revisit this -- Support both aspell and hunspell backends
+	       ))
+
+    (funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Minor-Mode            ::      *Dunamic Menu* [[elisp:(org-cycle)][| ]]
+	Dynamic Menus -- Use Through Out -- For Now Centralized. Will be split across later.
+"
+	     ;;;(require 'blee-lib-widget)
+	     ;;;(blee-lib-widget:all-defaults-set)
+
+	       (require 'blee-comeega)
+	       ))
+
+  ;; 
+  ;; To Be Sorted Later
+  ;;
+  ;;
+
+
+  (defun mb-policy-9 (string-arg)
+    ""
+    string-arg
+    )
+
+  ;;;
+  ;;; We want proper bidi suppport, so we restore everything
+  ;;; in case the likes of
+  ;;;
+  (setq-default bidi-display-reordering t)
+  (setq-default bidi-paragraph-direction nil)
+  (setq bidi-inhibit-bpa nil)
+
+  (require 'tramp)
+  (setq tramp-default-method "scp")
+
+  (load-file "/bisos/blee/env/lib/Incoming/top-mode.el")
+
+  (load-file "/bisos/blee/env/main/choose-comletion.el")
+
+  (cd "~")
   
    )
 

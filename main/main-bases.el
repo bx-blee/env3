@@ -152,6 +152,23 @@ buffer-file-name is useful for dev and testing.
 #+end_org "
   )
 
+(defconst b:base:env:dblocks (expand-file-name "dblocks" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:dblocks= .
+#+end_org "
+  )
+
+(defun blee:env:splashScreen:base-obtain ()
+  "Eg /bisos/blee/env/splashScreen/"
+  (concat (file-name-as-directory (b:base:env|obtain)) "splashScreen")
+  )
+
+(defun blee:env:images:base-obtain ()
+  "Eg /bisos/blee/env/splashScreen/"
+  (concat (file-name-as-directory (b:base:env|obtain)) "images")
+  )
+
+
 (defvar b:base:env:basesList
   `(,b:base:env:main
     ,b:base:env:libs
@@ -164,6 +181,7 @@ buffer-file-name is useful for dev and testing.
     ,b:base:env:m17n
     ,b:base:env:ui
     ,b:base:env:inputs
+    ,b:base:env:dblocks    
     ,b:base:env:legacy
     )
    " #+begin_org
