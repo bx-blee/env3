@@ -388,9 +388,6 @@ and side-effects are documented here
   ;;(require 'mozmail)
 
 
-  (require 'bystar-init-screen)
-  (bystar:init:startup-message)
-
 
   ;; NOTYET --- Merge in display
   ;;(bystar:mail:faces:background-dark)
@@ -457,6 +454,11 @@ and side-effects are documented here
 
   (load-file "/bisos/blee/env/main/choose-comletion.el")
 
+
+  (require 'bystar-init-screen)
+  (bystar:init:startup-message)
+  (bystar-scratch-welcome-buffer)
+  
   (cd "~")
   
    )

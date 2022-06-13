@@ -29,7 +29,9 @@
       (insert-welcome-buffer (blee:env:images:base-obtain))
       )
     (org-mode)
-    (switch-to-buffer my-buffer)))
+    (switch-to-buffer my-buffer)
+    (delete-other-windows)
+    ))
 
 (defun bystar-welcome-buffer-okay2Del ()
   "do fancy things"
