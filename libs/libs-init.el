@@ -84,8 +84,6 @@ and side-effects are documented here
 
    ;; (b:pkg:straight|install 'tide)
    ;; (b:pkg:straight|install 's)
-   ;; (straight-use-package 's)
-   ;; (straight-use-package 'tide)
 
    (require 'bcpa:polymode)
    (bcpa:polymode|fullUpdate)
@@ -99,6 +97,7 @@ and side-effects are documented here
    ;; (require 'bcpg:orgPlus)
    ;; (bcpg:orgPlus|fullUpdate)
 
+   (require 'eoeLsip)               ;; Transitional, to be eliminated   
    )
 
 (orgCmntBegin "

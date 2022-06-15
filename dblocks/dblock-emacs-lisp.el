@@ -366,6 +366,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
          (<pkgsStage (or (plist-get <params :pkgsStage) "ready"))
+         (<env (or (plist-get <params :pkgsStage) "any"))	 
          (<pkgAdoptionType (or (plist-get <params :pkgAdoptionType) nil))
          (<pkgName (or (plist-get <params :pkgName) nil))
          )
@@ -421,6 +422,57 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
 
     ))
 
+
+(defun b:func:advice|nameToFunc (<adviceName)
+  "Given *<adviceName* obtain corresponding adviceFunction."
+  (let* (
+	 ($result nil)
+	 )
+    (cond
+     ((string= <adviceName "doomOnly")
+      (setq $result "b:advice:common|doomOnly"))
+     ((string= <adviceName "pureOnly")
+      (setq $result "b:advice:common|pureOnly"))
+     ((string= <adviceName "nullify")
+      (setq $result "b:advice:common|nullify"))
+     ((string= <adviceName "trace")
+      (setq $result "trace"))
+     (t
+      (message "Unknown")))
+    $result))
+      
+
+(defun b:func:advice|insert (<funcName <adviceList)
+  "Insert advice name."
+  (let* (
+	 ($adviceFunc)
+	 )
+    (loop-for-each $each <adviceList
+      (setq $adviceFunc (b:func:advice|nameToFunc $each))
+      (insert
+       (s-lex-format
+	"\n(advice-add '${<funcName} :around #'${$adviceFunc})"
+	)))))
+
+
+
+(defun b:dblock:defun|prep (<funcName <advice)
+  (let* (
+	 ($adviceStr "")
+	 )
+    (when <advice
+      (setq $adviceStr (s-lex-format "~advice=${<advice}~")))
+    (s-lex-format
+      "  =defun= <<${<funcName>> ${$adviceStr}")))
+
+(defun b:dblock:funcEntry|record (<pkgsStage)
+  (when (string= <pkgsStage "ready")
+          (insert
+           (s-lex-format
+            "\
+ (b:log|entry (b:func$entry))\n"))))
+
+
 (advice-add 'org-dblock-write:b:elisp:pkg:install/update :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:b:elisp:pkg:install/update (<params)
   "
@@ -431,18 +483,19 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
          (<pkgsStage (or (plist-get <params :pkgsStage) "ready"))
+         (<advice (or (plist-get <params :advice) ()))
          (<pkgAdoptionType (or (plist-get <params :pkgAdoptionType) nil))
          (<pkgName (or (plist-get <params :pkgName) nil))
+	 ($funcName  (s-lex-format "${<pkgAdoptionType}:${<pkgName}:install|update"))
          )
     (bxPanel:params$effective)
 
+  
     (defun helpLine () "NOTYET" )
     (defun bodyContentPlus ())
     (defun bodyContent ()
-      "Insert the defvar."
-      (insert
-       (s-lex-format
-        "  =defun= <<${<pkgAdoptionType}:${<pkgName}:install|update>>")))
+      "Insert the defun."
+      (insert (b:dblock:defun|prep $funcName <advice))
 
     (defun outCommentPostContent ()
       (if (member <pkgAdoptionType b:pkg:adoption::types)
@@ -452,26 +505,20 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
         (b::error $inHere (s-lex-format "Unknown ${<pkgAdoptionType}"))))
 
     (defun outCommentPostContent_bnpa ()  ;; Blee Native Package Adoption
-      (let* (($straightInstaller))
+      (let* (
+	     ($straightInstaller)
+	     )
+	(b:func:advice|insert $funcName <advice)
         (insert
          (s-lex-format
-          "\n(defun ${<pkgAdoptionType}:${<pkgName}:install|update ()
- \"${<pkgName} package adoption install or update template.\"\n"
+          "\n(defun ${$funcName} ()
+ \"${<pkgName} Native package adoption install or update template.\"\n"
            ))
-
-        (when (string= <pkgsStage "ready")
-          (insert
-           (s-lex-format
-            "\
- (b:log|entry (b:func$entry))\n")))
-
+	(b:dblock:funcEntry|record <pkgsStage)	
         (if (string= <pkgsStage "ready")
             (setq $straightInstaller "b:pkg:straight|profiledInstall\n       b:pkgsProfile:native")
           (setq $straightInstaller "straight-use-package"))
-
-        (insert
-         (s-lex-format
-          "\
+        (insert (s-lex-format "\
  (if b:g:dev:mode?
       (${$straightInstaller}
        '(${<pkgName} :local-repo \"/bisos/git/bxRepos/blee/${<pkgName}\"))
@@ -511,7 +558,6 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
           "\
  (b:log|entry (b:func$entry))")))
         )
-
 
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
 

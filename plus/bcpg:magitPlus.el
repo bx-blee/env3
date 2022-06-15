@@ -93,9 +93,9 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  (b:log|entry (b:func$entry))
 ;;;#+END:
 
-;;;#+BEGIN:  b:elisp:pkg/install :outLevel 2 :pkgsType "component" :pkgName "magit" :pkgDesc "pkgDesc"
+;;;#+BEGIN:  b:elisp:pkg/install :outLevel 2 :pkgsType "component" :pkgName "magit" :pkgDesc ""
 (orgCmntBegin "
-** [[elisp:(show-all)][(>]]  =component= ~magit~ *pkgDesc* [[elisp:(org-shifttab)][<)]] E|
+** [[elisp:(show-all)][(>]]  =component= ~magit~ ** [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
  (b:pkg:straight|install 'magit)
 ;;;#+END:
@@ -103,7 +103,7 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: b:elisp:pkg:config/main :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "magitPlus"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:magitPlus:install|update>> [[elisp:(org-shifttab)][<)]] E|
+* [[elisp:(show-all)][(>]]  =defun= <<bcpg:magitPlus:config|main>> [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
 (defun bcpg:magitPlus:config|main ()
  "magitPlus package adoption config template."

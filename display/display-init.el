@@ -63,10 +63,15 @@
 and side-effects are documented here
 #+end_org "
 
+   (require 'bcpa:all-the-icons)
+   (bcpa:all-the-icons|fullUpdate)
+
+   (require 'bcpa:doom-modeline)
+   (bcpa:doom-modeline|fullUpdate)
+      
   (require 'bcpg:visibility)
   (bcpg:visibility|fullUpdate)
 
-  (require 'eoeLsip)               ;; Transitional, to be eliminated
   (require 'blee-nested-menus)     ;; Transitional, to be absorbed.
 
   (require 'bcpg:color-theme-modern)
@@ -77,6 +82,9 @@ and side-effects are documented here
   
   (require 'bcpg:tabbar)
   (bcpg:tabbar|fullUpdate)
+
+  (require 'bcg-core)
+  (bcg:core:full/update)
   
    )
 

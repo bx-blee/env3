@@ -69,11 +69,38 @@
 ** DocStr: Actions based on =parameters= and *returnValues*
 and side-effects are documented here
 #+end_org "
+
+   (if b:doom:enabled?
+       (b:base:main|doomBlee-init)
+     (b:base:main|pureBlee-init)
+      ))
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(b:base:main|init)
+#+END_SRC
+
+#+RESULTS:
+| bnpa:comeega:config | main | /bisos/git/auth/bxRepos/blee/env3/libs/libs-init.el | 72 |
+
+" orgCmntEnd)
+
+
+
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:base:main|pureBlee-init"
+(orgCmntBegin "
+* [[elisp:(show-all)][(>]]  =defun= <<b:base:main|pureBlee-init>> [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+(defun b:base:main|pureBlee-init (
+;;;#+END:
+                        )
+   " #+begin_org
+** DocStr: Actions based on =parameters= and *returnValues*
+and side-effects are documented here
+#+end_org "
    (require 'libs-init)
    (b:base:libs|init)
-
-   (require 'display-init)
-   (b:base:display|init)
 
    (require 'plus-init)
    (b:base:plus|init)
@@ -96,6 +123,9 @@ and side-effects are documented here
    (require 'ui-init)
    (b:base:ui|init)
 
+   (require 'display-init)
+   (b:base:display|init)
+
    (require 'legacy-init)
    (b:base:legacy|init)
    )
@@ -110,6 +140,37 @@ and side-effects are documented here
 | bnpa:comeega:config | main | /bisos/git/auth/bxRepos/blee/env3/libs/libs-init.el | 72 |
 
 " orgCmntEnd)
+
+
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:base:main|doomBlee-init"
+(orgCmntBegin "
+* [[elisp:(show-all)][(>]]  =defun= <<b:base:main|doomBlee-init>> [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+(defun b:base:main|doomBlee-init (
+;;;#+END:
+                        )
+   " #+begin_org
+** DocStr: Actions based on =parameters= and *returnValues*
+and side-effects are documented here
+#+end_org "
+   (require 'libs-init)
+   (b:base:libs|init)
+
+   (require 'legacy-init)
+   (b:base:legacy|init)
+   )
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(b:base:main|init)
+#+END_SRC
+
+#+RESULTS:
+| bnpa:comeega:config | main | /bisos/git/auth/bxRepos/blee/env3/libs/libs-init.el | 72 |
+
+" orgCmntEnd)
+
 
 
 
