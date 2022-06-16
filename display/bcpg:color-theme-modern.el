@@ -70,30 +70,29 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 " orgCmntEnd)
 ;;;#+END:
 
-;;;#+BEGIN: b:elisp:pkg/fullUpdate :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "color-theme-modern"
+;;;#+BEGIN: b:elisp:pkg/fullUpdate :outLevel 1 :advice () :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "color-theme-modern"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:color-theme-modern|fullUpdate>> [[elisp:(org-shifttab)][<)]] E|
+* [[elisp:(show-all)][(>]]  =defun= <<bcpg:color-theme-modern|fullUpdate>>  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
 (defun bcpg:color-theme-modern|fullUpdate ()
- "color-theme-modern package adoption control."
- (b:log|entry (b:func$entry))
-  (when bcpg:color-theme-modern:usgEnabled?
+ "color-theme-modern package adoption config template."
+ (b:log|entry (b:func$entry))  (when bcpg:color-theme-modern:usgEnabled?
     (bcpg:color-theme-modern:install|update)
     (bcpg:color-theme-modern:config|main)
     )
   )
 ;;;#+END:
 
-;;;#+BEGIN: b:elisp:pkg:install/update :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "color-theme-modern"
+;;;#+BEGIN: b:elisp:pkg:install/update :outLevel 1 :advice ("pureOnly") :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "color-theme-modern"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:color-theme-modern:install|update>> [[elisp:(org-shifttab)][<)]] E|
+* [[elisp:(show-all)][(>]]  =defun= <<bcpg:color-theme-modern:install|update>> ~advice=(pureOnly)~ [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
+(advice-add 'bcpg:color-theme-modern:install|update :around #'b:advice:common|pureOnly)
 (defun bcpg:color-theme-modern:install|update ()
- "color-theme-modern package adoption install or update template."
+ "color-theme-modern Component Package Adoption install or update template."
  (b:log|entry (b:func$entry))
 ;;;#+END:
-   ;;; Installation Material Comes Here
-;;;#+BEGIN:  b:elisp:pkg/install :outLevel 2 :pkgsType "component" :pkgName "color-theme-modern" :pkgDesc "pkgDesc"
+;;;#+BEGINNOT :  b:elisp:pkg/install :outLevel 2 :pkgAdoptionType "bcpa" :pkgName "color-theme-modern" :pkgDesc "pkgDesc"
 (orgCmntBegin "
 ** [[elisp:(show-all)][(>]]  =component= ~color-theme-modern~ *pkgDesc* [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
