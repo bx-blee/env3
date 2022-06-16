@@ -58,9 +58,9 @@
 " orgCmntEnd)
 ;;;#+END:
 
-;;;#+BEGIN:  b:elisp:defs/defun :defName "b:base:main|init"
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:base:main|init" :advice ()
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<b:base:main|init>> [[elisp:(org-shifttab)][<)]] E|
+* [[elisp:(show-all)][(>]]  =defun= <<b:base:main|init>>  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
 (defun b:base:main|init (
 ;;;#+END:

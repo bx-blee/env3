@@ -66,7 +66,7 @@ and side-effects are documented here
    (require 'blee-lib-general)   ;; Transitional
    
    (require 'bnpa:pkgs-profile)
-   (bnpa:pkgs-profile|fullUpdate)
+   (b:npa:pkgs-profile|fullUpdate)
 
    (require 'bnpa:blee3-pkgs-profile)
 
@@ -86,7 +86,7 @@ and side-effects are documented here
    ;; (b:pkg:straight|install 's)
 
    (require 'bcpa:polymode)
-   (bcpa:polymode|fullUpdate)
+   (b:cpa:polymode|fullUpdate)
 
    (require 'bnpa:comeega)
    (bnpa:comeega|fullUpdate)

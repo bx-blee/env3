@@ -53,7 +53,7 @@ s.el and loop.el are used in blee-libs. We consider those external local librari
   (require 'comment-block)
 
   (require 'bnpa:blee-libs)
-  (bnpa:blee-libs|fullUpdate)
+  (b:npa:blee-libs|fullUpdate)
   )
 ($:b:boot|prepForComeega)
 

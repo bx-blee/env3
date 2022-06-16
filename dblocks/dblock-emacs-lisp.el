@@ -249,22 +249,22 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
-         (<defName (or (plist-get <params :defName) nil))         
+         (<defName (or (plist-get <params :defName) nil))
+         (<advice (or (plist-get <params :advice) ()))         
          )
     (bxPanel:params$effective)
 
     (defun helpLine () "NOTYET" )
     (defun bodyContentPlus ())
     (defun bodyContent ()
-      "Insert the provide line"
-      (insert
-       (s-lex-format
-        "  =defun= <<${<defName}>>")))
+      (insert (b:dblock:defun|prep <defName <advice)))
+
+    (defun outCommentPostContent ()
+      (b:func:advice|insert <defName <advice)
+      (insert (s-lex-format "\n(defun ${<defName} (")))
     
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
-    (insert
-       (s-lex-format
-        "\n(defun ${<defName} ("))
+    (outCommentPostContent)    
     ))
 
 (advice-add 'org-dblock-write:b:elisp:defs/advice-add :around #'bx:dblock:control|wrapper)
@@ -383,11 +383,12 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
              ($inHere (b:log|entry (b:func$entry)))
              )
 	(b:func:advice|insert $funcName <advice)
-	(insert (s-lex-format "\n(defun ${$funcName} ()
- \"${<pkgName} package adoption config template.\"\n"))
+	(insert (s-lex-format "\n(defun ${$funcName} ()"))
+	(b:dblock:docStr|insert (s-lex-format
+       "*${<pkgName}* package adoption full update template."))
 	(b:dblock:funcEntry|record <pkgsStage)	
 	(insert (s-lex-format "\
-  (when ${<pkgAdoptionType}:${<pkgName}:usgEnabled?
+ (when ${<pkgAdoptionType}:${<pkgName}:usgEnabled?
     (${<pkgAdoptionType}:${<pkgName}:install|update)
     (${<pkgAdoptionType}:${<pkgName}:config|main)
     )
@@ -447,12 +448,19 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
  (b:log|entry (b:func$entry))"))))
 
 
+(defun b:dblock:docStr|insert (<docStr)
+  (let* (($docStr (s-lex-format "${<docStr}")))
+  (insert (s-lex-format
+           "\n   \" #+begin_org\n** DocStr: ${$docStr}\n#+end_org \"\n"))))
+
+
 (advice-add 'org-dblock-write:b:elisp:pkg:install/update :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:b:elisp:pkg:install/update (<params)
   "
 ** Produce something like defvar bnp:mua-abstract:usage:enabled?
 "
   (let* (
+         ($inHere (b:log|entry (b:func$entry)))
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
@@ -474,16 +482,17 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
           (funcall (intern (s-lex-format "outCommentPostContent_${<pkgAdoptionType}")))
         (b::error $inHere (s-lex-format "Unknown ${<pkgAdoptionType}"))))
 
-    (defun outCommentPostContent_bnpa ()  ;; Blee Native Package Adoption
+    (defun outCommentPostContent_b:npa ()  ;; Blee Native Package Adoption
       (let* (($straightInstaller))
 	(b:func:advice|insert $funcName <advice)
-        (insert (s-lex-format "\n(defun ${$funcName} ()
- \"${<pkgName} Native package adoption install or update template.\"\n"))
+        (insert (s-lex-format "\n(defun ${$funcName} ()"))
+	(b:dblock:docStr|insert (s-lex-format
+	 "{$<pkgName} Native package adoption install or update template."))
 	(b:dblock:funcEntry|record <pkgsStage)	
         (if (string= <pkgsStage "ready")
             (setq $straightInstaller "b:pkg:straight|profiledInstall\n       b:pkgsProfile:native")
           (setq $straightInstaller "straight-use-package"))
-        (insert (s-lex-format "
+        (insert (s-lex-format "\
  (if b:g:dev:mode?
       (${$straightInstaller}
        '(${<pkgName} :local-repo \"/bisos/git/bxRepos/blee/${<pkgName}\"))
@@ -491,21 +500,23 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
      '(${<pkgName} :type git :host github :repo \"bx-blee/${<pkgName}\"))))"
           ))))
 
-    (defun outCommentPostContent_bcpa ()  ;; Blee Component Package Adoption
+    (defun outCommentPostContent_b:cpa ()  ;; Blee Component Package Adoption
       (let* (($straightInstaller))
 	(b:func:advice|insert $funcName <advice)
-        (insert (s-lex-format "\n(defun ${$funcName} ()
- \"${<pkgName} Component Package Adoption install or update template.\"\n"))
+        (insert (s-lex-format "\n(defun ${$funcName} ()"))
+	(b:dblock:docStr|insert (s-lex-format 
+	 "*${<pkgName}* Component Package Adoption install or update template."))
 	(b:dblock:funcEntry|record <pkgsStage)	
         (if (string= <pkgsStage "ready")
             (setq $straightInstaller "b:pkg:straight|install")
           (setq $straightInstaller "straight-use-package"))
         (insert (s-lex-format "\n (${$straightInstaller} '${<pkgName}))"))))
 
-    (defun outCommentPostContent_bcpg ()  ;; Blee Component Package Grouping
+    (defun outCommentPostContent_b:cpg ()  ;; Blee Component Package Grouping
       (b:func:advice|insert $funcName <advice)
-      (insert (s-lex-format "\n(defun ${$funcName} ()
- \"${<pkgName} Component Package Adoption install or update template.\"\n"))
+      (insert (s-lex-format "\n(defun ${$funcName} ()"))
+      (b:dblock:docStr|insert (s-lex-format
+       "${<pkgName} Component Package Adoption install or update template."))
       (b:dblock:funcEntry|record <pkgsStage))	
 
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
@@ -520,6 +531,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
 ** Produce something like defvar bnp:mua-abstract:usage:enabled?
 "
   (let* (
+         ($inHere (b:log|entry (b:func$entry)))
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
@@ -538,8 +550,9 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
 
     (defun outCommentPostContent ()
       (b:func:advice|insert $funcName <advice)
-      (insert (s-lex-format "\n(defun ${$funcName} ()
- \"${<pkgName} package adoption config template.\"\n"))
+      (insert (s-lex-format "\n(defun ${$funcName} ()"))
+      (b:dblock:docStr|insert (s-lex-format
+       "*${<pkgName}* package adoption config template."))
       (b:dblock:funcEntry|record <pkgsStage))	
 
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
@@ -574,9 +587,9 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
           (setq $straightInstaller "b:pkg:straight|install")
         (setq $straightInstaller "straight-use-package"))
       (cond
-       ((string= <pkgAdoptionType "bcpa")
+       ((string= <pkgAdoptionType "b:cpa")
 	(insert (s-lex-format "\n (${$straightInstaller} '${<pkgName})")))
-       ((string= <pkgAdoptionType "bnpa")
+       ((string= <pkgAdoptionType "b:npa")
 	(insert (s-lex-format "
  (if b:g:dev:mode?
       (${$straightInstaller}
