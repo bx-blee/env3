@@ -158,6 +158,24 @@ buffer-file-name is useful for dev and testing.
 #+end_org "
   )
 
+(defconst b:base:env:realms (expand-file-name "realms" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:realms= .
+#+end_org "
+  )
+
+(defconst b:base:env:realms-site (expand-file-name "realms/site" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:realms-site= .
+#+end_org "
+  )
+
+(defconst b:base:env:realms-user (expand-file-name "realms/user" (b:base:env|obtain))
+   " #+begin_org
+** =b:base:env:realms-user= .
+#+end_org "
+  )
+
 (defun blee:env:splashScreen:base-obtain ()
   "Eg /bisos/blee/env/splashScreen/"
   (concat (file-name-as-directory (b:base:env|obtain)) "splashScreen")
@@ -183,6 +201,9 @@ buffer-file-name is useful for dev and testing.
     ,b:base:env:inputs
     ,b:base:env:dblocks    
     ,b:base:env:legacy
+    ,b:base:env:realms
+    ,b:base:env:realms-site
+    ,b:base:env:realms-user    
     )
    " #+begin_org
 ** =b:base:env:basesList= list of blee/env bases.

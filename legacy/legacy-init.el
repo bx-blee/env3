@@ -98,7 +98,7 @@ and side-effects are documented here
 
   (require 'bap-markdown)
   (bap:markdown:full/update)
-  
+
   (require 'bf-server)
   (bf:server:full/update)
 

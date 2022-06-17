@@ -4,7 +4,21 @@
 * ByStar User Environment (BUE) Bases
 ")
 
+(defun b:boot|blee-home-obtain ()
+  "If envvar BLEE_HOME is set, return that. Otherwise use usgBpos.sh."
+  (let* (($fullUseBxoPath
+	  (replace-regexp-in-string "\n$" "" 
+				    (shell-command-to-string
+	  "usgBpos.sh -i usgBpos_usageEnvs_fullUse_bxoPath")))
+	 ($bueElispBase
+	  (expand-file-name (format "%s/blee/emacs" $fullUseBxoPath))))
+    (if (file-directory-p $bueElispBase)
+	(setq $result $bueElispBase)
+      (setq $result nil))))
+
+
 ;;; (file-directory-p "/bxo/r3/iso/piu_mbFullUsage/blee/elisp")
+;;; (file-directory-p "/bxo/r3/iso/piu_mbFullUsage/blee/emacs")
 ;;; (blee:bue:base-obtain)
 (defun blee:bue:base-obtain ()
   "Using usgBpos we get the usage env base"
@@ -17,6 +31,30 @@
        ($bueElispBase
 	(expand-file-name
 	 (format "%s/blee/elisp" $fullUseBxoPath)))
+       ($result)
+       )
+    ;;(message $bueElispBase)
+    (when (file-directory-p $bueElispBase)
+      (setq $result $bueElispBase))
+
+    (unless (file-directory-p $bueElispBase)  
+      (setq $result nil))
+    $result
+    )
+  )
+
+
+(defun blee:bue:emacs-default-obtain ()
+  "Using usgBpos we get the usage env base"
+  (let*
+      (
+       ($fullUseBxoPath
+	(replace-regexp-in-string "\n$" "" 
+	 (shell-command-to-string
+	  "usgBpos.sh -i usgBpos_usageEnvs_fullUse_bxoPath")))
+       ($bueElispBase
+	(expand-file-name
+	 (format "%s/blee/emacs" $fullUseBxoPath)))
        ($result)
        )
     ;;(message $bueElispBase)

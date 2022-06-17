@@ -221,22 +221,22 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
-         (<defName (or (plist-get <params :defName) nil))         
+         (<defName (or (plist-get <params :defName) nil))
+         (<advice (or (plist-get <params :advice) ()))                  
          )
     (bxPanel:params$effective)
 
     (defun helpLine () "NOTYET" )
     (defun bodyContentPlus ())
     (defun bodyContent ()
-      "Insert the provide line"
-      (insert
-       (s-lex-format
-        "  =cl-defun= <<${<defName}>>")))
+      (insert (b:dblock:cl-defun|prep <defName <advice)))      
+
+    (defun outCommentPostContent ()
+      (b:func:advice|insert <defName <advice)
+      (insert (s-lex-format "\n(defun ${<defName} (")))
     
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
-    (insert
-       (s-lex-format
-        "\n(cl-defun ${<defName} ("))
+    (outCommentPostContent)     
     ))
 
 (advice-add 'org-dblock-write:b:elisp:defs/defun :around #'bx:dblock:control|wrapper)
@@ -439,6 +439,16 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
       (setq $adviceStr (s-lex-format "~advice=${<advice}~")))
     (s-lex-format
       "  =defun= <<${<funcName}>> ${$adviceStr}")))
+
+(defun b:dblock:cl-defun|prep (<funcName <advice)
+  (let* (
+	 ($adviceStr "")
+	 )
+    (when <advice
+      (setq $adviceStr (s-lex-format "~advice=${<advice}~")))
+    (s-lex-format
+      "  =cl-defun= <<${<funcName}>> ${$adviceStr}")))
+
 
 (defun b:dblock:funcEntry|record (<pkgsStage)
   (when (string= <pkgsStage "ready")
