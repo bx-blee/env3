@@ -87,6 +87,9 @@ and side-effects are documented here
   (require 'bap-bbdb)
   (bap:bbdb:full/update)
 
+  (require 'bcg-org)
+  (bcg:org:full/update)
+  
   (require 'bcg-org-roam)
   (bcg:org:roam:full/update)
   
@@ -454,6 +457,7 @@ and side-effects are documented here
 
   (load-file "/bisos/blee/env/main/choose-comletion.el")
 
+  (load "emacs-plus-interim.el")
 
   (require 'bystar-init-screen)
   (bystar:init:startup-message)

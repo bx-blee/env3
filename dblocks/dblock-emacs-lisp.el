@@ -581,7 +581,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
          (<pkgsStage (or (plist-get <params :pkgsStage) "ready"))
          (<pkgName (or (plist-get <params :pkgName) nil))
-         (<pkgAdoptionType (or (plist-get <params :pkgAdoptionType) "bcpa"))	 
+         (<pkgAdoptionType (or (plist-get <params :pkgAdoptionType) "b:cpa"))	 
          (<pkgDesc (or (plist-get <params :pkgDesc) ""))
          )
     (bxPanel:params$effective)
