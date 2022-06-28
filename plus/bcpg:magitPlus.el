@@ -110,6 +110,8 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  (b:log|entry (b:func$entry))
 ;;;#+END:
 
+ (require 'magit)
+ 
  ;;(setq magit-git-standard-options
  ;; (append magit-git-standard-options '("-c") '("http.sslVerify=false")))
 

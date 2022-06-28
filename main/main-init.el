@@ -70,10 +70,14 @@
 and side-effects are documented here
 #+end_org "
 
-   (if b:doom:enabled?
-       (b:base:main|doomBlee-init)
-     (b:base:main|pureBlee-init)
-      ))
+   ;; (if b:doom:enabled?
+   ;;     (b:base:main|doomBlee-init)
+   ;;   (b:base:main|pureBlee-init)
+   ;;    ))
+
+   (b:base:main|pureBlee-init)
+      )
+
 
 (orgCmntBegin "
 ** Basic Usage:
@@ -132,6 +136,9 @@ and side-effects are documented here
    (require 'realms-user-init)
    (b:base:realms-user|init)
 
+   (when nil ;; b:doom:enabled?
+     (load-file "/bisos/blee/env3/themes/blee-dark-1-theme.el")
+     (enable-theme 'blee-dark-1))
    )
 
 (orgCmntBegin "

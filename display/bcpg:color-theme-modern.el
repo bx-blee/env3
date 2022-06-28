@@ -70,7 +70,7 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 " orgCmntEnd)
 ;;;#+END:
 
-;;;#+BEGIN: b:elisp:pkg/fullUpdate :outLevel 1 :advice () :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "color-theme-modern"
+;;;#+BEGINNOT: b:elisp:pkg/fullUpdate :outLevel 1 :advice () :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "color-theme-modern"
 (orgCmntBegin "
 * [[elisp:(show-all)][(>]]  =defun= <<bcpg:color-theme-modern|fullUpdate>>  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
@@ -80,6 +80,9 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
     (bcpg:color-theme-modern:install|update)
     (bcpg:color-theme-modern:config|main)
     )
+ ;; (when b:doom:enabled?
+ ;;   (load-file "/bisos/blee/env3/themes/blee-dark-1-theme.el")
+ ;;   (enable-theme 'blee-dark-1))
   )
 ;;;#+END:
 
@@ -100,12 +103,15 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 ;;;#+END:
    )
 
-;;;#+BEGIN: b:elisp:pkg:config/main :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "color-theme-modern"
+;;;#+BEGIN: b:elisp:pkg:config/main :outLevel 1 :advice ("pureOnly") :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "color-theme-modern"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:color-theme-modern:install|update>> [[elisp:(org-shifttab)][<)]] E|
+* [[elisp:(show-all)][(>]]  =defun= <<bcpg:color-theme-modern:config|main>> ~advice=(pureOnly)~ [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
+(advice-add 'bcpg:color-theme-modern:config|main :around #'b:advice:common|pureOnly)
 (defun bcpg:color-theme-modern:config|main ()
- "color-theme-modern package adoption config template."
+   " #+begin_org
+** DocStr: *color-theme-modern* package adoption config template.
+#+end_org "
  (b:log|entry (b:func$entry))
 ;;;#+END:
 

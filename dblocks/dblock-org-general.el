@@ -41,11 +41,10 @@
           (concat $result
                   (format
                    "[[elisp:(find-file \"%s\")][%s]] || [[elisp:(find-file-other-window \"%s\")][Visit In Other]]"
-   <fileName
-   <fileName   
+   (expand-file-name <fileName)
+   (file-name-nondirectory (expand-file-name <fileName))
    (expand-file-name <fileName)
    )))
-                  
     $result
     ))
 
@@ -818,7 +817,7 @@ Sections are specified as :outLevel 1,n
         ;;
         (@panelType (or (plist-get @params :panelType) "bxPanel"))
         (@title (or (plist-get @params :title) "title"))        
-        
+        (@subTitle (or (plist-get @params :subTitle) ""))                
         ;;
         ($localVarPlaceHolder)
         )
@@ -858,6 +857,19 @@ Sections are specified as :outLevel 1,n
                ;;@panelType
                @title
                ))
+
+      ;; NOTYET, this needs to become centered insert
+      (unless (string= @subTitle "")
+	(insert
+	 (s-lex-format
+	  "~${@subTitle}~"))
+	(center-line)
+	(org-beginning-of-line)
+	(insert "* ")
+	(org-end-of-line)
+	(insert "\n")
+	)
+      
       (insert
        (format "%s %s "
                (blee:panel:outLevelStr @outLevel)

@@ -103,9 +103,11 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 (defun bcg:core:displayEngine/config ()
   "NOTYET ::Revisit UI Section of https://github.com/gilbertw1/bmacs/blob/master/bmacs.org#ui"
   (interactive)
-    
 
-  (setq frame-title-format (list (format "%%b – Pure-Blee 3.1-E-%s @ %s" emacs-version system-name)))
+  (if b:doom:enabled?
+      (setq frame-title-format (list (format "%%b – Doom-Blee 3.1-E-%s @ %s" emacs-version system-name)))
+    (setq frame-title-format (list (format "%%b – Pure-Blee 3.1-E-%s @ %s" emacs-version system-name)))
+    )
 
   (setq-default bidi-display-reordering t)         ; Blee wants to be bidi-aware
 
