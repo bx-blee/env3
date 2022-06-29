@@ -74,9 +74,6 @@ and side-effects are documented here
 
   (require 'blee-nested-menus)     ;; Transitional, to be absorbed.
 
-  (require 'bcpg:color-theme-modern)
-  (bcpg:color-theme-modern|fullUpdate)
-
   (require 'bcpg:toolbar)
   (bcpg:toolbar|fullUpdate)
   
@@ -85,6 +82,9 @@ and side-effects are documented here
 
   (require 'bcg-core)
   (bcg:core:full/update)
+
+  (require 'bcpg:color-theme-modern)
+  (bcpg:color-theme-modern|fullUpdate)
   
    )
 

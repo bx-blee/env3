@@ -261,7 +261,8 @@ and side-effects are documented here
 **  [[elisp:(org-cycle)][| ]]  Adopted Component   ::      *Dired* [[elisp:(org-cycle)][| ]]
 	
 "
-	       (require 'bac-dired)
+	       (unless (version< emacs-version "28.1")
+		 (require 'bac-dired))
 	       ))
 ;;;#+END:
 

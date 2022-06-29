@@ -122,9 +122,10 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  (load-theme 'calm-forest t t)
  (load-theme 'blee-dark-1 t t)
  (load-theme 'julie t t) 
- ;(enable-theme 'aalto-dark)
- ;(enable-theme 'calm-forest)
- (enable-theme 'blee-dark-1)
+ ;;(enable-theme 'aalto-dark)
+ ;;(enable-theme 'calm-forest)
+ (unless (version< emacs-version "28.1")
+   (enable-theme 'blee-dark-1))
  ;;(enable-theme 'julie)  
  )
 
