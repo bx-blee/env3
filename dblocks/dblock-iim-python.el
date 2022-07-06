@@ -926,10 +926,10 @@ Insert Org-heading
     
     (if (not (string= @cmndType ""))
         (sectionTitleOpenInsert @cmndType)
-      (sectionTitleOpenInsert "ICM-Cmnd")
+      (sectionTitleOpenInsert "CmndSvc")
       )
 
-    (insert (format " /%s/" @cmndName))
+    (insert (format " <<%s>>" @cmndName))
 
     (if (not (string= @comment ""))
         (insert (format " =%s=" @comment)))
@@ -939,7 +939,7 @@ Insert Org-heading
              @parsMandListStr @parsOptListStr @argsMin @argsMax @asFuncListStr @interactiveP
              ))
     
-    (sectionTitleCloseInsert "ICM-Cmnd")
+    (sectionTitleCloseInsert "CmndSvc")
 
     (insert
      (format "class %s(%s%s):\n" @cmndName $icmStr $IifStr))
@@ -1098,7 +1098,7 @@ Insert Org-heading
     
     (if (not (string= @cmndType ""))
         (sectionTitleOpenInsert @cmndType)
-      (sectionTitleOpenInsert "ICM-Cmnd")
+      (sectionTitleOpenInsert "CmndSvc")
       )
 
     (insert (format " /%s/" @cmndName))
@@ -1111,7 +1111,7 @@ Insert Org-heading
              @parsMandListStr @parsOptListStr @argsMin @argsMax @asFuncListStr @interactiveP
              ))
     
-    (sectionTitleCloseInsert "ICM-Cmnd")
+    (sectionTitleCloseInsert "CmndSvc")
 
     (insert
      (format "class %s(%s%s):\n" @cmndName $icmStr $IifStr))

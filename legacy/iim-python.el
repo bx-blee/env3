@@ -90,9 +90,12 @@
   (insert
    (format "\
 \"\"\" #+begin_org\n* \
- _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  %-10s ::"
-@sectionType
-)))
+ _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ \
+_[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
+[[elisp:(outline-show-branches+toggle)][|=]] \
+[[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  %-10s \
+[[elisp:(outline-show-subtree+toggle)][||]]"
+           @sectionType)))
 
 
 (defun sectionTitleCloseInsert(@sectionType)

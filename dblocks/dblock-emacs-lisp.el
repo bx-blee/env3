@@ -177,8 +177,13 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
 
     (defun bodyContent ()
       "Insert the provide line"
-      (insert (s-lex-format
-               "*  ~ORG-TOP-CONTROLS-COME-HERE~")))
+      (insert "*  [[elisp:(org-cycle)][|/Controls/| ]] :: [[elisp:(org-show-subtree)][|=]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]")
+
+      (insert "\n")
+
+      (insert "** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]")
+      )
+
 
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
     ))
@@ -248,7 +253,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
   (let* (
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-         (<style (letGet$style "openTerseNoNl" "closeContinue"))
+         (<style (letGet$style "openBlank" "closeBlank"))
          (<defName (or (plist-get <params :defName) nil))
          (<advice (or (plist-get <params :advice) ()))         
          )
@@ -431,23 +436,59 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
 	)))))
 
 
-(defun b:dblock:defun|prep (<funcName <advice)
+(defun b:dblock:sectionTitleOpenInsert(<sectionType)
+  (insert
+   (format
+    "*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  %-10s ::"
+<sectionType
+)))
+
+
+(defun b:dblock:sectionTitleCloseInsert(@sectionType)
+  (insert
+   (format "  [[elisp:(org-cycle)][| ]]\n#+end_org \"\"\"\n")))
+
+
+(defun b:dblock:body:elisp|prep (<sectionType <funcName <advice)
   (let* (
 	 ($adviceStr "")
+         ($openStr "")
+         ($closeStr "")
+         ($middleStr "")
+         ($result "")
 	 )
+    (setq
+     $openStr
+     (format
+      "*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ \
+_[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
+[[elisp:(outline-show-branches+toggle)][|=]] \
+[[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  %-10s \
+[[elisp:(outline-show-subtree+toggle)][||]]"
+         <sectionType))
+
+    (setq
+     $closeStr
+     (format
+      "  [[elisp:(org-cycle)][| ]]"))
+
     (when <advice
       (setq $adviceStr (s-lex-format "~advice=${<advice}~")))
-    (s-lex-format
-      "  =defun= <<${<funcName}>> ${$adviceStr}")))
+    (setq
+     $middleStr
+     (s-lex-format
+      "  <<${<funcName}>> ${$adviceStr}"))
+
+    (setq $result (concat $openStr $middleStr $closeStr))))
+
+
+
+(defun b:dblock:defun|prep (<funcName <advice)
+  (b:dblock:body:elisp|prep "defun" <funcName <advice))
+
 
 (defun b:dblock:cl-defun|prep (<funcName <advice)
-  (let* (
-	 ($adviceStr "")
-	 )
-    (when <advice
-      (setq $adviceStr (s-lex-format "~advice=${<advice}~")))
-    (s-lex-format
-      "  =cl-defun= <<${<funcName}>> ${$adviceStr}")))
+    (b:dblock:body:elisp|prep "cl-defun" <funcName <advice))
 
 
 (defun b:dblock:funcEntry|record (<pkgsStage)

@@ -112,31 +112,40 @@
 
     (defun $commonFrontControls ()
       "Other than the front |N or -> or |n "
-      ;;"[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]"
-      " _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_"
-      )
+      (if (equal major-mode 'org-mode)
+          (format
+           " _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_"
+           )
+        (format
+         " _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ \
+_[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
+[[elisp:(outline-show-branches+toggle)][|=]] \
+[[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*")))
 
-    (when (not @inDblock)
-      (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][|N]]"
-                                          (blee:panel:outLevelStr @outLevel)
-                                          )))
-    (when (equal @inDblock t)
-      (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][(>]]"
-                                           (blee:panel:outLevelStr @outLevel)
-                                           )))
+    (when (equal major-mode 'org-mode)
+      (when (not @inDblock)
+        (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][|N]]"
+                                             (blee:panel:outLevelStr @outLevel)
+                                             )))
+      (when (equal @inDblock t)
+        (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][(>]]"
+                                             (blee:panel:outLevelStr @outLevel)
+                                             )))
 
-    (when (equal @inDblock "yes")
-      (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][|n]]"
-                                           (blee:panel:outLevelStr @outLevel)
-                                           )))
-
+      (when (equal @inDblock "yes")
+        (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][|n]]"
+                                             (blee:panel:outLevelStr @outLevel)
+                                             ))))
+    (unless (equal major-mode 'org-mode)
+          (setq $primaryNaturalControl (format "%s"
+                                               (blee:panel:outLevelStr @outLevel))))
 
     (setq $result (format "%s %s "
                           $primaryNaturalControl
                           ($commonFrontControls)
                           ))
-    $result
-   ))
+    $result))
+
 
 
 (defun blee:panel:delimiterFrontControl (@outLevel &rest @args)
@@ -236,6 +245,7 @@
        )))
     $result
    ))
+
 
 
 
