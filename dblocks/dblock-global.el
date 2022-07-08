@@ -753,6 +753,10 @@ surround is for panel decoration."
            ;(insert "(lambda () \"\n")
            (insert "(orgCmntBegin \"\n")
            )
+          ((string-equal "python-mode" mode)
+           (bx:python:insert-begin-comment)
+           (message "Begin-Comment Set to python-mode")
+           )
           ((string-equal "latex-mode" mode)
            (bx:latex:insert-begin-comment)           
            (message "Begin-Comment Set to latex-mode")
@@ -811,6 +815,10 @@ surround is for panel decoration."
            ;;(insert "\n\")")
            (insert "\n\" orgCmntEnd)")
            )
+          ((string-equal "python-mode" mode)
+           (bx:python:insert-end-comment)
+           (message "End-comment Set for python-mode")
+           )
           ((string-equal "latex-mode" mode)
            (bx:latex:insert-end-comment)             
            (message "NON-AUTO Set to latex-mode")
@@ -832,10 +840,15 @@ surround is for panel decoration."
     )
   )
 
+(defun bx:python:insert-begin-comment ()
+  (insert "\"\"\" #+begin_org\n"))
+
+(defun bx:python:insert-end-comment ()
+  (insert "\n#+end_org \"\"\""))
+
 
 (defun bx:latex:insert-begin-comment ()
   (insert "\\begin{comment}\n"))
-  
 
 (defun bx:latex:insert-end-comment ()
   ""

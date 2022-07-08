@@ -321,7 +321,7 @@ if __name__ == \"__main__\":
         )
     (setq $argsList (split-string $argsListStr))
     (sectionTitleOpenInsert (format
-                             "Func-%s" $funcType))
+                             "F-%s" $funcType))
 
     
 

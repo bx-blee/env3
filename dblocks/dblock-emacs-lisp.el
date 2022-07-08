@@ -10,6 +10,7 @@
 ")
 ;;;#+END:
 
+
 ;;;#+BEGIN: bx:dblock:global:org-contents-list :disabledP "false" :mode "auto"
 (lambda () "
 *      ################ CONTENTS-LIST ###############
@@ -420,7 +421,8 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
      ((string= <adviceName "trace")
       (setq $result "trace"))
      (t
-      (message "Unknown")))
+      ;;(message "Unknown")
+      (setq $result <adviceName)))
     $result))
 
 (defun b:func:advice|insert (<funcName <adviceList)

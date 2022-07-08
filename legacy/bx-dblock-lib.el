@@ -84,7 +84,10 @@
   (require 'dblock-iims-panel)
   (require 'dblock-org-realms)
   (require 'dblock-org-mailings)
-  (require 'dblock-org-common)  
+  (require 'dblock-org-common)
+  (require 'dblock-comeega-prog)
+  (require 'dblock-comeega-elisp)
+  (require 'dblock-comeega-python)
   (message "bx:dblock:defaults-set -- Done." )
   )
 

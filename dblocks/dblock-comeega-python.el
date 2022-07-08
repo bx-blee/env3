@@ -1,4 +1,4 @@
-;;; dblock-comeega-elisp.el --- DBlocks for Python File-Elements  -*- lexical-binding: t; -*-
+;;; dblock-comeega-python.el --- DBlocks for Python File-Elements  -*- lexical-binding: t; -*-
 
 (orgCmntBegin "
 * Summary: Dblocks for common python comeega files --- workbech.
@@ -250,7 +250,7 @@ g_importedCmndsModules = [       # Enumerate modules from which CMNDs become inv
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
-(provide 'dblock-comeega-elisp)
+(provide 'dblock-comeega-python)
 ;;;#+END:
 
 ;;;#+BEGIN: b:prog:file/endOfFile :extraParams nil

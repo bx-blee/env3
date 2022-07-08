@@ -287,11 +287,11 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
 (orgCmntBegin "
 ** Basic Usage: Based on mode
 #+BEGIN_SRC emacs-lisp
-(b:dblock:comeega|frontElement "some")
+(b:dblock:comeega|frontElement \"some\")
 #+END_SRC
 
 #+RESULTS:
-: ###
+: *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  some       [[elisp:(outline-show-subtree+toggle)][||]]
 
 " orgCmntEnd)
 
