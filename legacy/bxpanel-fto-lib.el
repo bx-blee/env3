@@ -161,6 +161,29 @@ When :format is line, a complete line.
 	      )
 	)
       )
+    (when (fto:treeElem|atBaseIsNoFv? <ftoBase)
+      (when (string= <format "terse")
+	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))
+	(setq $result
+	      (format
+	       "[[elisp:(dired \"%s\")][ ~%s~ ]]"
+	       <ftoBase
+	       $ftoName
+	       )
+	      )
+	)
+      (when (string= <format "line")
+	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))
+	(setq $result
+	      (format
+	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]    ::  NoFV: /%s/"
+	       <ftoBase
+	       $ftoName
+	       $ftoName
+	       )
+	      )
+	)
+      )
     $result
     )
   )

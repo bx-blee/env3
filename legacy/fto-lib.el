@@ -159,7 +159,7 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 	)
     (setq $result (fv:read-as-string (concat (file-name-as-directory <ftoBase) "/_tree_")))
     (when (string= $result "")
-      (setq $result "leaf")
+      (setq $result "noFv")
       )
     $result
     )
@@ -250,6 +250,21 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
     )
   )
 
+;;;
+;;; (fto:treeElem|atBaseIsLeaf? "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
+;;;
+(defun fto:treeElem|atBaseIsNoFv? (<ftoBase)
+  "Given ftoBase, return nil if ftoBase is not a Leaf."
+  (let (
+	($result nil))
+    (when (string= (fto:treeElem|atBaseGetType <ftoBase) "noFv")
+      (setq $result t)
+      )
+    $result
+    )
+  )
+
+
 (make-obsolete 'fto:withBase:isLeaf? 'fto:treeElem|atBaseIsLeaf? "blee-3.1.")
 
 ;;;
@@ -269,6 +284,9 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
       )
     (when (fto:treeElem|atBaseIsLeaf? <ftoBase)
       (setq $result (fto:leaf|atBaseGetName <ftoBase))
+      )
+    (when (fto:treeElem|atBaseIsNoFv? <ftoBase)
+      (setq $result (fto:noFv|atBaseGetName <ftoBase))
       )
     $result
     )
@@ -305,6 +323,23 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
     $result
     )
   )
+
+;;;
+;;; (fto:leaf|atBaseGetName "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
+;;; (fto:leaf|atBaseGetName "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_/")
+;;;
+(defun fto:noFv|atBaseGetName (<ftoBase)
+  "Name of the leaf as string"
+  (let (
+	($result nil)
+	)
+    (setq $result (file-name-nondirectory
+		   (expand-file-name (directory-file-name <ftoBase))
+		   ))
+    $result
+    )
+  )
+
 
 
 ;;;

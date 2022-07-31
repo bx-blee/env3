@@ -226,7 +226,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
   (let* (
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-         (<style (letGet$style "openTerseNoNl" "closeContinue"))
+         (<style (letGet$style "openBlank" "closeBlank"))
          (<defName (or (plist-get <params :defName) nil))
          (<advice (or (plist-get <params :advice) ()))                  
          )
@@ -239,7 +239,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
 
     (defun outCommentPostContent ()
       (b:func:advice|insert <defName <advice)
-      (insert (s-lex-format "\n(defun ${<defName} (")))
+      (insert (s-lex-format "\n(cl-defun ${<defName} (")))
     
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
     (outCommentPostContent)     
@@ -370,7 +370,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          ($inHere (b:log|entry (b:func$entry)))
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-         (<style (letGet$style "openTerseNoNl" "closeContinue"))
+         (<style (letGet$style "openBlank" "closeBlank"))
          (<pkgsStage (or (plist-get <params :pkgsStage) "ready"))
          (<advice (or (plist-get <params :advice) ()))	 
          (<pkgAdoptionType (or (plist-get <params :pkgAdoptionType) nil))
@@ -516,7 +516,7 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
          ($inHere (b:log|entry (b:func$entry)))
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-         (<style (letGet$style "openTerseNoNl" "closeContinue"))
+         (<style (letGet$style "openBlank" "closeBlank"))
          (<pkgsStage (or (plist-get <params :pkgsStage) "ready"))
          (<advice (or (plist-get <params :advice) ()))
          (<pkgAdoptionType (or (plist-get <params :pkgAdoptionType) nil))
@@ -565,6 +565,8 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
           (setq $straightInstaller "straight-use-package"))
         (insert (s-lex-format "\n (${$straightInstaller} '${<pkgName}))"))))
 
+    (defun outCommentPostContent_bcpg ()  (outCommentPostContent_b:cpg))  ;; MB-2022 --- Naming convention changes to be sorted out.
+
     (defun outCommentPostContent_b:cpg ()  ;; Blee Component Package Grouping
       (b:func:advice|insert $funcName <advice)
       (insert (s-lex-format "\n(defun ${$funcName} ()"))
@@ -587,7 +589,7 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
          ($inHere (b:log|entry (b:func$entry)))
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-         (<style (letGet$style "openTerseNoNl" "closeContinue"))
+         (<style (letGet$style "openBlank" "closeBlank"))
          (<pkgsStage (or (plist-get <params :pkgsStage) "ready"))
          (<advice (or (plist-get <params :advice) ()))
 	 (<pkgAdoptionType (or (plist-get <params :pkgAdoptionType) nil))
@@ -621,7 +623,7 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
          ($inHere (b:log|entry (b:func$entry)))
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-         (<style (letGet$style "openTerseNoNl" "closeContinue"))
+         (<style (letGet$style "openBlank" "closeBlank"))
          (<pkgsStage (or (plist-get <params :pkgsStage) "ready"))
          (<pkgName (or (plist-get <params :pkgName) nil))
          (<pkgAdoptionType (or (plist-get <params :pkgAdoptionType) "b:cpa"))	 

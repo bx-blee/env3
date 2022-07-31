@@ -1,7 +1,7 @@
 ;;; dblock-comeega-python.el --- DBlocks for Python File-Elements  -*- lexical-binding: t; -*-
 
 (orgCmntBegin "
-* Summary: Dblocks for common python comeega files --- workbech.
+* Summary: Dblocks for common python comeega files --- workbech, particulars-csInfo, framework/main.
 " orgCmntEnd)
 
 ;;;#+BEGIN: b:prog:file/proclamations :copyLeft "libreHalaal"
@@ -152,12 +152,12 @@ icmInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'"
       )))
 
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:python:cs:framework|main" :advice ("bx:dblock:control|wrapper")
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:python:cs:framework/main" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:python:cs:framework|main>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:python:cs:framework/main>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:python:cs:framework|main :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:python:cs:framework|main (<params)
+(advice-add 'org-dblock-write:b:python:cs:framework/main :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:python:cs:framework/main (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
@@ -205,12 +205,12 @@ if __name__ == '__main__':
       )))
 
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:python:cs:framework|importCmndsModules" :advice ("bx:dblock:control|wrapper")
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:python:cs:framework/importCmndsModules" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:python:cs:framework|importCmndsModules>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:python:cs:framework/importCmndsModules>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:python:cs:framework|importCmndsModules :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:python:cs:framework|importCmndsModules (<params)
+(advice-add 'org-dblock-write:b:python:cs:framework/importCmndsModules :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:python:cs:framework/importCmndsModules (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
@@ -242,6 +242,63 @@ g_importedCmndsModules = [       # Enumerate modules from which CMNDs become inv
           (insert (s-lex-format "    '${$each}',\n")))
         (insert (s-lex-format "]\n")))
 
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:python:cs:module/cur_paramsAssign" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:python:cs:module/cur_paramsAssign>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:python:cs:module/cur_paramsAssign :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:python:cs:module/cur_paramsAssign (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<curParsList (or (plist-get <params :curParsList) ()))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "Currents"))
+             )
+      (insert
+         (s-lex-format "${$frontStr} ~cur_examples~ ${<curParsList}"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+_parNamesList = ["))
+                
+      (loop-for-each $each <curParsList
+          (insert (s-lex-format " '${$each}',")))
+      (insert (s-lex-format "]\n"))
+
+      (insert (s-lex-format "\
+if not (curParsDictValue := currentsConfig.curParsGetAsDictValue_wOp(_parNamesList, outcome=g_outcome).results): g_opSysExit(g_outcome)\n"))
+
+      (loop-for-each $each <curParsList
+          (insert (s-lex-format "cur_${$each} = curParsDictValue['${$each}']\n")))
+
+      (insert (s-lex-format "\
+def cur_examples():
+    icm.ex_gExecMenuItem(execLine='bx-currents.cs')
+    icm.ex_gExecMenuItem(execLine='bx-currents.cs -i usgCursParsGet')
+    for each in _parNamesList:
+        icm.ex_gExecMenuItem(execLine=f'bx-currents.cs -v 20 -i pkgInfoParsSet {each}={curParsDictValue[each]}')"))
+        )
+                
     (progn  ;; Actual Invocations
       (outCommentPreContent)
       (bx:invoke:withStdArgs$bx:dblock:governor:process)

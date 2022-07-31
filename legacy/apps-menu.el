@@ -20,6 +20,7 @@
 
 
 (require 'apps-calc-menu)
+(require 'apps-epa-menu)
 (require 'apps-calendar-menu)
 (require 'apps-bbdb-menu)
 (require 'apps-org-menu)
@@ -66,6 +67,9 @@ As such what happens below is exactly what is necessary and no more."
 	))
 
     (apps:calc:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (apps:epa:menu:plugin|install
      apps:menu:global (s-- 3))
 
     (apps:calendar:menu:plugin|install

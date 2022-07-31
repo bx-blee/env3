@@ -279,7 +279,7 @@ if __name__ == \"__main__\":
         )
     (setq $argsList (split-string $argsListStr))
     (sectionTitleOpenInsert (format
-                             "Func-%s" $funcType))
+                             "F-%s" $funcType))
 
     
 
@@ -424,7 +424,7 @@ if __name__ == \"__main__\":
         ($classType (or (plist-get @params :classType) ""))
         )
     (sectionTitleOpenInsert (format
-                             "Class-%s" $classType))
+                             "Cls-%s" $classType))
     
     (insert (format " /%s/" $className))
 
@@ -517,7 +517,7 @@ if __name__ == \"__main__\":
         )
     (setq $argsList (split-string $argsListStr))
     (subSectionTitleOpenInsertMethod (format
-                             "Method-%s" $methodType))
+                             "Mtd-%s" $methodType))
 
     (insert (format " /%s/" $methodName))
 
@@ -617,7 +617,7 @@ Insert Org-heading
     (icm-python-cmnd:classHead $modPrefix $cmndName $cmndType $comment $parsMand $parsOpt $argsMin $argsMax $asFunc $interactiveP $icmStr)
     ))
 
-(defun icm-python-cmnd:classHead(
+(defun icm-python-cmnd:classHead-with-obtainDocStr(
   @modPrefix @cmndName @cmndType @comment @parsMandListStr @parsOptListStr @argsMin @argsMax @asFuncListStr @interactiveP @icmStr)
   ""
   (let (
@@ -875,12 +875,13 @@ Insert Org-heading
         ($interactiveP (or (plist-get @params :interactiveP) ""))
         ($icmStr (or (plist-get @params :icmStr) ""))   
         )
-    (icm-py3-cmnd:classHead $modPrefix $cmndName $cmndType $comment $parsMand $parsOpt $argsMin $argsMax $asFunc $interactiveP $icmStr)
+    ;;(icm-py3-cmnd:classHead $modPrefix $cmndName $cmndType $comment $parsMand $parsOpt $argsMin $argsMax $asFunc $interactiveP $icmStr)
+    (icm-python-cmnd:classHead $modPrefix $cmndName $cmndType $comment $parsMand $parsOpt $argsMin $argsMax $asFunc $interactiveP $icmStr)
     ))
 
 (defun icm-py3-cmnd:classHead(
   @modPrefix @cmndName @cmndType @comment @parsMandListStr @parsOptListStr @argsMin @argsMax @asFuncListStr @interactiveP @icmStr)
-  ""
+  "This is incomplete and is not being used."
   (let (
         ($icmStr @icmStr)
         ($parsMandList (split-string @parsMandListStr))
@@ -1042,7 +1043,7 @@ Insert Org-heading
     ))
 
 
-(defun icm-python-cmnd:classHead-WORKS(
+(defun icm-python-cmnd:classHead(
   @modPrefix @cmndName @cmndType @comment @parsMandListStr @parsOptListStr @argsMin @argsMax @asFuncListStr @interactiveP @icmStr)
   ""
   (let (
@@ -1101,7 +1102,8 @@ Insert Org-heading
       (sectionTitleOpenInsert "CmndSvc")
       )
 
-    (insert (format " /%s/" @cmndName))
+    ;(insert (format " /%s/" @cmndName))
+    (insert (format " <<%s>>" @cmndName))
 
     (if (not (string= @comment ""))
         (insert (format " =%s=" @comment)))
@@ -1279,6 +1281,10 @@ Insert Org-heading
                    ))
         (insert "\n")
         )
+      (if (not (string= @comment ""))
+          (insert
+           (format "
+        \"\"\"%s\"\"\"" @comment)))
     ))
 
 

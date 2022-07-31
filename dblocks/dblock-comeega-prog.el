@@ -266,35 +266,39 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
 " orgCmntEnd)
 
-;;;#+BEGIN:  b:elisp:defs/defun :defName "b:dblock:comeega|frontElement" :advice ()
+
+;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "b:dblock:comeega|frontElement" :advice ()
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:dblock:comeega|frontElement>>   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<b:dblock:comeega|frontElement>>   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(defun b:dblock:comeega|frontElement (
+(cl-defun b:dblock:comeega|frontElement (
 ;;;#+END:
-                                      <elementType)
+                                         <elementType
+                                         &key (orgDepth 1)
+                                         )
    " #+begin_org
 ** DocStr: Returns a string with comeega front controls
 #+end_org "
+  (let (($orgDepthStr (make-string orgDepth ?*)))
    (format
-    "*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ \
+    "%s  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ \
 _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
 [[elisp:(outline-show-branches+toggle)][|=]] \
 [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  %-10s \
 [[elisp:(outline-show-subtree+toggle)][||]]"
-         <elementType))
+         $orgDepthStr <elementType)))
 
 (orgCmntBegin "
 ** Basic Usage: Based on mode
 #+BEGIN_SRC emacs-lisp
-(b:dblock:comeega|frontElement \"some\")
+(b:dblock:comeega|frontElement (symbol-name 'some) :orgDepth 2)
+;; (b:dblock:comeega|frontElement (symbol-name 'some))
 #+END_SRC
 
 #+RESULTS:
 : *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  some       [[elisp:(outline-show-subtree+toggle)][||]]
 
 " orgCmntEnd)
-
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil

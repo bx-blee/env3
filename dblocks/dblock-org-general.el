@@ -1123,14 +1123,22 @@ Sections are specified as :outLevel 1,n
             )          
         (when (string= @model "auto")
           (generalPanels)
-          (when (fto:treeElem|atBaseIsNode? $cwd)
+          (cond
+           ((fto:treeElem|atBaseIsNode? $cwd)
             (bodyContentNode)
             )
-          (when (fto:treeElem|atBaseIsLeaf? $cwd)
+           ((fto:treeElem|atBaseIsLeaf? $cwd)
             (bodyContentLeaf)
-            ))))
+            )
+           ((fto:treeElem|atBaseIsNoFv? $cwd)
+            (bodyContentNoFv)
+            )
+           (t
+            (message "EH_problem Neither leaf nor branch nor noFV")
+            )
+           ))))
 
-    (defun bodyContentNode ()
+    (defun bodyContentNoFv ()
       "Descendents, Siblings and Ancestors of This Node."
       (let* (
             ($cwd ".")
@@ -1140,9 +1148,9 @@ Sections are specified as :outLevel 1,n
             (countLimit 5)
             )          
         (when (string= @model "auto")
-          (unless (fto:treeElem|atBaseIsNode? $cwd)
+          (unless (fto:treeElem|atBaseIsNoFv? $cwd)
             (message "EH_problem"))
-          (when (fto:treeElem|atBaseIsNode? $cwd)
+          (when (fto:treeElem|atBaseIsNoFv? $cwd)
 
             (setq count 0)
             (dolist ($eachSubDir (fto:node|atBaseGetDescendantsBases
@@ -1187,6 +1195,66 @@ Sections are specified as :outLevel 1,n
           )
         )
       )
+
+    (defun bodyContentNode ()
+      "Descendents, Siblings and Ancestors of This Node."
+      (let* (
+            ($cwd ".")
+            ($thisNode (fto:node|atBaseGetName $cwd))
+            ($outString "")
+            (count 0)
+            (countLimit 5)
+            )
+        (when (string= @model "auto")
+          (unless (fto:treeElem|atBaseIsNode? $cwd)
+            (message "EH_problem"))
+          (when (fto:treeElem|atBaseIsNode? $cwd)
+
+            (setq count 0)
+            (dolist ($eachSubDir (fto:node|atBaseGetDescendantsBases
+                                  $cwd
+                                  :expandedFileName t))
+              (when (eq count 0)
+                (insert (format "\n*   =Decedents=  :: ")))
+              (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
+              (insert " *|* ")
+              (setq count (1+ count))
+              (when (eq count countLimit)
+                (setq count 0))
+              )
+
+            (setq count 0)
+            (dolist ($eachSubDir (fto:node|atBaseGetSiblingsBases
+                                  $cwd
+                                  :expandedFileName t))
+              (when (eq count 0)
+                (insert (format "\n*   *Siblings*   :: ")))
+              (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
+              (insert " *|* ")
+              (setq count (1+ count))
+              (when (eq count countLimit)
+                (setq count 0))
+              )
+
+            (setq count 0)
+            (dolist ($eachSubDir (fto:node|atBaseGetAncestorsBases $cwd))
+              (when (eq count 0)
+                (insert (format "\n*   /Ancestors/  :: ")))
+              (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
+              (insert " *|* ")
+              (setq count (1+ count))
+              (when (eq count countLimit)
+                (setq count 0))
+              )
+            (insert "\n")
+            )
+
+          (topLineDeliminator)
+          )
+        )
+      )
+
+
 
     (defun bodyContentLeaf ()
       "Descendents, Siblings and Ancestors of This Leaf."

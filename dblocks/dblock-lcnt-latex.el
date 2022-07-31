@@ -5139,11 +5139,10 @@ otherwise labelInfo is inserted as label"
       (insert
        (format "\
 \\begin{comment}%s
-%s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  *%s*   /%s/ ::  [[elisp:(org-cycle)][| ]]
+%s    /%s/ ::  [[elisp:(org-cycle)][| ]]
 \\end{comment}"
                delimiterLinePerhaps
-               (make-string orgDepth ?*)
-               (str:capitalize-first-char segType)
+               (b:dblock:comeega|frontElement (str:capitalize-first-char segType) :orgDepth orgDepth)
                $labelTitleStr
                )))
     
@@ -5151,11 +5150,10 @@ otherwise labelInfo is inserted as label"
       (insert
        (format "\
 \\begin{comment}%s
-%s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /%s/   [[elisp:(org-cycle)][| =%s= |]] :: |
+%s   /%s/ ::  [[elisp:(org-cycle)][| ]]
 \\end{comment}"
                delimiterLinePerhaps
-               (make-string orgDepth ?*)
-               (str:capitalize-first-char segType)
+               (b:dblock:comeega|frontElement (str:capitalize-first-char segType) :orgDepth orgDepth)
                $labelTitleStr
                )))
 

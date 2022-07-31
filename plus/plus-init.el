@@ -77,6 +77,9 @@ and side-effects are documented here
 
    (require 'bcpg:calendarPlus)
    (bcpg:calendarPlus|fullUpdate)
+
+   (require 'bcpg:gpgPlus)
+   (bcpg:gpgPlus|fullUpdate)
    )
 
 (orgCmntBegin "
