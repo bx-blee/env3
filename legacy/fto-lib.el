@@ -487,11 +487,80 @@ When <expandedFileName use expand-file-name.
     )
   )
 
+;;; (file-name-as-directory(fto:node|atBaseGetDirBase "/bxo/iso/piu_mbFullUsage/panel/_nodeBase_"))
+;;; (fto:bpo|backTilRoot (file-name-as-directory "/bxo/iso/piu_mbFullUsage/panel/_nodeBase_"))
+;;;
+(cl-defun fto:bpo|backTilRoot (<ftoBase)
+  "Provides a list of ancestor bases. For now, just a place-holder"
+  (let (
+	($result nil)
+        ($cur nil)
+        ($prefix nil)
+        ($parts nil)
+        ($rootBase "")
+	)
+
+    (setq $cur (s-split "/" (expand-file-name <ftoBase)))
+    (pop $cur)
+    (cond
+     (
+      (member "blee-binders" $cur)
+      (setq $parts (-split-on "blee-binders" $cur))
+      (setq $prefix (first $parts))
+      (setq $cur (second $parts))
+      (add-to-list '$cur "blee-binders")
+      )
+     (
+      (member "iso" $cur)
+      (setq $parts (-split-on "iso" $cur))
+      (setq $prefix (first $parts))
+      ;;(setq $prefix (append $prefix (list "iso")))
+      (setq $cur (second $parts))
+      (add-to-list '$cur "iso")
+     )
+     (t
+      (message "Bad Divider")
+      ))
+
+    (setq $rootBase
+          (expand-file-name
+           (concat
+            "/" (s-join "/" $prefix) "/")))
+
+    (setq $cur (butlast $cur))
+    (while $cur
+      (setq $result (append $result
+	                    (list
+                             (expand-file-name
+                              (concat
+                               $rootBase (s-join "/" $cur))))))
+      (setq $cur (butlast $cur))
+      )
+    $result
+    ))
 
 ;;;
 ;;; (fto:node|atBaseGetAncestorsBases "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
-;;; 
+;;;
 (defun fto:node|atBaseGetAncestorsBases (<ftoBase)
+  "Provides a list of ancestor bases. For now, just a place-holder"
+  (let (
+	($result nil)
+	)
+    (unless (fto:treeElem|atBaseIsNode? <ftoBase)
+      (message "NOTYET problem reporting")
+      )
+    (when (fto:treeElem|atBaseIsNode? <ftoBase)
+      (setq $result (fto:bpo|backTilRoot
+                     (expand-file-name
+                      (fto:node|atBaseGetDirBase <ftoBase)))))
+    $result
+    )
+  )
+
+;;;
+;;;
+(defun fto:node|atBaseGetAncestorsBasesOBSOLETED (<ftoBase)
   "Provides a list of ancestor bases. For now, just a place-holder"
   (let (
 	($result nil)
@@ -533,27 +602,8 @@ When <expandedFileName use expand-file-name.
       (message "NOTYET problem reporting")
       )
     (when (fto:treeElem|atBaseIsLeaf? <ftoBase)
-      (setq $result (append $result
-			    (list
-			     (expand-file-name
-			      (concat 
-			       (file-name-as-directory <ftoBase)
-			       ".."
-			       ))))
-	    )
-      (setq $result (append $result
-			    (list
-			     (expand-file-name
-			      (concat 
-			       (file-name-as-directory <ftoBase)
-			       "../.."
-			       ))))
-	    )
-      )
-    $result
-    )
-  )
-
+      (setq $result (fto:bpo|backTilRoot
+                     (expand-file-name (file-name-as-directory <ftoBase)))))))
 
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "fto-lib"

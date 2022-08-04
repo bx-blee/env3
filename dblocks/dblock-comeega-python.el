@@ -296,7 +296,7 @@ def cur_examples():
     icm.ex_gExecMenuItem(execLine='bx-currents.cs')
     icm.ex_gExecMenuItem(execLine='bx-currents.cs -i usgCursParsGet')
     for each in _parNamesList:
-        icm.ex_gExecMenuItem(execLine=f'bx-currents.cs -v 20 -i pkgInfoParsSet {each}={curParsDictValue[each]}')"))
+        icm.ex_gExecMenuItem(execLine=f'bx-currents.cs -v 20 -i usgCursParsSet {each}={curParsDictValue[each]}')"))
         )
                 
     (progn  ;; Actual Invocations
