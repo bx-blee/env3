@@ -70,7 +70,7 @@
 
     (when (equal bx:copyleft "halaal+minimal")
       (insert " *CopyLeft*  This Software is a Libre-Halaal Poly-Existential. See http://www.freeprotocols.org")
-      nn)
+      )
     
     (when (equal bx:copyleft "halaal+brief")
       (insert "** Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
@@ -303,6 +303,43 @@ if __name__ == \"__main__\":
      (format "def %s(" $funcName))
     ))
 
+(defun org-dblock-write:bx:cs:py3:func (@params)
+  "Insert Header
+"
+  (let (
+        ($funcName (or (plist-get @params :funcName) ""))
+        ($funcType (or (plist-get @params :funcType) ""))
+        ($decorate (or (plist-get @params :deco) ""))
+        ($comment (or (plist-get @params :comment) ""))
+        )
+    (sectionTitleOpenInsert (format
+                             "F-%s" $funcType))
+
+    (insert (format " /%s/" $funcName))
+
+    (if (not (string= $comment ""))
+        (insert (format " =%s=" $comment)))
+
+    (if (not (string= $decorate ""))
+        (insert (format " deco=%s" $decorate)))
+
+    (sectionTitleCloseInsert "")
+
+    (if (string= $decorate "default")
+        (setq $decorate "io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)"))
+
+    (if (string= $decorate "track")
+        (setq $decorate "io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)"))
+
+
+    (if (not (string= $decorate ""))
+        (insert (format "@%s\n" $decorate)))
+
+    (insert
+     (format "def %s(" $funcName))
+    ))
+
+
 
 
 (defalias  'org-dblock-write:bx:icm:python:func 'org-dblock-write:bx:dblock:python:func)
@@ -441,6 +478,67 @@ if __name__ == \"__main__\":
     (insert
      (format "class %s(%s):" $className $superClass))
     ))
+
+
+(defun org-dblock-write:bx:cs:py3:method (@params)
+  "Insert Header
+"
+  (let (
+        ($methodName (or (plist-get @params :methodName) ""))
+        ($methodType (or (plist-get @params :methodType) ""))
+        ($retType (or (plist-get @params :retType) ""))
+        ($decorate (or (plist-get @params :deco) ""))
+        ($comment (or (plist-get @params :comment) ""))
+        ($argsListStr (or (plist-get @params :argsList) ""))
+        ($argsList)
+        )
+    (setq $argsList (split-string $argsListStr))
+    (subSectionTitleOpenInsertMethod (format
+                             "Method-%s" $methodType))
+
+
+
+    (insert (format " /%s/" $methodName))
+
+    (if (not (string= $comment ""))
+        (insert (format " =%s=" $comment)))
+
+    (insert
+     (format " retType=%s argsList=%s"
+             $retType $argsList
+             ))
+
+    (if (not (string= $decorate ""))
+        (insert (format " deco=%s" $decorate)))
+
+    (sectionTitleCloseInsert "")
+
+    (if (string= $decorate "default")
+        (setq $decorate "io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)"))
+
+    (if (not (string= $decorate ""))
+        (insert (format "    @%s\n" $decorate)))
+
+    (if (string= $argsListStr "")
+        (insert
+         (format "    def %s(self):" $methodName))
+      (insert
+       (format "    def %s(\n        self," $methodName))
+
+
+    (when (not (string= $argsListStr ""))
+      (insert "\n")
+      (mapcar (lambda (x)
+                (insert
+                 (format "        %s,\n"
+                         x
+                         )))
+              $argsList
+              )
+      (insert
+       (format "    ):"))
+      )
+    )))
 
 
 (defun org-dblock-write:bx:icm:python:method (@params)
@@ -616,6 +714,27 @@ Insert Org-heading
         )
     (icm-python-cmnd:classHead $modPrefix $cmndName $cmndType $comment $parsMand $parsOpt $argsMin $argsMax $asFunc $interactiveP $icmStr)
     ))
+
+(defun org-dblock-write:bx:cs:py3:cmnd:classHead (@params)
+  " asFunc is only used when interactive=False
+Insert Org-heading
+"
+  (let (
+        ($modPrefix (or (plist-get @params :modPrefix) ""))
+        ($cmndName (or (plist-get @params :cmndName) ""))
+        ($cmndType (or (plist-get @params :cmndType) ""))
+        ($comment (or (plist-get @params :comment) ""))
+        ($parsMand (or (plist-get @params :parsMand) ""))
+        ($parsOpt (or (plist-get @params :parsOpt) ""))
+        ($argsMin (or (plist-get @params :argsMin) ""))
+        ($argsMax (or (plist-get @params :argsMax) ""))
+        ($asFunc (or (plist-get @params :asFunc) ""))
+        ($interactiveP (or (plist-get @params :interactiveP) ""))
+        ($icmStr (or (plist-get @params :icmStr) ""))
+        )
+    (cs-python-cmnd:classHead $modPrefix $cmndName $cmndType $comment $parsMand $parsOpt $argsMin $argsMax $asFunc $interactiveP $icmStr)
+    ))
+
 
 (defun icm-python-cmnd:classHead-with-obtainDocStr(
   @modPrefix @cmndName @cmndType @comment @parsMandListStr @parsOptListStr @argsMin @argsMax @asFuncListStr @interactiveP @icmStr)
@@ -1041,6 +1160,252 @@ Insert Org-heading
            (format "
         \"\"\"%s\"\"\"" @comment)))
     ))
+
+
+(defun cs-python-cmnd:classHead(
+  @modPrefix @cmndName @cmndType @comment @parsMandListStr @parsOptListStr @argsMin @argsMax @asFuncListStr @interactiveP @icmStr)
+  ""
+  (let (
+        ($icmStr @icmStr)
+        ($parsMandList (split-string @parsMandListStr))
+        ($parsOptList (split-string @parsOptListStr))
+        ($parsList)
+        ($asFuncList (split-string @asFuncListStr))
+        ($icmStr)
+        ($iimStr)
+        ($IicmStr)
+        ($iifStr)
+        ($IifStr)
+        )
+    (setq $parsList (append $parsMandList $parsOptList))
+
+    (cond
+     ((string= @modPrefix "")
+      (progn
+        (setq $icmStr "icm.")
+        (setq $iimStr "icm")
+        (setq $IicmStr "Icm")
+        (setq $iifStr "cmnd")
+        (setq $IifStr "Cmnd")
+      ))
+     ((string= @modPrefix "old")
+      (progn
+        (setq $icmStr "icm.")
+        (setq $iimStr "iim")
+        (setq $IicmStr "Iicm")
+        (setq $iifStr "iif")
+        (setq $IifStr "Iif")
+      ))
+     ((string= @modPrefix "new")
+      (progn
+        (setq $icmStr "icm.")
+        (setq $iimStr "icm")
+        (setq $IicmStr "Icm")
+        (setq $iifStr "cmnd")
+        (setq $IifStr "Cmnd")
+      ))
+     ((string= @modPrefix "lib")
+      (progn
+        (setq $icmStr "")
+        (setq $iimStr "icm")
+        (setq $IicmStr "Icm")
+        (setq $iifStr "cmnd")
+        (setq $IifStr "Cmnd")
+      ))
+     (t
+      (message "Bad Input"))
+     )
+
+    (if (not (string= @cmndType ""))
+        (sectionTitleOpenInsert @cmndType)
+      (sectionTitleOpenInsert "CmndSvc")
+      )
+
+    ;(insert (format " /%s/" @cmndName))
+    (insert (format " <<%s>>" @cmndName))
+
+    (if (not (string= @comment ""))
+        (insert (format " =%s=" @comment)))
+
+    (insert
+     (format " parsMand=%s parsOpt=%s argsMin=%s argsMax=%s asFunc=%s interactive=%s"
+             @parsMandListStr @parsOptListStr @argsMin @argsMax @asFuncListStr @interactiveP
+             ))
+
+    (sectionTitleCloseInsert "CmndSvc")
+
+    (insert
+     (format "class %s(%s%s):\n" @cmndName "cs." $IifStr))
+
+    (insert
+     (format "    %sParamsMandatory = [ " $iifStr))
+    (mapcar (lambda (x)
+              (insert
+               (format "'%s', "
+                       x
+                       )))
+            $parsMandList
+            )
+    (insert
+     (format "]\n"))
+
+    (insert
+     (format "    %sParamsOptional = [ " $iifStr))
+    (mapcar (lambda (x)
+              (insert
+               (format "'%s', "
+                       x
+                       )))
+            $parsOptList
+            )
+    (insert
+     (format "]\n"))
+
+    (insert
+     (format "    %sArgsLen = {'Min': %s, 'Max': %s,}"
+             $iifStr @argsMin @argsMax))
+
+    (defun trueOrFalseStr(inStr)
+      (let (
+            ($retVal)
+            )
+      (cond
+       ((string= inStr "")
+        (setq $retVal "False"))
+       ((string= inStr "true")
+        (setq $retVal "True"))
+       (t
+        (setq $retVal "False"))
+       )
+      $retVal
+      ))
+
+      (insert
+       (format "
+
+    @%ssubjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def %s(self,
+        interactive=%s,        # Can also be called non-interactively"
+               "io.track."
+               $iifStr
+               (trueOrFalseStr @interactiveP)
+               ))
+
+      (mapcar (lambda (x)
+                (insert
+                 (format "
+        %s=None,         # or Cmnd-Input"
+                         x
+                         )))
+              $parsMandList
+              )
+
+      (mapcar (lambda (x)
+                (insert
+                 (format "
+        %s=None,         # or Cmnd-Input"
+                         x
+                         )))
+              $parsOptList
+              )
+
+      (if (not (string= @argsMax "0"))
+          (insert
+           (format "
+        argsList=[],         # or Args-Input")))
+
+      (mapcar (lambda (x)
+                (insert
+                 (format "
+        %s=None,         # asFunc when interactive==False"
+                         x
+                         )))
+              $asFuncList
+              )
+
+      ;;; G = %s%sGlobalContext()
+      (insert
+       (format "
+    ) -> bpf.op.Outcome:
+"))
+
+      (when (string= @modPrefix "lib")
+        (insert
+         (format "
+        G = IcmGlobalContext()
+"
+                 )))
+
+
+      (insert
+       (format "\
+        %sOutcome = self.getOpOutcome()
+        if interactive:
+            if not self.cmndLineValidate(outcome=%sOutcome):
+                return %sOutcome
+"
+               $iifStr
+               $iifStr
+               $iifStr
+               ))
+
+      (if (not (string= @argsMax "0"))
+          (insert
+           (format "\
+            effectiveArgsList = G.%sRunArgsGet().%sArgs  # type: ignore
+        else:
+            effectiveArgsList = argsList
+
+"
+                   $iimStr $iifStr
+                   ))
+        (insert "\n")
+        )
+
+      (insert "\
+        callParamsDict = {")
+      (mapcar (lambda (x)
+                (insert
+                 (format "'%s': %s, "
+                         x
+                         x
+                         )))
+              $parsList
+              )
+      (insert
+       (format "}
+        if not %s%sCallParamsValidate(callParamsDict, interactive, outcome=%sOutcome):
+            return %sOutcome" "cs." $iifStr $iifStr $iifStr
+               ))
+
+      (mapcar (lambda (x)
+                (insert
+                 (format "
+        %s = callParamsDict['%s']"
+                         x
+                         x
+                         )))
+              $parsList
+              )
+
+      (if (not (string= @argsMax "0"))
+          (insert
+           (format "\
+
+
+        cmndArgsSpecDict = self.cmndArgsSpec()
+        if not self.cmndArgsValidate(effectiveArgsList, cmndArgsSpecDict, outcome=cmndOutcome):
+            return cmndOutcome\
+"
+                   ))
+        (insert "\n")
+        )
+      (if (not (string= @comment ""))
+          (insert
+           (format "
+        \"\"\"%s\"\"\"" @comment)))
+    ))
+
 
 
 (defun icm-python-cmnd:classHead(
