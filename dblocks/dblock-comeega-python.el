@@ -205,6 +205,89 @@ if __name__ == '__main__':
       )))
 
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py:cs:framework/csuListProc" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py:cs:framework/csuListProc>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py:cs:framework/csuListProc :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py:cs:framework/csuListProc (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pyImports (or (plist-get <params :pyImports) nil))
+         (<csuImports (or (plist-get <params :csuImports) nil))
+         (<csuParams (or (plist-get <params :csuParams) nil))
+         ($csuListLength)
+         )
+    (bxPanel:params$effective)
+
+    (progn ;; This results in sets b:py:cs:csuList
+      (blee:ppmm:mode-push major-mode)
+      (bap:org/switch-to-org-mode)
+      (blee:org:code-block/above-run)
+      (blee:ppmm:mode-pop))
+
+    (setq $csuListLength (length b:py:cs:csuList))
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Process CSU List~ with ${$csuListLength} in csuList pyImports=${<pyImports} csuImports=${<csuImports} csuParams=${<csuParams}"))))
+
+    (defun outCommentPostContent ()
+      (defun pyImportsProcEach (<each)
+        (let* (
+               ($csuAsStrList (s-split "\\." <each))
+               ($last (first (last $csuAsStrList)))
+               ($butlast (butlast $csuAsStrList))
+               ($joinedButlast (s-join "." $butlast))
+               )
+          (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n"))))
+
+      (when <pyImports
+        (insert "\n\n")
+        (loop-for-each $each b:py:cs:csuList
+          (pyImportsProcEach $each))
+        (insert "\n"))
+
+      (when <csuImports
+        (insert "\ncsuList = [")
+        (loop-for-each $each b:py:cs:csuList
+          (insert (s-lex-format " \'${$each}\',")))
+        (insert " ]\n")
+        (insert (s-lex-format "
+g_importedCmndsModules = cs.csuList_importedModules(csuList)
+"
+                              )))
+
+      (when <csuParams
+        (insert (s-lex-format "
+def g_extraParams():
+    csParams = cs.param.ICM_ParamDict()
+    cs.csuList_commonParamsSpecify(csParams, csuList)
+    cs.argsparseBasedOnCsParams(csParams)
+"
+                              ))))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+;; (s-split "-" "one-two-three")
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:python:cs:framework/importCmndsModules" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:python:cs:framework/importCmndsModules>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
