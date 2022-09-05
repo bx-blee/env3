@@ -137,12 +137,12 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
         (insert
          (s-lex-format "
 import typing
-icmInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['${$moduleName}'], }
-icmInfo['version'] = '${$version}'
-icmInfo['status']  = '${<status}'
-icmInfo['panel'] = '${$moduleName}-Panel.org'
-icmInfo['groupingType'] = 'IcmGroupingType-pkged'
-icmInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'"
+csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['${$moduleName}'], }
+csInfo['version'] = '${$version}'
+csInfo['status']  = '${<status}'
+csInfo['panel'] = '${$moduleName}-Panel.org'
+csInfo['groupingType'] = 'IcmGroupingType-pkged'
+csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'"
                        ))))
 
     (progn  ;; Actual Invocations
@@ -191,6 +191,58 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 if __name__ == '__main__':
     icm.g_icmMain(
         icmInfo=${<csInfo},
+        noCmndEntry=${<noCmndEntry},  # specify a Cmnd name
+        extraParamsHook=${<extraParamsHook},
+        importedCmndsModules=${<importedCmndsModules},
+    )
+"
+                       )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/main" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/main>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/main :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/main (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<csInfo (or (plist-get <params :csInfo) "csInfo"))
+         (<noCmndEntry (or (plist-get <params :noCmndEntry) "examples"))
+         (<extraParamsHook (or (plist-get <params :extraParamsHook) "g_paramsExtraSpecify"))
+         (<importedCmndsModules (or (plist-get <params :importedCmndsModules)  "g_importedCmndsModules"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format "${$frontStr} ~g_icmMain~ (${<csInfo}, _${<noCmndEntry}_, ${<extraParamsHook}, ${<importedCmndsModules})"))))
+
+    (defun outCommentPostContent ()
+        (insert
+         (s-lex-format "
+
+if __name__ == '__main__':
+    cs.main.g_csMain(
+        csInfo=${<csInfo},
         noCmndEntry=${<noCmndEntry},  # specify a Cmnd name
         extraParamsHook=${<extraParamsHook},
         importedCmndsModules=${<importedCmndsModules},
@@ -275,8 +327,8 @@ g_importedCmndsModules = cs.csuList_importedModules(csuList)
       (when <csuParams
         (insert (s-lex-format "
 def g_extraParams():
-    csParams = cs.param.ICM_ParamDict()
-    cs.csuList_commonParamsSpecify(csParams, csuList)
+    csParams = cs.param.CmndParamDict()
+    cs.csuList_commonParamsSpecify(csuList, csParams)
     cs.argsparseBasedOnCsParams(csParams)
 "
                               ))))
@@ -387,6 +439,128 @@ def cur_examples():
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun  :defName "org-dblock-write:b:py3:cs:cmnd/classHead" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:cmnd/classHead>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:cmnd/classHead :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:cmnd/classHead (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Insert a CS Cmnd Class Header
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<cmndName (or (plist-get <params :cmndName) ""))
+         (<cmndType (or (plist-get <params :cmndType) ""))
+         (<comment (or (plist-get <params :comment) ""))
+         (<parsMandListStr (or (plist-get <params :parsMand) ""))
+         (<parsOptListStr (or (plist-get <params :parsOpt) ""))
+         (<argsMin (or (plist-get <params :argsMin) ""))
+         (<argsMax (or (plist-get <params :argsMax) ""))
+         (<pyInvListStr (or (plist-get <params :pyInv) ""))
+         ;;
+         ($parsMandList (split-string <parsMandListStr))
+         ($parsOptList (split-string <parsOptListStr))
+         ($parsList (append $parsMandList $parsOptList))
+         ($asFuncList (split-string <pyInvListStr))
+         )
+
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "CmndSvc-${<cmndType}")))
+             )
+             (insert (s-lex-format "${$frontStr} <<${<cmndName}>>"))
+
+             (if (not (string= <comment ""))
+                 (insert (format " =%s=" <comment)))
+
+             (insert
+              (s-lex-format
+               "parsMand=${<parsMandListStr} parsOpt=${<parsOptListStr} argsMin=${<argsMin} argsMax=${<argsMax} pyInv=${<pyInvListStr}"
+               ))))
+    
+    (defun outCommentPostContent ()
+        (insert (s-lex-format "\nclass ${<cmndName}(cs.Cmnd):\n"))
+
+      (insert (format "    cmndParamsMandatory = [ "))
+      (mapcar (lambda (x)
+                (insert (format "'%s', "
+                                x )))
+              $parsMandList)
+      (insert (format "]\n"))
+
+      (insert (format "    cmndParamsOptional = [ "))
+      (mapcar (lambda (x)
+                (insert (format "'%s', "
+                         x )))
+              $parsOptList)
+      (insert (format "]\n"))
+
+      (insert (s-lex-format "    cmndArgsLen = {'Min': ${<argsMin}, 'Max': ${<argsMax},}"))
+
+      (insert (s-lex-format "
+
+    @io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: bpf.op.Outcome,"))
+
+      (mapcar (lambda (x)
+                (insert (s-lex-format "
+        ${x}: typing.Optional[str]=None,  # Cs Mandatory Param")))
+              $parsMandList
+              )
+
+      (mapcar (lambda (x)
+                (insert (s-lex-format "
+        ${x}: typing.Optional[str]=None,  # Cs Optional Param")))
+              $parsOptList
+              )
+
+      (if (not (equal <argsMax 0))
+          (insert (format "
+        argsList: typing.Optional[list[str]]=None,  # CsArgs")))
+
+      (mapcar (lambda (x)
+                (insert (s-lex-format "
+             ${x}: typing.Any=None,   # pyInv Argument")))
+              $asFuncList)
+
+      (insert (format "
+    ) -> bpf.op.Outcome:\n"))
+
+     (if (not (string= <comment ""))
+          (insert (s-lex-format "
+        \"\"\"${<comment}\"\"\"")))
+
+      (insert "\
+        callParamsDict = {")
+      (mapcar (lambda (x)
+                (insert (s-lex-format "'${x}': ${x}, ")))
+              $parsList)
+      (insert (format "}\n"))
+
+      (insert (s-lex-format "
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+            return io.eh.badOutcome(cmndOutcome)"))
+      )
+
+   (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil

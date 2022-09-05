@@ -49,6 +49,7 @@
 (defun insertTripleQuotesOrgEnd ()
   (insert "#+end_org \"\"\""))
 
+(defalias 'org-dblock-write:bx:cs:python:top-of-file 'org-dblock-write:bx:icm:python:top-of-file)
 
 (defun org-dblock-write:bx:icm:python:top-of-file (params)
   (let ((bx:vc (or (plist-get params :vc) ""))
@@ -88,6 +89,8 @@
     (insertTripleQuotesOrgEnd)
     ))
 
+
+(defalias 'org-dblock-write:bx:cs:python:topControls 'org-dblock-write:bx:icm:python:topControls)
 
 (defun org-dblock-write:bx:icm:python:topControls (params)
   (let (
@@ -167,6 +170,7 @@ if __name__ == \"__main__\":
     ))
 
 (defalias 'org-dblock-write:bx:icm:python:section 'org-dblock-write:bx:dblock:python:section)
+(defalias 'org-dblock-write:bx:cs:python:section 'org-dblock-write:bx:dblock:python:section)
 
 (defun org-dblock-write:bx:dblock:python:section (@params)
   ""
@@ -403,6 +407,8 @@ if __name__ == \"__main__\":
 
 
 (defalias 'org-dblock-write:bx:icm:python:icmItem 'org-dblock-write:bx:dblock:python:icmItem)
+(defalias 'org-dblock-write:bx:cs:python:icmItem 'org-dblock-write:bx:dblock:python:icmItem)
+(defalias 'org-dblock-write:b:py3:cs:csItem 'org-dblock-write:bx:dblock:python:icmItem)
 
 (defun org-dblock-write:bx:dblock:python:icmItem (@params)
   "Insert Header
@@ -478,6 +484,40 @@ if __name__ == \"__main__\":
     (insert
      (format "class %s(%s):" $className $superClass))
     ))
+
+(defun org-dblock-write:b:py3t:cs:method (@params)
+  "Insert Header
+"
+  (let (
+        ($methodName (or (plist-get @params :methodName) ""))
+        ($methodType (or (plist-get @params :methodType) ""))
+        ($decorate (or (plist-get @params :deco) ""))
+        ($comment (or (plist-get @params :comment) ""))
+        )
+    (subSectionTitleOpenInsertMethod (format
+                             "Mtd-T-%s" $methodType))
+
+    (insert (format " /%s/" $methodName))
+
+    (if (not (string= $comment ""))
+        (insert (format " =%s=" $comment)))
+
+    (if (not (string= $decorate ""))
+        (insert (format " deco=%s" $decorate)))
+
+    (sectionTitleCloseInsert "")
+
+    (if (string= $decorate "default")
+        (setq $decorate "io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)"))
+
+    (if (not (string= $decorate ""))
+        (insert (format "    @%s\n" $decorate)))
+
+    (insert
+       (format "    def %s(" $methodName))
+
+    ))
+
 
 
 (defun org-dblock-write:bx:cs:py3:method (@params)
