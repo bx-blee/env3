@@ -517,19 +517,19 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
       (mapcar (lambda (x)
                 (insert (s-lex-format "
-        ${x}: typing.Optional[str]=None,  # Cs Mandatory Param")))
+             ${x}: typing.Optional[str]=None,  # Cs Mandatory Param")))
               $parsMandList
               )
 
       (mapcar (lambda (x)
                 (insert (s-lex-format "
-        ${x}: typing.Optional[str]=None,  # Cs Optional Param")))
+             ${x}: typing.Optional[str]=None,  # Cs Optional Param")))
               $parsOptList
               )
 
       (if (not (equal <argsMax 0))
           (insert (format "
-        argsList: typing.Optional[list[str]]=None,  # CsArgs")))
+             argsList: typing.Optional[list[str]]=None,  # CsArgs")))
 
       (mapcar (lambda (x)
                 (insert (s-lex-format "
@@ -540,28 +540,29 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
     ) -> bpf.op.Outcome:\n"))
 
      (if (not (string= <comment ""))
-          (insert (s-lex-format "
+          (insert (s-lex-format "\
         \"\"\"${<comment}\"\"\"")))
 
-      (insert "\
+     (insert "
         callParamsDict = {")
-      (mapcar (lambda (x)
-                (insert (s-lex-format "'${x}': ${x}, ")))
-              $parsList)
-      (insert (format "}\n"))
+     (mapcar (lambda (x)
+               (insert (s-lex-format "'${x}': ${x}, ")))
+             $parsList)
+     (insert (format "}\n"))
 
-      (insert (s-lex-format "
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+     (let (($argsListOrNone "argsList"))
+        (when (equal <argsMax 0)
+          (setq $argsListOrNone "None"))
+        (insert (s-lex-format "\
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, ${$argsListOrNone}).isProblematic():
             return io.eh.badOutcome(cmndOutcome)"))
-      )
+        ))
 
    (progn  ;; Actual Invocations
       (outCommentPreContent)
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
-
-
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'dblock-comeega-python)
