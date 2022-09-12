@@ -300,6 +300,31 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
 
 " orgCmntEnd)
 
+;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "b:dblock:comeega|eolControls" :comment "End-Of-Line String" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<b:dblock:comeega|eolControls>>   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(cl-defun b:dblock:comeega|eolControls (
+;;;#+END:
+                                       )
+   " #+begin_org
+** DocStr: Returns a string with comeega end-of-line controls
+#+end_org "
+   (s-lex-format "  [[elisp:(org-cycle)][| ]]"))
+
+(orgCmntBegin "
+** Basic Usage: Based on mode
+#+BEGIN_SRC emacs-lisp
+(b:dblock:comeega|eolControls)
+#+END_SRC
+
+#+RESULTS:
+:   [[elisp:(org-cycle)][| ]]
+
+" orgCmntEnd)
+
+
+
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'dblock-comeega-prog)

@@ -755,8 +755,17 @@ surround is for panel decoration."
 ;;;(bx:dblock:global:moded:insert-begin "none")
 ;;;(bx:dblock:global:moded:insert-begin "auto")
 ;;;(bx:dblock:global:moded:insert-begin "emacs-lisp-mode")
-;;;
-(defun* bx:dblock:global:moded:insert-begin (mode)
+
+;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bx:dblock:global:moded:insert-begin" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bx:dblock:global:moded:insert-begin>>   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(cl-defun bx:dblock:global:moded:insert-begin (
+;;;#+END:
+                                               mode
+                                               &key (outLevel 1)
+                                               )
+;;;; (defun* bx:dblock:global:moded:insert-begin (mode)
   ""
   (if (string-equal "none" mode)
       (return-from bx:dblock:global:moded:insert-begin)
@@ -773,7 +782,7 @@ surround is for panel decoration."
            (insert "(orgCmntBegin \"\n")
            )
           ((string-equal "python-mode" mode)
-           (bx:python:insert-begin-comment)
+           (bx:python:insert-begin-comment :outLevel outLevel)
            (message "Begin-Comment Set to python-mode")
            )
           ((string-equal "latex-mode" mode)
@@ -817,8 +826,13 @@ surround is for panel decoration."
 ;;;(bx:dblock:global:moded:insert-end "none")
 ;;;(bx:dblock:global:moded:insert-end "auto")
 ;;;(bx:dblock:global:moded:insert-end "emacs-lisp-mode")
-;;;
-(defun* bx:dblock:global:moded:insert-end (mode)
+
+
+(cl-defun bx:dblock:global:moded:insert-end (
+                                             mode
+                                             &key (outLevel 1)
+                                             )
+
   ""
   (if (string-equal "none" mode)
       (return-from bx:dblock:global:moded:insert-end)
@@ -835,7 +849,7 @@ surround is for panel decoration."
            (insert "\n\" orgCmntEnd)")
            )
           ((string-equal "python-mode" mode)
-           (bx:python:insert-end-comment)
+           (bx:python:insert-end-comment :outLevel outLevel)
            (message "End-comment Set for python-mode")
            )
           ((string-equal "latex-mode" mode)
@@ -859,11 +873,37 @@ surround is for panel decoration."
     )
   )
 
-(defun bx:python:insert-begin-comment ()
-  (insert "\"\"\" #+begin_org\n"))
+;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bx:python:insert-begin-comment" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bx:python:insert-begin-comment>>   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(cl-defun bx:python:insert-begin-comment (
+;;;#+END:
+                                          &key (outLevel 1)
+                                          )
+  (let* (
+         ($tripleQuote "\"\"\"")
+         ($frontSpaces "")
+         )
+    (when (> outLevel 1)
+      (setq $frontSpaces (s-repeat (- outLevel 1) "    ")))
+    (insert (s-lex-format "${$frontSpaces}${$tripleQuote} #+begin_org\n"))))
 
-(defun bx:python:insert-end-comment ()
-  (insert "\n#+end_org \"\"\""))
+;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bx:python:insert-end-comment" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bx:python:insert-end-comment>>   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(cl-defun bx:python:insert-end-comment (
+;;;#+END:
+                                          &key (outLevel 1)
+                                          )
+  (let* (
+         ($tripleQuote "\"\"\"")
+         ($frontSpaces "")
+         )
+    (when (> outLevel 1)
+      (setq $frontSpaces (s-repeat (- outLevel 1) "    ")))
+    (insert (s-lex-format "\n${$frontSpaces}#+end_org ${$tripleQuote}"))))
 
 
 (defun bx:latex:insert-begin-comment ()

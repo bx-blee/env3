@@ -75,7 +75,7 @@ If that fails, we return major-mode.
                                @helpLine)
 
   (when (>= @outLevel 0 )
-    (bx:dblock:global:moded:insert-begin major-mode))
+    (bx:dblock:global:moded:insert-begin major-mode :outLevel @outLevel))
   
   (bx:dblock:governor:open @outLevel @governor @style @dblockFuncName)
 
@@ -86,7 +86,7 @@ If that fails, we return major-mode.
   (bx:dblock:governor:close @outLevel @governor @style @dblockFuncName)
 
   (when (>= @outLevel 0 )
-    (bx:dblock:global:moded:insert-end major-mode))
+    (bx:dblock:global:moded:insert-end major-mode :outLevel @outLevel))
   )
 
 
