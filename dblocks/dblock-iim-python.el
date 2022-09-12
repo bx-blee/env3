@@ -184,6 +184,8 @@ if __name__ == \"__main__\":
              $title
              ))))
 
+(defalias 'org-dblock-write:bx:cs:py3:section 'org-dblock-write:bx:icm:py3:section)
+
 (defun org-dblock-write:bx:icm:py3:section (@params)
   ""
   (let (
@@ -404,6 +406,64 @@ if __name__ == \"__main__\":
     (insert
      (format "):"))
     ))
+
+(defun org-dblock-write:bx:cs:python:func (@params)
+  "Insert Header
+"
+  (let (
+        ($funcName (or (plist-get @params :funcName) ""))
+        ($funcType (or (plist-get @params :funcType) ""))
+        ($retType (or (plist-get @params :retType) ""))
+        ($decorate (or (plist-get @params :deco) ""))
+        ($comment (or (plist-get @params :comment) ""))
+        ($argsListStr (or (plist-get @params :argsList) ""))
+        ($argsList)
+        )
+    (setq $argsList (split-string $argsListStr))
+    (sectionTitleOpenInsert (format
+                             "F-%s" $funcType))
+
+
+
+    (insert (format " /%s/" $funcName))
+
+    (if (not (string= $comment ""))
+        (insert (format " =%s=" $comment)))
+
+    (insert
+     (format " retType=%s argsList=%s"
+             $retType $argsList
+             ))
+
+    (if (not (string= $decorate ""))
+        (insert (format " deco=%s" $decorate)))
+
+    (sectionTitleCloseInsert "")
+
+    (if (string= $decorate "default")
+        (setq $decorate "io.track.subjectToTracking(fnLoc=True, fnEntry=True, fnExit=True)"))
+
+    (if (not (string= $decorate ""))
+        (insert (format "@%s\n" $decorate)))
+
+    (insert
+     (format "def %s(" $funcName))
+
+    (when (not (string= $argsListStr ""))
+      (insert "\n")
+      (mapcar (lambda (x)
+                (insert
+                 (format "    %s,\n"
+                         x
+                         )))
+              $argsList
+              )
+      )
+
+    (insert
+     (format "):"))
+    ))
+
 
 
 (defalias 'org-dblock-write:bx:icm:python:icmItem 'org-dblock-write:bx:dblock:python:icmItem)

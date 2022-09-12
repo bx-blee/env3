@@ -902,8 +902,28 @@ Some Comment under current
 	)
       )))
 
-
-
+(defun blee:org:code-block/bufferParams ()
+  "Runs a org-mode buffers."
+  (interactive)
+  (let (
+	($orig-org-confirm-babel-evaluate org-confirm-babel-evaluate)
+	)
+    (if (bound-and-true-p b:dblockControls)
+        (message "Already set")
+      (save-excursion
+        (beginning-of-buffer)
+        (search-forward "setq-local b:dblockControls" nil t)
+        (search-backward "+BEGIN_SRC" nil t)
+        (save-excursion
+	  ;;(org-mode)
+	  (when org-confirm-babel-evaluate
+	    (setq org-confirm-babel-evaluate nil)
+	    )
+	  (org-babel-execute-src-block)
+	  (setq org-confirm-babel-evaluate $orig-org-confirm-babel-evaluate)
+	  )
+        ;;(describe-variable 'b:dblockControls)
+        ))))
 
 
 (lambda () "
