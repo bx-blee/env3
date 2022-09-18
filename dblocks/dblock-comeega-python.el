@@ -386,6 +386,7 @@ pyLibPure
           (insert "\nfrom bisos import b\n")
           (insert "from bisos.b import cs\n")
           (insert "from bisos.b import b_io\n")
+          (insert "\nimport collections")
           )
          ((string= $classification "cs-lib")    ;; CS-Lib (Cmnds or no Cmnds)
           (insert "\nfrom bisos import b\n")
@@ -397,6 +398,7 @@ pyLibPure
           )
          (t
           (message (s-lex-format "Unknown basedOn=${<basedOn}"))
+          (insert (s-lex-format "\n# Problem: Unknown basedOn=${<basedOn}"))
           )
          )))
 
@@ -523,6 +525,14 @@ def cur_examples():
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Insert a CS Cmnd Class Header
 Based on outCommentPreContent, bodyContent and outCommentPostContent.
+
+When <extent==default no code is provided for args verification
+When <extent==verify code is provided verify cmndArgs
+
+When <ro==cli (default), ro Cmnd invocation is permitted and no code is added
+When <ro==noCli there will be a class variable    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo()
+When <ro==cli+py An extra roSapPath=None is added as a pyInv and code is provided to process it
+When <ro==py  is same as cli+py plus <ro=noCli
 #+end_org "
   (let* (
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
@@ -530,7 +540,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<style (letGet$style "openBlank" "closeBlank"))
          (<cmndName (or (plist-get <params :cmndName) ""))
          (<cmndType (or (plist-get <params :cmndType) ""))
-         (<extent (or (plist-get <params :extent) "default"))
+         (<extent (or (plist-get <params :extent) "default")) ;; or verify
+         (<ro (or (plist-get <params :ro) "cli"))         ;; or none or cli+py or py
          (<comment (or (plist-get <params :comment) ""))
          (<parsMandListStr (or (plist-get <params :parsMand) ""))
          (<parsOptListStr (or (plist-get <params :parsOpt) ""))
@@ -560,11 +571,11 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
              (insert
               (s-lex-format
-               "parsMand=${<parsMandListStr} parsOpt=${<parsOptListStr} argsMin=${<argsMin} argsMax=${<argsMax} pyInv=${<pyInvListStr}"
+               "parsMand=${<parsMandListStr} parsOpt=${<parsOptListStr} argsMin=${<argsMin} argsMax=${<argsMax} ro=${<ro} pyInv=${<pyInvListStr}"
                ))))
     
     (defun outCommentPostContent ()
-        (insert (s-lex-format "\nclass ${<cmndName}(cs.Cmnd):\n"))
+      (insert (s-lex-format "\nclass ${<cmndName}(cs.Cmnd):\n"))
 
       (insert (format "    cmndParamsMandatory = [ "))
       (mapcar (lambda (x)
@@ -581,6 +592,9 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (insert (format "]\n"))
 
       (insert (s-lex-format "    cmndArgsLen = {'Min': ${<argsMin}, 'Max': ${<argsMax},}"))
+
+      (when (or (string= <ro "noCli") (string= <ro "py"))
+        (insert (s-lex-format "\n    rtInvConstraints = cs.rtInvoker.RtInvoker.new_noRo() # NO RO From CLI")))
 
       (insert (s-lex-format "
 
@@ -602,6 +616,10 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (if (not (equal <argsMax 0))
           (insert (format "
              argsList: typing.Optional[list[str]]=None,  # CsArgs")))
+
+      (when (or (string= <ro "cli+py") (string= <ro "py"))
+          (insert (format "
+             roSapPath: typing.Optional[str]=None,  # RO pyInv Sap Path")))
 
       (mapcar (lambda (x)
                 (insert (s-lex-format "
@@ -628,8 +646,12 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
            (setq $argsListOrNone "None"))
          (insert (s-lex-format "\
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, ${$argsListOrNone}).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)"))
-         )))
+            return b_io.eh.badOutcome(cmndOutcome)"))))
+
+     (when (or (string= <ro "cli+py") (string= <ro "py"))
+       (insert (format "
+        # Remotely invoke this same command and return cmndOutcome")))
+     )
 
    (progn  ;; Actual Invocations
       (outCommentPreContent)
@@ -686,7 +708,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
         (setq <decorate "cs.track(fnLoc=True, fnEntry=True, fnExit=True)"))
 
       (if (not (string= <decorate ""))
-          (insert (format "\n    @%s\n" <decorate)))
+          (insert (format "\n    @%s\n" <decorate))
+       (insert "\n"))
 
       (insert
        (format "    def %s(" <methodName))
@@ -697,6 +720,84 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:method/args" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:method/args>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:method/args :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:method/args (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 2)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<methodName (or (plist-get <params :methodName) ""))
+         (<methodType (or (plist-get <params :methodType) ""))
+         (<decorate (or (plist-get <params :deco) ""))
+         (<comment (or (plist-get <params :comment) ""))
+         (<retType (or (plist-get <params :retType) ""))
+         (<argsListStr (or (plist-get <params :argsList) ""))
+         ($argsList)
+         )
+    (bxPanel:params$effective)
+
+    (setq $argsList (split-string <argsListStr))
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement
+                         (s-lex-format "Mtd-T-${<methodType}") :orgDepth <outLevel))
+             ($eolStr (b:dblock:comeega|eolControls))
+             )
+      (insert
+         (s-lex-format "${$frontStr} /${<methodName}/ deco=${<decorate} "))
+
+      (if (not (string= <comment ""))
+          (insert (s-lex-format " =${<comment}=")))
+
+      (if (not (string= <decorate ""))
+          (insert (s-lex-format " deco=${<decorate}")))
+
+      (insert (s-lex-format " ${$eolStr}"))
+      ))
+
+    (defun outCommentPostContent ()
+      (if (string= <decorate "default")
+        (setq <decorate "cs.track(fnLoc=True, fnEntry=True, fnExit=True)"))
+
+      (if (not (string= <decorate ""))
+          (insert (format "\n    @%s\n" <decorate))
+       (insert "\n"))
+
+      (insert (format "    def %s(" <methodName))
+      (when (not (string= <argsListStr ""))
+        ;(insert "\n")
+        (mapcar (lambda (x)
+                  (insert
+                   (format "%s, "
+                           x
+                           )))
+                $argsList
+              )
+        )
+      (insert (format "):"))
+      )
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:func/typing" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -874,7 +975,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (insert
          (s-lex-format "${$frontStr} /${<className}/ "))
 
-      (if (not (string= <superClass ""))
+      (if (string= <superClass "")
           (setq <superClass "object"))
 
       (insert (s-lex-format " superClass=${<superClass}"))
