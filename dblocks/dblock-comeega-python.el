@@ -850,7 +850,9 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
         (setq <decorate "cs.track(fnLoc=True, fnEntry=True, fnExit=True)"))
 
       (if (not (string= <decorate ""))
-          (insert (format "\n@%s\n" <decorate)))
+          (insert (format "\n@%s\n" <decorate))
+        (insert "\n")
+        )
 
       (insert
        (format "def %s(" <funcName))
