@@ -333,6 +333,148 @@ def g_extraParams():
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent))))
 
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:orgItem/basic" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:orgItem/basic>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:orgItem/basic :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:orgItem/basic (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]]
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<type (or (plist-get <params :type) ""))
+         (<title (or (plist-get <params :title) ""))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "${<type}")))
+             ($backStr (b:dblock:comeega|eolControls))
+             )
+        (if <comment
+            (insert (s-lex-format "${$frontStr} ${<title} ${<comment} ${$backStr}"))
+          (insert (s-lex-format "${$frontStr} ${<title} ${$backStr}"))
+          )))
+
+    (defun outCommentPostContent ())
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:orgItem/section" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:orgItem/section>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:orgItem/section :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:orgItem/section (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]]
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<type (or (plist-get <params :type) "/Section/   "))
+         (<title (or (plist-get <params :title) ""))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "${<type}")))
+             ($backStr (b:dblock:comeega|eolControls))
+             )
+        (if <comment
+            (insert (s-lex-format "${$frontStr} *${<title}* ${<comment} ${$backStr}"))
+          (insert (s-lex-format "${$frontStr} *${<title}* ${$backStr}"))
+          )))
+
+    (defun outCommentPostContent ())
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:main/exposedSymbols" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:main/exposedSymbols>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:main/exposedSymbols :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:main/exposedSymbols (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<classes (or (plist-get <params :classes) '()))
+         ($classesLength)
+         )
+    (bxPanel:params$effective)
+
+
+    (setq $classesLength (length <classes))
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} /Exposed Symbols List Specification/ with ${$classesLength} in Classes List"))))
+
+    (defun outCommentPostContent ()
+      (defun exposedSymbolsEach (<each)
+        (let* (
+               ($moduleAsStrList (s-split "\\." <each))
+               ($last (first (last $moduleAsStrList)))
+               ($butlast (butlast $moduleAsStrList))
+               ($joinedButlast (s-join "." $butlast))
+               )
+          (insert (s-lex-format "${$last} = ${<each} # exec/eval-ed as __main__.ClassName\n"))))
+
+      (when <classes
+        (insert "\n\n")
+        (loop-for-each $each <classes
+          (exposedSymbolsEach $each))
+        ;; (insert "\n"))
+      ))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/imports" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/imports>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
@@ -401,6 +543,51 @@ pyLibPure
           (insert (s-lex-format "\n# Problem: Unknown basedOn=${<basedOn}"))
           )
          )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:file/dblockControls" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:file/dblockControls>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:file/dblockControls :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:file/dblockControls (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+pyLibPure
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<classification (or (plist-get <params :classification) nil))
+         )
+    (bxPanel:params$effective)
+
+    (setq $classification (get 'b:dblockControls 'py3:cs:Classification))
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (insert (s-lex-format
+"* [[elisp:(org-cycle)][| /Control Parameters Of This File/ |]] :: dblk ctrls classifications=${<classification}"))
+
+      (insert (s-lex-format "
+#+BEGIN_SRC emacs-lisp
+(setq-local b:dblockControls t) ; (setq-local b:dblockControls nil)
+(put 'b:dblockControls 'py3:cs:Classification \"${<classification}\") ; Main Multi-Unit CommandSvc
+#+END_SRC
+#+RESULTS:
+: cs-mu"))
+      )
+
+    (defun outCommentPostContent ())
 
     (progn  ;; Actual Invocations
       (outCommentPreContent)
@@ -490,7 +677,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
     (defun outCommentPostContent ()
       (insert (s-lex-format "
 _parNamesList = ["))
-                
+
       (loop-for-each $each <curParsList
           (insert (s-lex-format " '${$each}',")))
       (insert (s-lex-format "]\n"))
@@ -508,7 +695,7 @@ def cur_examples():
     for each in _parNamesList:
         icm.ex_gExecMenuItem(execLine=f'bx-currents.cs -v 20 -i usgCursParsSet {each}={curParsDictValue[each]}')"))
         )
-                
+
     (progn  ;; Actual Invocations
       (outCommentPreContent)
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
@@ -573,7 +760,7 @@ When <ro==py  is same as cli+py plus <ro=noCli
               (s-lex-format
                "parsMand=${<parsMandListStr} parsOpt=${<parsOptListStr} argsMin=${<argsMin} argsMax=${<argsMax} ro=${<ro} pyInv=${<pyInvListStr}"
                ))))
-    
+
     (defun outCommentPostContent ()
       (insert (s-lex-format "\nclass ${<cmndName}(cs.Cmnd):\n"))
 

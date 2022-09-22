@@ -310,7 +310,7 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
    " #+begin_org
 ** DocStr: Returns a string with comeega end-of-line controls
 #+end_org "
-   (s-lex-format "  [[elisp:(org-cycle)][| ]]"))
+   (s-lex-format " [[elisp:(org-cycle)][| ]]"))
 
 (orgCmntBegin "
 ** Basic Usage: Based on mode
