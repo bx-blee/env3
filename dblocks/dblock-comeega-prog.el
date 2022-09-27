@@ -16,7 +16,7 @@
 ;;;#+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 (orgCmntBegin "
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: NOTYET
+** This File: /bisos/git/auth/bxRepos/blee/env3/dblocks/dblock-comeega-prog.el
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 " orgCmntEnd)
 ;;;#+END:
@@ -87,10 +87,26 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
     (defun outCommentPreContent ())
     (defun bodyContentPlus ())
     (defun bodyContent ()
-      (b:dblock:inserts|fromFile "./inserts/copyLeftPlus.org"))
+      (let* (
+             ($result "")
+             ($mode major-mode)
+             )
+        (cond
+         ((string-equal "emacs-lisp-mode" $mode)
+          (b:dblock:inserts|fromFile "./inserts/copyLeftPlus-blee.org"))
+         ((string-equal "python-mode" $mode)
+          (b:dblock:inserts|fromFile "./inserts/copyLeftPlus-bisos.org"))
+         ((string-equal "latex-mode" $mode)
+          (b:dblock:inserts|fromFile "./inserts/copyLeftPlus-bystar.org"))
+         ((string-equal "sh-mode" $mode)
+          (b:dblock:inserts|fromFile "./inserts/copyLeftPlus-bisos.org"))
+         ((string-equal "org-mode" $mode)
+          (b:dblock:inserts|fromFile "./inserts/copyLeftPlus-bystar.org"))
+         (t
+          (message (s-lex-format "Unknown major-mode: ${$mode}")))
+         )))
 
     (defun outCommentPostContent ())
-
 
     (progn  ;; Actual Invocations
       (outCommentPreContent)
@@ -122,7 +138,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
     (defun bodyContentPlus ())
     (defun bodyContent ()
       (insert (s-lex-format "* *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version\n"))
-      (insert (s-lex-format "** This File: NOTYET\n"))
+      (insert (s-lex-format "** This File: ${buffer-file-name}\n"))
       (loop-for-each $each <authors
         (b:dblock:inserts|fromFile $each)))
 

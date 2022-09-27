@@ -1,0 +1,4 @@
+* *[[elisp:(org-cycle)][| Proclamations |]]* :: Libre-Halaal Software --- Part Of BISOS ---  Poly-COMEEGA Format.
+** This is Libre-Halaal Software. © Neda Communications, Inc. Subject to AGPL.
+** It is part of BISOS (ByStar Internet Services OS)
+** Best read and edited  with Blee in Poly-COMEEGA (Polymode Colaborative Org-Mode Enhance Emacs Generalized Authorship)

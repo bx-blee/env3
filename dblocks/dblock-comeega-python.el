@@ -187,7 +187,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
              )
       (insert
-         (s-lex-format "${$frontStr} ~g_icmMain~ (${<csInfo}, _${<noCmndEntry}_, ${<extraParamsHook}, ${<importedCmndsModules})"))))
+         (s-lex-format "${$frontStr} =g_csMain= (${<csInfo}, _${<noCmndEntry}_, ${<extraParamsHook}, ${<importedCmndsModules})"))))
 
     (defun outCommentPostContent ()
         (insert
@@ -236,7 +236,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
              )
       (insert
-         (s-lex-format "* *[[elisp:(org-cycle)][| ~End-Of-Editable-Text~ |]]* :: emacs and org variables and control parameters"))))
+         (s-lex-format "* [[elisp:(org-cycle)][| *End-Of-Editable-Text* |]] :: emacs and org variables and control parameters"))))
 
     (defun outCommentPostContent ()
         (insert
@@ -291,7 +291,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              )
       (insert
          (s-lex-format
-          "${$frontStr} ~Process CSU List~ with ${$csuListLength} in csuList pyImports=${<pyImports} csuImports=${<csuImports} csuParams=${<csuParams}"))))
+          "${$frontStr} =Process CSU List= with /${$csuListLength}/ in csuList pyImports=${<pyImports} csuImports=${<csuImports} csuParams=${<csuParams}"))))
 
     (defun outCommentPostContent ()
       (defun pyImportsProcEach (<each)
@@ -450,7 +450,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              )
       (insert
          (s-lex-format
-          "${$frontStr} /Exposed Symbols List Specification/ with ${$classesLength} in Classes List"))))
+          "${$frontStr} ~Exposed Symbols List Specification~ with /${$classesLength}/ in Classes List"))))
 
     (defun outCommentPostContent ()
       (defun exposedSymbolsEach (<each)
@@ -535,6 +535,11 @@ pyLibPure
           (insert "from bisos.b import cs\n")
           (insert "from bisos.b import b_io\n")
           )
+         ((string= $classification "bpf-lib")    ;; No Cmnds, but with CS imports
+          (insert "\nfrom bisos import b\n")
+          (insert "from bisos.b import cs\n")
+          (insert "from bisos.b import b_io\n")
+          )
          ((string= $classification "pyLibPure")
           (insert (s-lex-format "\n# No CS imports for ${$classification}"))
           )
@@ -581,7 +586,7 @@ pyLibPure
       (insert (s-lex-format "
 #+BEGIN_SRC emacs-lisp
 (setq-local b:dblockControls t) ; (setq-local b:dblockControls nil)
-(put 'b:dblockControls 'py3:cs:Classification \"${<classification}\") ; Main Multi-Unit CommandSvc
+(put 'b:dblockControls 'py3:cs:Classification \"${<classification}\") ; one of cs-mu, cs-u, cs-lib, bpf-lib, pyLibPure
 #+END_SRC
 #+RESULTS:
 : cs-mu"))
@@ -593,7 +598,6 @@ pyLibPure
       (outCommentPreContent)
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent))))
-
 
 
 (defalias 'org-dblock-write:b:python:cs:framework/importCmndsModules 'org-dblock-write:b:py3:cs:framework/importCmndsModules)
@@ -727,7 +731,7 @@ When <ro==py  is same as cli+py plus <ro=noCli
          (<style (letGet$style "openBlank" "closeBlank"))
          (<cmndName (or (plist-get <params :cmndName) ""))
          (<cmndType (or (plist-get <params :cmndType) ""))
-         (<extent (or (plist-get <params :extent) "default")) ;; or verify
+         (<extent (or (plist-get <params :extent) "verify")) ;; or noVerify
          (<ro (or (plist-get <params :ro) "cli"))         ;; or none or cli+py or py
          (<comment (or (plist-get <params :comment) ""))
          (<parsMandListStr (or (plist-get <params :parsMand) ""))
@@ -750,16 +754,28 @@ When <ro==py  is same as cli+py plus <ro=noCli
     (defun bodyContent ()
       (let* (
              ($frontStr (b:dblock:comeega|frontElement (s-lex-format "CmndSvc-${<cmndType}")))
+             ($backStr (b:dblock:comeega|eolControls))
              )
-             (insert (s-lex-format "${$frontStr} <<${<cmndName}>>"))
+             (insert (s-lex-format "${$frontStr} <<${<cmndName}>> "))
 
-             (if (not (string= <comment ""))
-                 (insert (format " =%s=" <comment)))
-
-             (insert
-              (s-lex-format
-               "parsMand=${<parsMandListStr} parsOpt=${<parsOptListStr} argsMin=${<argsMin} argsMax=${<argsMax} ro=${<ro} pyInv=${<pyInvListStr}"
-               ))))
+             (unless (string= <comment "")
+               (insert (s-lex-format " *${<comment}* ")))
+             (unless (string= <extent "default")
+               (insert (s-lex-format " =${<extent}= ")))
+             (unless (string= <parsMandListStr "")
+               (insert (s-lex-format "parsMand=${<parsMandListStr} ")))
+             (unless (string= <parsOptListStr "")
+               (insert (s-lex-format "parsOpt=${<parsOptListStr} ")))
+             (unless (eq <argsMin 0)
+               (insert (s-lex-format "argsMin=${<argsMin} ")))
+             (unless (eq <argsMax 0)
+               (insert (s-lex-format "argsMax=${<argsMax} ")))
+             (unless (string= <ro "")
+               (insert (s-lex-format "ro=${<ro} ")))
+             (unless (string= <pyInvListStr "")
+               (insert (s-lex-format "pyInv=${<pyInvListStr} ")))
+             (insert (s-lex-format " ${$backStr}"))
+             ))
 
     (defun outCommentPostContent ()
       (insert (s-lex-format "\nclass ${<cmndName}(cs.Cmnd):\n"))
@@ -833,7 +849,11 @@ When <ro==py  is same as cli+py plus <ro=noCli
            (setq $argsListOrNone "None"))
          (insert (s-lex-format "\
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, ${$argsListOrNone}).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)"))))
+            return b_io.eh.badOutcome(cmndOutcome)")))
+       (unless (equal <argsMax 0)
+         (insert (s-lex-format "\
+        cmndArgsSpecDict = self.cmndArgsSpec()"))))
+
 
      (when (or (string= <ro "cli+py") (string= <ro "py"))
        (insert (format "
@@ -1018,10 +1038,10 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              ($eolStr (b:dblock:comeega|eolControls))
              )
       (insert
-         (s-lex-format "${$frontStr} /${<funcName}/ deco=${<decorate} "))
+         (s-lex-format "${$frontStr} /${<funcName}/ "))
 
       (if (not (string= <comment ""))
-          (insert (s-lex-format " =${<comment}=")))
+          (insert (s-lex-format " ${<comment}")))
 
       (if (not (string= <decorate ""))
           (insert (s-lex-format " deco=${<decorate}")))
