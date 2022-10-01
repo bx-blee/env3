@@ -662,6 +662,63 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 #+end_org "
   (let* (
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<curParsList (or (plist-get <params :curParsList) ()))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "Currents" :orgDepth <outLevel))
+             )
+      (insert
+         (s-lex-format "${$frontStr} ~cur_examples~ ${<curParsList}"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+        _parNamesList = ["))
+
+      (loop-for-each $each <curParsList
+          (insert (s-lex-format " '${$each}',")))
+      (insert (s-lex-format "]\n"))
+
+      (insert (s-lex-format "\
+        if not (curParsDictValue := currentsConfig.curParsGetAsDictValue_wOp(_parNamesList, outcome=cmndOutcome).results): return(cmndOutcome)\n"))
+
+      (loop-for-each $each <curParsList
+          (insert (s-lex-format "        cur_${$each} = curParsDictValue['${$each}']\n")))
+
+      (insert (s-lex-format "\
+        def cur_examples():
+            cs.examples.execInsert(execLine='bx-currents.cs')
+            cs.examples.execInsert(execLine='bx-currents.cs -i usgCursParsGet')
+            for each in _parNamesList:
+                cs.examples.execInsert(execLine=f'bx-currents.cs -v 20 -i usgCursParsSet {each}={curParsDictValue[each]}')"))
+        )
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:module/cur_paramsAssignFile" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:module/cur_paramsAssignFile>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:module/cur_paramsAssignFile :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:module/cur_paramsAssignFile (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
          (<curParsList (or (plist-get <params :curParsList) ()))
@@ -705,6 +762,7 @@ def cur_examples():
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun  :defName "org-dblock-write:b:py3:cs:cmnd/classHead" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -836,7 +894,7 @@ When <ro==py  is same as cli+py plus <ro=noCli
           (insert (s-lex-format "\
         \"\"\"${<comment}\"\"\"")))
 
-     (when (string= <extent "verify")
+     (when (or (string= <extent "verify") (string= <extent "default"))
        (insert "
         callParamsDict = {")
        (mapcar (lambda (x)
@@ -851,7 +909,7 @@ When <ro==py  is same as cli+py plus <ro=noCli
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, ${$argsListOrNone}).isProblematic():
             return b_io.eh.badOutcome(cmndOutcome)")))
        (unless (equal <argsMax 0)
-         (insert (s-lex-format "\
+         (insert (s-lex-format "
         cmndArgsSpecDict = self.cmndArgsSpec()"))))
 
 

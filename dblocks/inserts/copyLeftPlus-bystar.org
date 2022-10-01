@@ -1,4 +1,4 @@
-* *[[elisp:(org-cycle)][| Proclamations |]]* :: Libre-Halaal Software --- Part Of Blee ---  Poly-COMEEGA Format.
+* *[[elisp:(org-cycle)][| Proclamations |]]* :: Libre-Halaal Software --- Part Of ByStar ---  Poly-COMEEGA Format.
 ** This is Libre-Halaal Software. © Libre-Halaal Foundation. Subject to AGPL.
-** It is not part of Emacs. It is part of Blee.
+** This is part of the Libre-Halaal ByStar
 ** Best read and edited  with Poly-COMEEGA (Polymode Colaborative Org-Mode Enhance Emacs Generalized Authorship)
