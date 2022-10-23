@@ -794,6 +794,7 @@ When <ro==py  is same as cli+py plus <ro=noCli
          (<comment (or (plist-get <params :comment) ""))
          (<parsMandListStr (or (plist-get <params :parsMand) ""))
          (<parsOptListStr (or (plist-get <params :parsOpt) ""))
+         (<parsNoMapping (or (plist-get <params :noMapping) ""))
          (<argsMin (or (plist-get <params :argsMin) 0))
          (<argsMax (or (plist-get <params :argsMax) 0))
          (<pyInvListStr (or (plist-get <params :pyInv) ""))
@@ -916,7 +917,17 @@ When <ro==py  is same as cli+py plus <ro=noCli
      (when (or (string= <ro "cli+py") (string= <ro "py"))
        (insert (format "
         # Remotely invoke this same command and return cmndOutcome")))
-     )
+
+     (when (string= <parsNoMapping "")
+      (mapcar (lambda (x) (insert (s-lex-format "
+        ${x} = csParam.mappedValue('${x}', ${x})")))
+              $parsMandList
+              )
+      (mapcar (lambda (x) (insert (s-lex-format "
+        ${x} = csParam.mappedValue('${x}', ${x})")))
+              $parsOptList
+              )
+     ))
 
    (progn  ;; Actual Invocations
       (outCommentPreContent)
