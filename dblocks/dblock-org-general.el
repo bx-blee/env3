@@ -1544,7 +1544,8 @@ Sections are specified as :outLevel 1,n
         (@dest (or (plist-get @params :dest) "."))
         (@destDesc (or (plist-get @params :destDesc) "auto"))
         (@foldDesc (or (plist-get @params :foldDesc) "auto"))
-        (@agenda (or (plist-get @params :agenda) nil))                          
+        (@agenda (or (plist-get @params :agenda) nil))
+        (agendaIndicator "")
         ;;
         )
 
@@ -1562,12 +1563,14 @@ Sections are specified as :outLevel 1,n
 
     (defun bodyContent ()
       "Descendents, Siblings and Ancestors of This Node."
+      (when @agenda (setq agendaIndicator "/Agenda/"))
       (when (string= @model "auto")
         (insert (blee:panel:delimiterFrontControl (1- @outLevel) :inDblock t))
         (insert (format
-                 "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]   ::  [[elisp:(org-cycle)][| <<%s>> |]] "
+                 "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]   :: %s [[elisp:(org-cycle)][| <<%s>> |]] "
                  @dest
                  (blee:panel:fto|atBaseGetDestDesc @dest @destDesc)
+                 agendaIndicator
                  (blee:panel:fto|atBaseGetFoldDesc @dest @foldDesc)              
                  ))
         ;;(insert "\n")
