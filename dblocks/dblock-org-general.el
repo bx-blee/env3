@@ -1565,7 +1565,7 @@ Sections are specified as :outLevel 1,n
       (when (string= @model "auto")
         (insert (blee:panel:delimiterFrontControl (1- @outLevel) :inDblock t))
         (insert (format
-                 "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]   ::  [[elisp:(org-cycle)][| /%s/ |]] "
+                 "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]   ::  [[elisp:(org-cycle)][| <<%s>> |]] "
                  @dest
                  (blee:panel:fto|atBaseGetDestDesc @dest @destDesc)
                  (blee:panel:fto|atBaseGetFoldDesc @dest @foldDesc)              
