@@ -264,7 +264,12 @@ intend to operate based on a region become directly invokable through yas."
 	  (setq deactivate-mark nil)
 	  ;;;(message "2 - region acive= %s -- beg=%s -- point=%s" (region-active-p) beg (point))
 	  ))))
-    
+
+(defun b:snippet:help/panel (<panelFileName)
+  "Provide help for snippets (and dblocks) in an other frame."
+  (find-file-read-only-other-frame <panelFileName)
+  )
+
 
 ;;; (define-key yas-minor-mode-map (kbd "<C-tab>")     'yas-ido-expand)
 
