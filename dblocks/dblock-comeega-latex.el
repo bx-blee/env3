@@ -56,11 +56,54 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
 " orgCmntEnd)
 ;;;#+END:
 
-;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "dblock Functions - Begin" :extraInfo "b:lcnt:"
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "dblock Frame Head Functions - Begin" :extraInfo "b:lcnt:"
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _dblock Functions - Begin_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _dblock Frame Head Functions - Begin_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
 ;;;#+END:
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:pres:frame:begin/blank" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:pres:frame:begin/blank>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:pres:frame:begin/blank :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:pres:frame:begin/blank (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]]
+Beamer and reveal slide style plain/regular, can be different. Label is used to
+locate the image in the disposition.gened directory.
+Reveal frame icludes an end. Beamer frame is open and needs to end outside of the dblock.
+
+Provenance: Taken from full-latex-frame-video-begin
+
+Implementation:
+
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          )
+     (bxPanel:params$effective)
+
+     (setq <params (plist-put <params ':type "Frame:begin-blank"))
+     (setq <params (plist-put <params ':options "plain"))
+     (setq <params (plist-put <params ':audio "UnSpecified"))
+     (setq <params (plist-put <params ':fragile "true"))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent () (b:lcnt:pres:commonDblock:inComment/begin <params))
+     (defun outCommentPostContent () (b:lcnt:pres:commonDblock:outComment/begin <params))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:pres:frame:begin/plain" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -282,8 +325,8 @@ and side-effects are documented here
     ;; These are used for Impressive
     ;;
     (insert (s-lex-format "\
-    %%BxPy: impressiveFrameParSet('${$frameLabelEncoded}', 'always', 'True')
-    %%BxPy: impressiveFrameParSet('${$frameLabelEncoded}', 'transition', '${<frameTransition}')"))
+%%BxPy: impressiveFrameParSet('${$frameLabelEncoded}', 'always', 'True')
+%%BxPy: impressiveFrameParSet('${$frameLabelEncoded}', 'transition', '${<frameTransition}')"))
 
     ))
 
@@ -296,9 +339,9 @@ and side-effects are documented here
 " orgCmntEnd)
 
 
-;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "dblock Functions - Derived" :extraInfo "b:lcnt:"
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "dblock Frame Head Functions - Derived" :extraInfo "b:lcnt:"
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _dblock Functions - Derived_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _dblock Frame Head Functions - Derived_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
 ;;;#+END:
 
@@ -401,11 +444,12 @@ and side-effects are documented here
          (<frameType (or (plist-get <params :type) "UnSpecified"))
          (<frameTitle (or (plist-get <params :title) "UnSpecified"))
          (<frameLabel (or (plist-get <params :label) "UnSpecified"))
+         (<comment (or (plist-get <params :comment) ""))
          ($frontStr (b:dblock:comeega|frontElement (s-lex-format "${<frameType}") :orgDepth <outLevel))
          ($backStr (b:dblock:comeega|eolControls))
          )
 
-    (insert (s-lex-format "${$frontStr} Label=${<frameLabel} ${<frameTitle}\n"))))
+    (insert (s-lex-format "${$frontStr} Label=${<frameLabel} ${<frameTitle} ${<comment}\n"))))
 
 
 (orgCmntBegin "
@@ -440,7 +484,7 @@ and side-effects are documented here
          (<frameTransition (or (plist-get <params :transition) "UnSpecified"))
          (<frameOnLeave (or (plist-get <params :onLeave) "UnSpecified"))
          (<beamer (or (plist-get <params :beamer) "regular"))
-         (<reveal (or (plist-get <params :onLeave) "plain"))
+         (<reveal (or (plist-get <params :reveal) "plain"))
          (<derivedImageOrVideo (or (plist-get <params :derivedImageOrVideo) ""))
          ($frameOptionsStr "")
          ($frameLabelEncoded "")
@@ -460,10 +504,10 @@ and side-effects are documented here
           (setq $frameOptionsStr (concat $frameOptionsStr ",")))
       (setq $frameOptionsStr (concat $frameOptionsStr "fragile")))
 
-    (when (not (equal <frameOptions "UnSpecified"))
+    (when (equal <reveal "plain")
       (if (not (string= "" $frameOptionsStr))
           (setq $frameOptionsStr (concat $frameOptionsStr ",")))
-      (setq $frameOptionsStr (concat $frameOptionsStr <frameOptions)))
+      (setq $frameOptionsStr (concat $frameOptionsStr <reveal)))
 
     (when (string-equal <frameLabel  "auto")
       (setq <frameLabel (str:spacesElim <frameTitle)))
@@ -492,29 +536,29 @@ and side-effects are documented here
       (insert (s-lex-format "\
     \\transitionout{${<frameOnLeave}}\n")))
 
-    (when (not (equal <frameAudio "UnSpecified"))
-      (when (not (equal <frameAudio "labeled"))
-        (insert (s-lex-format "\
+    (when (equal <derivedImageOrVideo "derivedImage")
+      (when (not (equal <frameAudio "UnSpecified"))
+        (when (not (equal <frameAudio "labeled"))
+          (insert (s-lex-format "\
     \\frameaudio{\"audio/${<frameAudio}.mp3\"}\n")))
-      (when (equal <frameAudio "labeled")
-        (insert (s-lex-format "\
+        (when (equal <frameAudio "labeled")
+          (insert (s-lex-format "\
     \\frameaudio{\"audio/${$frameLabelEncoded}.mp3\"}\n")))
-      )
+        ))
 
     ;;
     ;; If Title is not specified, it is passed in as blank
     ;; frametitle initiates the slide creation with HaVeA.
     ;; It needs to come after transition
     ;;
-    (when (equal <frameTitle "UnSpecified")
-      (setq <frameTitle ""))
+
+    ;; For drivedImage and drivedVideo, frameTitle and and frameSubtitle are blank
 
     (insert (s-lex-format "\
-    \\frametitle{${<frameTitle}}\n"))
+    \\frametitle{}\n"))
 
-    (when (not (equal <frameSubtitle "UnSpecified"))
-      (insert (s-lex-format "\
-    \\framesubtitle{${<frameSubtitle}}\n")))
+    (insert (s-lex-format "\
+    \\framesubtitle{}\n"))
 
     (when (equal <derivedImageOrVideo "derivedImage")
       (insert (s-lex-format "\
@@ -522,22 +566,37 @@ and side-effects are documented here
 <div class=\"center\">
 <img src=\"./disposition.gened/${$frameLabelEncoded}/slide-1.png\" height=\"500\">
 </div>
-    \\end{rawhtml}")))
+    \\end{rawhtml}\n")))
 
     (when (equal <derivedImageOrVideo "derivedVideo")
+
       (insert (s-lex-format "\
+    \\begin{presentationMode}
     \\begin{rawhtml}
 <video preload=\"auto\" data-audio-controls src=\"./video/derived-${$frameLabelEncoded}.mp4\"></video>
-    \\end{rawhtml}")))
+    \\end{rawhtml}
+    \\end{presentationMode}
+
+    \\begin{articleMode}
+    \\begin{rawhtml}
+    <!-- data-autoplay  controls -->
+    <p>
+    <video controls  preload=\"auto\" src=\"./video/derived-${$frameLabelEncoded}.mp4\" height=\"50%%\" width=\"50%%\">
+    </video>
+    </p>
+     \\end{rawhtml}
+    \\end{articleMode}\n"
+                            )))
 
     (insert (s-lex-format "\
 \\end{frame}
 \\end{htmlonly}"))
 
     (insert (s-lex-format "\n
-\\begin{latexonly}"))
+\\begin{verblatex}"))
 
-    (setq <params (plist-put <params ':options <beamer))
+    (when (equal <beamer "plain")
+      (setq <params (plist-put <params ':options <beamer)))
     (b:lcnt:pres:commonDblock:outComment/begin <params)
     ))
 
@@ -606,6 +665,155 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
+
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "dblock Frame Body Functions - MultiMedia" :extraInfo "b:lcnt:"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _dblock Frame Body Functions - MultiMedia_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+;;;#+END:
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:pres:frame:body:mm/video" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:pres:frame:body:mm/video>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:pres:frame:body:mm/video :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:pres:frame:body:mm/video (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Insert the Beamer slide image into corresponding Reveal Slide.
+Beamer and reveal slide style plain/basic, can be different. Label is used to
+locate the image in the disposition.gened directory.
+Reveal frame icludes an end. Beamer frame is open and needs to end outside of the dblock.
+
+Provenance: Taken from full-latex-frame-video-begin
+
+Implementation:
+
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 0)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          )
+     (bxPanel:params$effective)
+
+     (setq <params (plist-put <params ':type "FrmCntnt-Video"))
+
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent () (b:lcnt:pres:commonDblock:inComment:mm/body <params))
+     (defun outCommentPostContent () (b:lcnt:pres:commonDblock:outComment:mm/body <params))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:pres:commonDblock:inComment:mm/body" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:pres:commonDblock:inComment:mm/body>>   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun b:lcnt:pres:commonDblock:inComment:mm/body (
+;;;#+END:
+                                                   <params)
+  " #+begin_org
+** DocStr: Actions based on =parameters= and *returnValues*
+and side-effects are documented here
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 6)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<frameType (or (plist-get <params :type) "UnSpecified"))
+         (<frameTitle (or (plist-get <params :title) "UnSpecified"))
+         (<frameLabel (or (plist-get <params :label) "UnSpecified"))
+         ($frontStr (b:dblock:comeega|frontElement (s-lex-format "${<frameType}") :orgDepth <outLevel))
+         ($backStr (b:dblock:comeega|eolControls))
+         )
+
+    (insert (s-lex-format "${$frontStr} Label=${<frameLabel} ${<frameTitle}\n"))))
+
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(b:lcnt:pres:commonDblock/ derived )
+#+END_SRC
+" orgCmntEnd)
+
+
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:pres:commonDblock:outComment:mm/body" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:pres:commonDblock:outComment:mm/body>>   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun b:lcnt:pres:commonDblock:outComment:mm/body (
+;;;#+END:
+                                                    <params)
+  " #+begin_org
+** DocStr: Actions based on =parameters= and *returnValues*
+and side-effects are documented here
+#+end_org "
+
+  (let* (
+         (<mode (or (plist-get <params :mode) "auto"))
+         (<contentType (or (plist-get <params :type) "UnSpecified"))
+         (<videoPath (or (plist-get <params :videoPath) ""))
+         )
+
+    (insert (s-lex-format "
+\\begin{presentationMode}
+\\begin{htmlonly}
+  \\begin{rawhtml}
+<video preload=\"auto\" data-audio-controls src=\"${<videoPath}\"></video>
+  \\end{rawhtml}
+\\end{htmlonly}
+\\end{presentationMode}"))
+
+    (insert (s-lex-format "\n
+\\begin{articleMode}
+\\begin{htmlonly}
+  \\begin{rawhtml}
+      <!-- data-autoplay  controls -->
+    <p>
+    <video  controls   preload=\"auto\"  src=\"${<videoPath}\"  height=\"50%%\" width=\"50%%\">
+    </video>
+    </p>
+  \\end{rawhtml}
+\\end{htmlonly}
+\\end{articleMode}"))
+
+    (insert (s-lex-format "\n
+\\begin{presentationMode}
+\\begin{latexonly}
+    \\begin{center}
+      Video File: ${<videoPath}
+    \\end{center}
+\\end{latexonly}
+\\end{presentationMode}"))
+
+    (insert (s-lex-format "\n
+\\begin{articleMode}
+\\begin{latexonly}
+    \\begin{center}
+      Video File: ${<videoPath}
+    \\end{center}
+\\end{latexonly}
+\\end{articleMode}"))
+
+    ))
+
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(b:lcnt:pres:commonDblock/ derived )
+#+END_SRC
+" orgCmntEnd)
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
