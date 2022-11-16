@@ -425,7 +425,89 @@ Reveal frame icludes an end. Beamer frame is open and needs to end outside of th
        (outCommentPostContent)
        )))
 
-   
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:pres:frame/insertDerivedImage" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:pres:frame/insertDerivedImage>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:pres:frame/insertDerivedImage :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:pres:frame/insertDerivedImage (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Insert a named Beamer slide image in Reveal. Mention it in Beamer.
+
+Implementation:
+Based on: b:lcnt:pres:commonDblock:inComment/insertImage
+and b:lcnt:pres:commonDblock:outComment/insertImage
+
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 5)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          )
+     (bxPanel:params$effective)
+
+     (setq <params (plist-put <params ':type "insertDerivedImage"))
+     (setq <params (plist-put <params ':audio "labeled"))
+     (setq <params (plist-put <params ':fragile "true"))
+     ;; (setq <params (plist-put <params ':imageLabel "derivedImage"))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent () (b:lcnt:pres:commonDblock:inComment/derived <params))
+     (defun outCommentPostContent () (b:lcnt:pres:commonDblock:outComment/insertDerived <params))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:pres:frame/insertDerivedVideo" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:pres:frame/insertDerivedVideo>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:pres:frame/insertDerivedVideo :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:pres:frame/insertDerivedVideo (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Insert a named Beamer slide image in Reveal. Mention it in Beamer.
+
+Implementation:
+Based on: b:lcnt:pres:commonDblock:inComment/insertImage
+and b:lcnt:pres:commonDblock:outComment/insertImage
+
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 5)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          )
+     (bxPanel:params$effective)
+
+     (setq <params (plist-put <params ':type "insertDerivedVideo"))
+     (setq <params (plist-put <params ':audio "labeled"))
+     (setq <params (plist-put <params ':fragile "true"))
+     ;; (setq <params (plist-put <params ':imageLabel "derivedImage"))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent () (b:lcnt:pres:commonDblock:inComment/derived <params))
+     (defun outCommentPostContent () (b:lcnt:pres:commonDblock:outComment/insertDerived <params))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+
+
 ;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:pres:commonDblock:inComment/derived" :advice ()
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:pres:commonDblock:inComment/derived>>   [[elisp:(org-cycle)][| ]]
@@ -598,6 +680,168 @@ and side-effects are documented here
     (when (equal <beamer "plain")
       (setq <params (plist-put <params ':options <beamer)))
     (b:lcnt:pres:commonDblock:outComment/begin <params)
+    ))
+
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(b:lcnt:pres:commonDblock/ derived )
+#+END_SRC
+" orgCmntEnd)
+
+
+
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:pres:commonDblock:outComment/insertDerived" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:pres:commonDblock:outComment/insertDerived>>   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun b:lcnt:pres:commonDblock:outComment/insertDerived (
+;;;#+END:
+                                                    <params)
+  " #+begin_org
+** DocStr: Actions based on =parameters= and *returnValues*
+and side-effects are documented here
+#+end_org "
+
+  (let* (
+         (<mode (or (plist-get <params :mode) "auto"))
+         (<frameType (or (plist-get <params :type) "UnSpecified"))
+         (<frameTitle (or (plist-get <params :title) "UnSpecified"))
+         (<frameSubtitle (or (plist-get <params :subtitle) "UnSpecified"))
+         (<frameLabel (or (plist-get <params :label) "UnSpecified"))
+         (<frameFragile (or (plist-get <params :fragile) "UnSpecified"))
+         (<frameOptions (or (plist-get <params :options) "UnSpecified"))
+         (<frameAudio (or (plist-get <params :audio) "UnSpecified"))
+         (<frameTransition (or (plist-get <params :transition) "UnSpecified"))
+         (<frameOnLeave (or (plist-get <params :onLeave) "UnSpecified"))
+         (<beamer (or (plist-get <params :beamer) "regular"))
+         (<reveal (or (plist-get <params :reveal) "plain"))
+         (<derivedLabel (or (plist-get <params :derivedLabel) ""))
+         ($frameOptionsStr "")
+         ($frameLabelEncoded "")
+         ($frameTitleEncoded "")
+         ($frameSubtitleEncoded "")
+         )
+
+
+    (setq $frameTitleEncoded (shell-command-to-string (concat "uri@Encode.sh " <frameTitle)))
+    (setq $frameSubtitleEncoded (shell-command-to-string (concat "uri@Encode.sh " <frameSubtitle)))
+
+    ;;
+    ;; Combine frame options into frameOptionsStr
+    ;;
+    (when (equal <frameFragile "true")
+      (if (not (string= "" $frameOptionsStr))
+          (setq $frameOptionsStr (concat $frameOptionsStr ",")))
+      (setq $frameOptionsStr (concat $frameOptionsStr "fragile")))
+
+    (when (equal <reveal "plain")
+      (if (not (string= "" $frameOptionsStr))
+          (setq $frameOptionsStr (concat $frameOptionsStr ",")))
+      (setq $frameOptionsStr (concat $frameOptionsStr <reveal)))
+
+    (when (string-equal <frameLabel  "auto")
+      (setq <frameLabel (str:spacesElim <frameTitle)))
+
+    (setq $frameLabelEncoded (shell-command-to-string (concat "uri@Encode.sh " <frameLabel)))
+
+    (when (not (equal <frameLabel "UnSpecified"))
+      (if (not (string= "" $frameOptionsStr))
+          (setq $frameOptionsStr (concat $frameOptionsStr ",")))
+      (setq $frameOptionsStr (concat $frameOptionsStr "label=" <frameLabel)))
+
+    (if (not (string= "" $frameOptionsStr))
+        (setq $frameOptionsStr (concat "[" $frameOptionsStr "]")))
+
+    (insert (s-lex-format "\n
+\\begin{htmlonly}"))  ;; NOTYET, comment that it should be at begining of line
+
+    (insert (s-lex-format "\n
+\\begin{frame}${$frameOptionsStr}\n"))
+
+    (when (not (equal <frameTransition "UnSpecified"))
+      (insert (s-lex-format "\
+    \\transition{${<frameTransition}}\n")))
+
+    (when (not (equal <frameOnLeave "UnSpecified"))
+      (insert (s-lex-format "\
+    \\transitionout{${<frameOnLeave}}\n")))
+
+    (when (not (equal <frameAudio "UnSpecified"))
+      (when (not (equal <frameAudio "labeled"))
+        (insert (s-lex-format "\
+    \\frameaudio{\"audio/${<frameAudio}.mp3\"}\n")))
+      (when (equal <frameAudio "labeled")
+        (insert (s-lex-format "\
+    \\frameaudio{\"audio/${$frameLabelEncoded}.mp3\"}\n")))
+        )
+
+
+
+    ;;
+    ;; If Title is not specified, it is passed in as blank
+    ;; frametitle initiates the slide creation with HaVeA.
+    ;; It needs to come after transition
+    ;;
+
+    ;; For drivedImage and drivedVideo, frameTitle and and frameSubtitle are blank
+
+    (insert (s-lex-format "\
+    \\frametitle{}\n"))
+
+    (insert (s-lex-format "\
+    \\framesubtitle{}\n"))
+
+    (when (equal <frameType "insertDerivedImage")
+      (when (not (equal <derivedLabel ""))
+        (insert (s-lex-format "\
+    \\begin{rawhtml}
+<div class=\"center\">
+<img src=\"./disposition.gened/${<derivedLabel}/slide-1.png\" height=\"500\">
+</div>
+    \\end{rawhtml}\n"))
+
+
+      (insert (s-lex-format "\
+\\end{htmlonly}"))
+
+      (insert (s-lex-format "\n
+\\begin{latexonly}
+
+Reveal Image Insertion Of src=\"./disposition.gened/${<derivedLabel}/slide-1.png\"
+
+\\end{latexonly}\n"))))
+
+   (when (equal <frameType "insertDerivedVideo")
+     (when (not (equal <derivedLabel ""))
+       (insert (s-lex-format "\
+   \\begin{presentationMode}
+    \\begin{rawhtml}
+<video preload=\"auto\" data-audio-controls src=\"./video/derived-${<derivedLabel}.mp4\"></video>
+    \\end{rawhtml}
+    \\end{presentationMode}
+
+    \\begin{articleMode}
+    \\begin{rawhtml}
+    <!-- data-autoplay  controls -->
+    <p>
+    <video controls  preload=\"auto\" src=\"./video/derived-${<derivedLabel}.mp4\" height=\"50%%\" width=\"50%%\">
+    </video>
+    </p>
+     \\end{rawhtml}
+    \\end{articleMode}\n"))
+
+      (insert (s-lex-format "\
+\\end{htmlonly}"))
+
+      (insert (s-lex-format "\n
+\\begin{latexonly}
+
+Reveal Video Insertion Of src=\"./video/derived-${<derivedLabel}.mp4\"
+
+\\end{latexonly}\n"))))
+
     ))
 
 
