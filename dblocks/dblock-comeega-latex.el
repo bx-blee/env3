@@ -505,9 +505,6 @@ and b:lcnt:pres:commonDblock:outComment/insertImage
        (outCommentPostContent)
        )))
 
-
-
-
 ;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:pres:commonDblock:inComment/derived" :advice ()
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:pres:commonDblock:inComment/derived>>   [[elisp:(org-cycle)][| ]]
@@ -754,8 +751,6 @@ and side-effects are documented here
     (if (not (string= "" $frameOptionsStr))
         (setq $frameOptionsStr (concat "[" $frameOptionsStr "]")))
 
-    (insert (s-lex-format "\n
-\\begin{htmlonly}"))  ;; NOTYET, comment that it should be at begining of line
 
     (insert (s-lex-format "\n
 \\begin{frame}${$frameOptionsStr}\n"))
@@ -795,13 +790,16 @@ and side-effects are documented here
 
     (when (equal <frameType "insertDerivedImage")
       (when (not (equal <derivedLabel ""))
+
+        (insert (s-lex-format "\n
+\\begin{htmlonly} %% Must be at begining of line\n"))
+
         (insert (s-lex-format "\
     \\begin{rawhtml}
 <div class=\"center\">
 <img src=\"./disposition.gened/${<derivedLabel}/slide-1.png\" height=\"500\">
 </div>
     \\end{rawhtml}\n"))
-
 
       (insert (s-lex-format "\
 \\end{htmlonly}"))
@@ -815,6 +813,9 @@ Reveal Image Insertion Of src=\"./disposition.gened/${<derivedLabel}/slide-1.png
 
    (when (equal <frameType "insertDerivedVideo")
      (when (not (equal <derivedLabel ""))
+       (insert (s-lex-format "\n
+\\begin{htmlonly} %% Must be at begining of line\n"))
+
        (insert (s-lex-format "\
    \\begin{presentationMode}
     \\begin{rawhtml}
@@ -841,7 +842,6 @@ Reveal Image Insertion Of src=\"./disposition.gened/${<derivedLabel}/slide-1.png
 Reveal Video Insertion Of src=\"./video/derived-${<derivedLabel}.mp4\"
 
 \\end{latexonly}\n"))))
-
     ))
 
 
