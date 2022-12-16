@@ -85,11 +85,17 @@ and side-effects are documented here
    ;; (b:pkg:straight|install 'tide)
    ;; (b:pkg:straight|install 's)
 
+   (require 'blee-libs)
+   (b:npa:blee-libs|fullUpdate)
+
    (require 'bcpa:polymode)
    (b:cpa:polymode|fullUpdate)
 
    (require 'bnpa:comeega)
    (bnpa:comeega|fullUpdate)
+
+   (require 'bnpa:bisos)
+   (bnpa:bisos|fullUpdate)
 
    (require 'bcpg:commonLibs)
    (bcpg:commonLibs|fullUpdate)
