@@ -56,7 +56,7 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
 " orgCmntEnd)
 ;;;#+END:
 
-;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "dblock Frame Head Functions - Begin" :extraInfo "b:lcnt:"
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "LaTeX Input" :extraInfo "b:lcnt:"
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _dblock Frame Head Functions - Begin_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
