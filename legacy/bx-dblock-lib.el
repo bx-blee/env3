@@ -88,8 +88,9 @@
   (require 'dblock-comeega-prog)
   (require 'dblock-comeega-elisp)
   (require 'dblock-comeega-python)
-  (require 'dblock-comeega-latex-pres)
   (require 'dblock-comeega-latex)
+  (require 'dblock-comeega-latex-pres)
+  (require 'dblock-comeega-latex-image)
   (message "bx:dblock:defaults-set -- Done." )
   )
 

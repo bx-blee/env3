@@ -3058,7 +3058,7 @@ This is a Libre-Halaal poly-existential.
 (defun org-dblock-write:bx:dblock:lcnt:latex:title-page (params)
   (let ((bx:class (or (plist-get params :class) ""))
         (bx:langs (or (plist-get params :langs) ""))
-        (coverPage (or (plist-get params :coverPage) "UnSpecified"))
+        (coverPage (or (plist-get params :coverPage) "std"))
         (bx:form (or (plist-get params :form) ""))              
         (lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
         (lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
@@ -3078,7 +3078,7 @@ This is a Libre-Halaal poly-existential.
     (bx:lcnt:info:base-read)
 
     ;;;(insert "%{{{ DBLOCK-front-begin\n")
-    (insert "%%%% Args:  :form \"priv|std\" :coverPage \"blank|std\"\n")
+    (insert "%%%% Args:  :form \"priv|std\" :coverPage \"blank|std|derived\"\n")
 
     (org-latex-section-insert-dblock-name "title-page")
 
@@ -3280,57 +3280,84 @@ This is a Libre-Halaal poly-existential.
 %BxPy: impressiveFrameParSet('titlePage', 'onLeave', 'UnSpecified')
   \\end{frame}
 \\end{latexonly}
+")
 
+      (cond
+       ((string-equal coverPage "std")
+
+        (insert "
 \\begin{htmlonly}
   \\begin{frame}[label=titlePage]
   \\frameaudio{\"audio/titlePage.mp3\"}
 ")
-      (insert (format "
+        (insert (format "
   \\frametitle{%s}
 "  lcnt-mainTitle))
 
-      (if (not (string-equal lcnt-subTitle ""))
-          (insert (format "%s\\\\\n" lcnt-subTitle)))
+        (if (not (string-equal lcnt-subTitle ""))
+            (insert (format "%s\\\\\n" lcnt-subTitle)))
 
-      (if (not (string-equal lcnt-subSubTitle ""))
-          (insert (format "%s\\\\\n" lcnt-subSubTitle)))
+        (if (not (string-equal lcnt-subSubTitle ""))
+            (insert (format "%s\\\\\n" lcnt-subSubTitle)))
 
 
-      (when (or (equal bx:langs "en")
-                (equal bx:langs "en+fa"))
-    (insert "\\begin{center}\n")
-    (insert "{\\large Document \\#")
-    (insert (format "%s-%s\\\\\n" lcnt-type lcnt-lcntNu))
-    (insert (format "Version %s\\\\\n"  lcnt-version))
-    (insert (format "%s}\n" lcnt-date))
-    (insert "\\end{center}")
+        (when (or (equal bx:langs "en")
+                  (equal bx:langs "en+fa"))
+          (insert "\\begin{center}\n")
+          (insert "{\\large Document \\#")
+          (insert (format "%s-%s\\\\\n" lcnt-type lcnt-lcntNu))
+          (insert (format "Version %s\\\\\n"  lcnt-version))
+          (insert (format "%s}\n" lcnt-date))
+          (insert "\\end{center}")
 
-   (insert "
+          (insert "
 \\vspace{0.05in}
 
 \\begin{center}
 {\\large This Document is Available on-line at:\\\\
 ")
 
-   (insert (format "\\href{%s}{%s}}\n" lcnt-url lcnt-url))
+          (insert (format "\\href{%s}{%s}}\n" lcnt-url lcnt-url))
 
-   (insert "\\end{center}
+          (insert "\\end{center}
 
 \\begin{center}
 ")
 
-   (insert (format "{\\large {\\bf %s}\\\\
+          (insert (format "{\\large {\\bf %s}\\\\
   Email: \\href{%s}{%s}\\\\
 }" lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
 
-   (insert "\\end{center}")
+          (insert "\\end{center}")
 
-   (insert "
+          (insert "
   \\end{frame}
 \\end{htmlonly}
 
 ")
-      )
+       )
+        )
+       ((string-equal coverPage "derived")  ;; case condition
+
+        (insert "
+\\begin{htmlonly}
+  \\begin{frame}[label=titlePage]
+  \\frameaudio{\"audio/titlePage.mp3\"}
+  \\frametitle{}
+  \\framesubtitle{}
+  \\begin{rawhtml}
+<div class=\"center\">
+<img src=\"./disposition.gened/titlePage/slide-1.png\" height=\"500\">
+</div>
+    \\end{rawhtml}
+\\end{frame}
+\\end{htmlonly}
+")
+        )
+        (t
+        (insert (s-lex-format "Error: Unexpected coverPage=${coverPage}"))
+        )
+       )
 
     ;;;(insert "%}}} DBLOCK-front-begin")
       )

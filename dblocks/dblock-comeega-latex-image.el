@@ -153,7 +153,7 @@ and side-effects are documented here
     \\begin{center}"))
 
     (insert (s-lex-format "
-       \\includegraphics[width=108mm,height=76mm,keepaspectratio]${<imageFile}"))
+       \\includegraphics[width=108mm,height=76mm,keepaspectratio]{${<imageFile}}"))
 
     (insert "
     \\end{center}
@@ -182,7 +182,7 @@ and side-effects are documented here
     \\begin{center}")
 
     (insert (s-lex-format "
-      \\includegraphics[width=\\textwidth]${<imageFile}"))
+      \\includegraphics[width=\\textwidth]{${<imageFile}}"))
 
     ;;; BUG: insert-file-contents did not work
 
@@ -200,16 +200,16 @@ and side-effects are documented here
 \\end{latexonly}
 
 \\begin{htmlonly}
-  %BEGIN IMAGE
+%BEGIN IMAGE
   \\begin{center}")
 
     (insert (s-lex-format "
-      \\includegraphics[width=\\textwidth]${<imageFile}"))
+      \\includegraphics[width=\\textwidth]{${<imageFile}}"))
 
     (insert "
   \\end{center}
-  %END IMAGE
-  %HEVEA\\imageflush
+%END IMAGE
+%HEVEA\\imageflush
 
   \\begin{figure}")
 
@@ -288,15 +288,17 @@ and side-effects are documented here
          (<imageFile (or (plist-get <params :imageFile) ""))
          (<comment (or (plist-get <params :comment) ""))
          ($fileName "")
+         ($fileNameEncoded "")
          )
 
     (setq $fileName (f-no-ext (f-filename <imageFile)))
+    (setq $fileNameEncoded (shell-command-to-string (concat "uri@Encode.sh " $fileName)))
 
     (setq <params (plist-put <params ':type "Frame:begin-plain"))
     (setq <params (plist-put <params ':options "plain"))
     (setq <params (plist-put <params ':audio "labeled"))
     (setq <params (plist-put <params ':fragile "true"))
-    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Image -- ${$fileName}")))
+    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Image -- ${$fileNameEncoded}")))
 
      (org-dblock-write:bx:dblock:lcnt:latex-section <params)
 
@@ -360,12 +362,14 @@ and side-effects are documented here
          (<imageFile (or (plist-get <params :imageFile) ""))
          (<comment (or (plist-get <params :comment) ""))
          ($fileName "")
+         ($fileNameEncoded "")
          ($fileNameParts '())
          ($dateDay "")
          ($dateTime "")
          )
 
     (setq $fileName (f-no-ext (f-filename <imageFile)))
+    (setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo ${$fileName} | latexencode")))
     (setq $fileNameParts (s-split "-" $fileName))
     (setq $dateday (nth 0 $fileNameParts))
     (setq $dateTime (s-left 4 (nth 1 $fileNameParts)))
@@ -376,7 +380,7 @@ and side-effects are documented here
     (setq <params (plist-put <params ':options "plain"))
     (setq <params (plist-put <params ':audio "labeled"))
     (setq <params (plist-put <params ':fragile "true"))
-    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Photo -- ${$fileName}")))
+    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Photo -- ${$fileNameEncoded}")))
 
     (org-dblock-write:bx:dblock:lcnt:latex-section <params)
 
@@ -480,9 +484,13 @@ Content of a frame based
      (defun helpLine () "default controls" )
      (defun outCommentPreContent ())
      (defun bodyContentPlus ())
-     ;;(defun bodyContent () (b:lcnt:frame:content:image:inComment/common <params))
-     (defun bodyContent () (insert (s-lex-format "* \
-_Processing Dblock b:lcnt:album:any:list/fromFile.el for ${<albumFile}_\n")))
+     (defun bodyContent ()
+       (let* (
+              ($frontStr (b:dblock:comeega|frontElement (s-lex-format "ALBUM") :orgDepth <outLevel))
+              ($backStr (b:dblock:comeega|eolControls))
+              )
+         (insert (s-lex-format
+                "${$frontStr} ~${<comment}~ _Processing Dblock b:lcnt:album:any:list/fromFile.el ${<albumFile}_\n"))))
      (defun outCommentPostContent () (b:lcnt:album:any:list/fromFile.el <params))
 
      (progn  ;; Actual Invocations
