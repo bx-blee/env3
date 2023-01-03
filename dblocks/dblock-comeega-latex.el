@@ -108,6 +108,66 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
        )))
 
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/include" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/include>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/include :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/include (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]]
+
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<includeFile (or (plist-get <params :includeFile) ""))
+          (<notClearDoublePage (or (plist-get <params :notClearDoublePage) nil))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "INCLUDE"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (if (file-exists-p <includeFile)
+                 (insert (s-lex-format
+                          "${$frontStr}   ~Include File~  /${<includeFile}"))
+               (insert (s-lex-format
+                        "${$frontStr} _MISSING_ ~Include File~  ${<includeFile}")))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (if (file-exists-p <includeFile)
+           (progn
+             (when (not <notClearDoublePage)
+               (insert (s-lex-format
+                      "\n\\cleardoublepage")))
+             (insert (s-lex-format "
+\\begingroup
+\\let\\clearpage\\relax
+\\include{${<includeFile}}
+\\endgroup"
+              )))
+         (progn
+           (insert (s-lex-format
+                        "\n%%%% Missing ${<includeFile}"))))
+
+           )
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'dblock-comeega-latex)
 ;;;#+END:
