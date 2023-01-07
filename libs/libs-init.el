@@ -94,6 +94,10 @@ and side-effects are documented here
    (require 'bnpa:comeega)
    (bnpa:comeega|fullUpdate)
 
+   (require 'bnpa:bidi-menu)
+   (b:npa:bidi-menu|fullUpdate)
+
+
    (require 'bnpa:bisos)
    (bnpa:bisos|fullUpdate)
 

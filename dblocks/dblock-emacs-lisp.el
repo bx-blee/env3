@@ -545,7 +545,7 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
         (if (string= <pkgsStage "ready")
             (setq $straightInstaller "b:pkg:straight|profiledInstall\n       b:pkgsProfile:native")
           (setq $straightInstaller "straight-use-package"))
-        (insert (s-lex-format "\
+        (insert (s-lex-format "
  (if b:g:dev:mode?
       (${$straightInstaller}
        '(${<pkgName} :local-repo \"/bisos/git/bxRepos/blee/${<pkgName}\"))

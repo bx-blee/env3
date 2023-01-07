@@ -32,6 +32,8 @@
 (require 'modes-menu-flyspell)
 (require 'modes-menu-flyspell-prog)
 
+(require 'bidi-menu)
+
 ;; (modes:menu-bar|install)
 (defun modes:menu-bar|install ()
   "Primary interface."
@@ -87,9 +89,11 @@ For use in delimiters in easy-menu-define"
     (browsers:modes:menu:plugin/install
      modes:menu:global (s-- 3))
 
+    (b:bidi:menu:plugin|install
+     modes:menu:global (s-- 3))
+
     (mcdt:menu:plugin|install
      modes:menu:global (s-- 4))
-
 
     (web:search:modes:menu:plugin/install
      modes:menu:global (s-- 4))
@@ -116,7 +120,7 @@ For use in delimiters in easy-menu-define"
     (progn
       (modes:fill-column:menu:plugin|install
        modes:menu:local-minor (s-- 3))
-      
+
       (modes:linum:menu:plugin|install
        modes:menu:local-minor (s-- 4))
 

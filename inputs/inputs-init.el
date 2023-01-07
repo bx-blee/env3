@@ -65,6 +65,13 @@ and side-effects are documented here
 
    (require 'bcpg:funcKeys)
    (bcpg:funcKeys|fullUpdate)
+
+   ;;;
+   ;;; NOTYET, This should be re done and go into interim
+   ;;;
+   (when (f-exists-p "/bisos/git/bxRepos/blee/persian-input-method/persian.el")
+     (load-file "/bisos/git/bxRepos/blee/persian-input-method/persian.el"))
+
    )
 
 (orgCmntBegin "
