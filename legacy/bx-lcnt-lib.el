@@ -7,6 +7,16 @@
 ;;
 ;; bx:lcnt 
 
+(defvar-local b:lcnt:tex:masters:~ '()
+  "List of master tex files associated with this buffer.
+  An lcntProc is expected to reside next to each master file."
+  )
+
+(defvar-local b:lcnt:tex:includePath:~ "./common"
+  "The path through which tex include commands are issued.
+  This path is also used in includePath."
+  )
+
 ;;;------------------------------------------------
 ;;;  Lcnt 
 ;;;------------------------------------------------
@@ -156,7 +166,63 @@
 	)
       )))
 
-  
+;;;   (bx:lcnt:info:base-read-dir "/bxo/iso/pip_lcnt_bystarCommon/lcnt/lgpc/bystar/permanent/usage/bleeEnFa")
+;;;   (get 'bx:lcnt:info:base 'authorUrl1)
+(defun b:lcnt:info:includeOnly/readDir (<dir)
+  ""
+  (interactive "DEnter Directory:")
+
+
+  (setq b:lcnt:info:includeOnly:base "invalid")
+  '()
+
+
+  (let (
+        ($lcntInfoIncludeOnlyDir (concat <dir "/LCNT-INFO/Builds/includeOnly"))
+        )
+    (setq b:lcnt:info:includeOnly:base "invalid")
+    (if (not (file-directory-p $lcntInfoIncludeOnlyDir))
+        (progn
+	  (message (s-lex-format "Missing: ${$lcntInfoIncludeOnlyDir}")))
+      (progn
+        (if (not (f-exists? (concat $lcntInfoIncludeOnlyDir "/filesList")))
+            (message (s-lex-format "Missing: ${$lcntInfoIncludeOnlyDir}/filesList"))
+          (progn
+	    (setq b:lcnt:info:includeOnly:base "valid")
+
+	    ;;(get 'b:lcnt:info:includeOnly:base 'filesList)
+	    (put 'b:lcnt:info:includeOnly:base
+	         'filesList
+	         (shell-command-to-string
+	          (s-lex-format
+                   "echo -n $( cat  ${$lcntInfoIncludeOnlyDir}/filesList)")))
+            ))))))
+
+(defun b:lcnt:info:includeOnly/listGet ()
+  ""
+
+  (b:lcnt:info:includeOnly/readDir default-directory)
+
+  (let (
+        ($filesListStr)
+        ($filesList '())
+        )
+    (if (string= b:lcnt:info:includeOnly:base "invalid")
+        (setq $filesList '())
+      (progn
+        (setq $filesListStr (get 'b:lcnt:info:includeOnly:base 'filesList))
+        (if (string= $filesListStr "")
+            (setq $filesList '())
+          (progn
+            (setq $filesList (append (s-split " " $filesListStr) $filesList))
+            ;(push (s-split " " $filesListStr) $filesList)
+            )
+        )))
+    $filesList
+    ))
+
+
+
 ;;;   (bx:lcnt:info:base-show-after-read-old)
 (defun bx:lcnt:info:base-show-after-read-old () ;;;(folder)
   ""

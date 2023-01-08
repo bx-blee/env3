@@ -168,6 +168,71 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
        )))
 
 
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/includeOnly" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/includeOnly>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/includeOnly :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/includeOnly (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          ($includeOnlyList)
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "IncOnly"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (if $includeOnlyList
+                 (insert (s-lex-format
+                          "${$frontStr} _IncludeOnly=${$includeOnlyList}_ ~Setting whenIncludeOnly and Limited Processing~"))
+               (insert (s-lex-format
+                        "${$frontStr} _NO IncludeOnly_ ~Setting whenNotIncludeOnly and Processing Everything~")))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (if $includeOnlyList
+           (progn
+             (insert (s-lex-format
+                      "\n\\includeonly{\n    "))
+             (loop-for-each $each $includeOnlyList
+               (insert (s-lex-format
+                      "${$each}, ")))
+             (insert (s-lex-format
+                      "\n}
+\\includecomment{whenIncludeOnly}
+\\excludecomment{whenNotIncludeOnly}")))
+         (progn
+           (insert (s-lex-format
+                    "\n
+\\excludecomment{whenIncludeOnly}
+\\includecomment{whenNotIncludeOnly}")))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'dblock-comeega-latex)
 ;;;#+END:

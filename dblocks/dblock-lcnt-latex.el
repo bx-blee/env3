@@ -5198,7 +5198,7 @@ otherwise labelInfo is inserted as label"
              segTitle
              ))
 
-    
+
     (when (string-equal labelInfo "auto")
       (setq labelInfo (str:spacesElim $labelTitleStr)))
 
@@ -5208,8 +5208,12 @@ otherwise labelInfo is inserted as label"
 \\label{%s}"
                (concat (getTagForLabelFromSegType segType) labelInfo)
                )))
-    )
-  )
+    (when (string-equal segType "chapter")
+      (insert (s-lex-format "
+\\begin{whenIncludeOnly}
+  \\minitoc%
+\\end{whenIncludeOnly}")))
+    ))
 
 
 (lambda () "
