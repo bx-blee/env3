@@ -178,12 +178,13 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
  [[elisp:(delete-other-windows)][(1)]] |\
  [[elisp:(show-all)][Show-All]] \
  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] |\
+ [[file:Panel.org][Panel]] |\
  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] |\
  [[elisp:(bx:org:run-me-eml)][RunEml]] |\
  [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]] \
  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]")
       (insert "\n")
-      (insert "** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]")
+      (insert "** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]\n")
       )
 
     (defun outCommentPostContent ())
