@@ -452,6 +452,115 @@ Expects certain file-local variables to have been set
        )))
 
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/appendicesBegin" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/appendicesBegin>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/appendicesBegin :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/appendicesBegin (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<whenIncludeOnly (or (plist-get <params :whenIncludeOnly) nil))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "~Appndce{~  "))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} *Appendices-Begin* -- ${<comment} ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (when <whenIncludeOnly
+         (insert "\n\\begin{whenIncludeOnly}"))
+       (unless <whenIncludeOnly
+         (insert "\n\\begin{whenNotIncludeOnly}"))
+       (insert "\n\\begin{appendices}")
+       (when <whenIncludeOnly
+         (insert "\n\\end{whenIncludeOnly}"))
+       (unless <whenIncludeOnly
+         (insert "\n\\end{whenNotIncludeOnly}"))
+       )
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/appendicesEnd" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/appendicesEnd>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/appendicesEnd :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/appendicesEnd (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<whenIncludeOnly (or (plist-get <params :whenIncludeOnly) nil))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "~Appndcs}~  "))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} *Appendices-End* -- ${<comment} ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (when <whenIncludeOnly
+         (insert "\n\\begin{whenIncludeOnly}"))
+       (unless <whenIncludeOnly
+         (insert "\n\\begin{whenNotIncludeOnly}"))
+       (insert "\n\\end{appendices}")
+       (when <whenIncludeOnly
+         (insert "\n\\end{whenIncludeOnly}"))
+       (unless <whenIncludeOnly
+         (insert "\n\\end{whenNotIncludeOnly}"))
+       )
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'dblock-comeega-latex)

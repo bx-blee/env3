@@ -273,8 +273,6 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       )))
 
 
-
-
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "Supporting Facilities" :extraInfo ""
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Supporting Facilities_: |]]    [[elisp:(org-shifttab)][<)]] E|
