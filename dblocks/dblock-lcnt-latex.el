@@ -248,7 +248,7 @@ usepackage{comment}
     
 
     (insert (format "\
-\\begin{comment}
+\\begin{whenOrg}
 *      IIM Parameters    ::  [[elisp:(bx:iimBash:resultsShow:cmndLineElems)][Show Cmnd Line Elems]]\
  || [[elisp:(setq bx:iimBash:iimParamsArgs \"-p extent=build+view\")][-p extent=build+view]]\
  || [[elisp:(setq bx:iimBash:iimParamsArgs \"-p extent=build\")][-p extent=build]]\
@@ -299,9 +299,9 @@ usepackage{comment}
     (bx:lcnt:info:base-read)
 
     (insert (format "\
-\\begin{comment}\n*\
+\\begin{whenOrg}\n*\
   [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /DBLOCK: HeVeA Use/  ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}\n"))
+\\end{whenOrg}\n"))
     
     (insert "
 \\usepackage{hevea} 
@@ -2970,9 +2970,9 @@ This is a Libre-Halaal poly-existential.
 
 
       (insert (format "
-\\begin{comment}
+\\begin{whenOrg}
 ***** DBLOCK -- mention-lcnt %s
-\\end{comment}
+\\end{whenOrg}
 
 \\begin{quote}
   \\textbf{%s}\\newline"
@@ -5058,9 +5058,9 @@ Each of these dblock-params match a buffer-local variables.
           (if (file-exists-p bx:input-file)
               (progn
                 (insert (format "\
-\\begin{comment}
+\\begin{whenOrg}
 %s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}
+\\end{whenOrg}
 
 \\input{%s}"
                                 "*"
@@ -5094,9 +5094,9 @@ Each of these dblock-params match a buffer-local variables.
           (if (file-exists-p bx:input-file)
               (progn
                 (insert (format "\
-\\begin{comment}
+\\begin{whenOrg}
 *****  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /In Frame Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}
+\\end{whenOrg}
 
 \\input{%s}"
                                 bx:input-file
@@ -5165,9 +5165,9 @@ otherwise labelInfo is inserted as label"
 
       (insert
        (format "\
-\\begin{comment}%s
+\\begin{whenOrg}%s
 %s    /%s/ ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}"
+\\end{whenOrg}"
                delimiterLinePerhaps
                (b:dblock:comeega|frontElement (str:capitalize-first-char segType) :orgDepth orgDepth)
                $labelTitleStr
@@ -5176,9 +5176,9 @@ otherwise labelInfo is inserted as label"
     (when (not (string-equal segType "part"))
       (insert
        (format "\
-\\begin{comment}%s
+\\begin{whenOrg}%s
 %s   /%s/ ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}"
+\\end{whenOrg}"
                delimiterLinePerhaps
                (b:dblock:comeega|frontElement (str:capitalize-first-char segType) :orgDepth orgDepth)
                $labelTitleStr
@@ -5269,9 +5269,9 @@ otherwise labelInfo is inserted as label"
 
       (insert
        (format "\
-\\begin{comment}%s
+\\begin{whenOrg}%s
 %s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  *%s*   /%s/ ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}"
+\\end{whenOrg}"
                delimiterLinePerhaps
                (make-string orgDepth ?*)
                (str:capitalize-first-char segType)
@@ -5281,9 +5281,9 @@ otherwise labelInfo is inserted as label"
     (when (not (string-equal segType "part"))
       (insert
        (format "\
-\\begin{comment}%s
+\\begin{whenOrg}%s
 %s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /%s/   %s ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}"
+\\end{whenOrg}"
                delimiterLinePerhaps
                (make-string orgDepth ?*)
                (str:capitalize-first-char segType)
@@ -5409,10 +5409,10 @@ otherwise labelInfo is inserted as label"
           (when (string-equal bx:part "")
             ;;(setq bx:part bx:toc)
             (insert (format "\
-\\begin{comment}
+\\begin{whenOrg}
 %s      ================
 %s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  *Part*   _%s_ ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}
+\\end{whenOrg}
 
 \\newpage
 \\part{%s}"
@@ -5428,10 +5428,10 @@ otherwise labelInfo is inserted as label"
 
           (when (not (string-equal bx:part ""))
             (insert (format "\
-\\begin{comment}
+\\begin{whenOrg}
 %s      ================
 %s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  *Part %s*   _%s_ ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}
+\\end{whenOrg}
 
 \\newpage
 \\part{%s}"
@@ -5535,10 +5535,10 @@ otherwise labelInfo is inserted as label"
           ;;; Processing Body
           (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
           (insert (format "\
-\\begin{comment}
+\\begin{whenOrg}
 *      ================
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || *Segment*   %s ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}"
+\\end{whenOrg}"
                           bx:seg-title
                           )))
       (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
@@ -5561,10 +5561,10 @@ otherwise labelInfo is inserted as label"
           ;;; Processing Body
           (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
           (insert (format "\
-\\begin{comment}
+\\begin{whenOrg}
 *      ================
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || *Appendix*   %s ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}
+\\end{whenOrg}
 
 \\newpage
 \\appendix{%s}
@@ -5741,9 +5741,9 @@ otherwise labelInfo is inserted as label"
             )
           (insert (format "
 
-\\begin{comment}
+\\begin{whenOrg}
 *      ================
-\\end{comment}"
+\\end{whenOrg}"
                           )))
       (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
       )))
@@ -5849,9 +5849,9 @@ Star at the begining of line is avoided not to show up in org-mode view.
 "
   (insert
    (format "\
-\\begin{comment}\n*\
+\\begin{whenOrg}\n*\
   [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /DBLOCK: %s/  ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}
+\\end{whenOrg}
 "
            name
            )))
@@ -5881,9 +5881,9 @@ Star at the begining of line is avoided not to show up in org-mode view.
 
     (insert
      (format "\
-\\begin{comment}\n%s\
+\\begin{whenOrg}\n%s\
   [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /DBLOCK: %s/ %s%s%s ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}\
+\\end{whenOrg}\
 "
              $orgLevelStr
              @name           
@@ -5922,12 +5922,12 @@ Star at the begining of line is avoided not to show up in org-mode view.
 
     (insert
      (format "\
-\\begin{comment}\n\
+\\begin{whenOrg}\n\
 %s\
  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] \
  /%s%s%s/  %s%s%s\
  ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}\
+\\end{whenOrg}\
 "
              $orgLevelStr
              @label

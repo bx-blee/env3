@@ -907,12 +907,12 @@ surround is for panel decoration."
 
 
 (defun bx:latex:insert-begin-comment ()
-  (insert "\\begin{comment}\n"))
+  (insert "\\begin{whenOrg}\n"))
 
 (defun bx:latex:insert-end-comment ()
   ""
   (insert "\
-\\end{comment}"
+\\end{whenOrg}"
           )
   )
 

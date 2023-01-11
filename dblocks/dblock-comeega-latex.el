@@ -78,6 +78,7 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
           (<inputFile (or (plist-get <params :input-file) ""))
+          (<inputedAs (or (plist-get <params :inputedAs) "INPUTED"))
           )
      (bxPanel:params$effective)
 
@@ -86,7 +87,7 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "INPUT"))
+                  ($frontStr (b:dblock:comeega|frontElement "INPUTED"))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (if (file-exists-p <inputFile)
@@ -124,6 +125,7 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
           (<includeFile (or (plist-get <params :includeFile) ""))
+          (<includedAs (or (plist-get <params :includedAs) "INCLUDED"))
           (<notClearDoublePage (or (plist-get <params :notClearDoublePage) nil))
           )
      (bxPanel:params$effective)
@@ -133,7 +135,7 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "INCLUDE"))
+                  ($frontStr (b:dblock:comeega|frontElement <includedAs))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (if (file-exists-p <includeFile)
@@ -268,7 +270,7 @@ Expects certain file-local variables to have been set
                   ($texMastersStr (s-join " " b:lcnt:tex:masters:~))
                   )
              (insert (s-lex-format
-                        "${$frontStr} LCNT-PROCS Come Here\n"))
+                        "${$frontStr} Process this lcnt.tex file through its masters\n"))
 
              (loop-for-each $eachMaster b:lcnt:tex:masters:~
                (insert (s-lex-format
@@ -421,7 +423,7 @@ Expects certain file-local variables to have been set
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "~EndOfFile~"))
+                  ($frontStr (b:dblock:comeega|frontElement "~EndOfFile~ "))
                   ($eolStr (b:dblock:comeega|eolControls))
                   ($thisFile (f-filename (buffer-file-name)))
                   )
