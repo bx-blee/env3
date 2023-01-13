@@ -64,6 +64,7 @@ Each of these become buffer local variables that can be used by other dblocks in
 inserts:
 documentclass[$effectiveTexOptions]{$effectiveTexClass}
 usepackage{comment}
+excludecomment{whenOrg}
 "
 
   (let ((bx:class (or (plist-get params :class) ""))
@@ -86,12 +87,14 @@ usepackage{comment}
                 (equal bx:langs "en+fa"))
         (insert "\
 \\documentclass{article}
-\\usepackage{comment}")
+\\usepackage{comment}
+\\excludecomment{whenOrg}")
         )
       (when (equal bx:langs "fa+en")
         (insert "\
 \\documentclass{article}
-\\usepackage{comment}")
+\\usepackage{comment}
+\\excludecomment{whenOrg}")
         )
       )
 
@@ -100,12 +103,14 @@ usepackage{comment}
                 (equal bx:langs "en+fa"))
         (insert "\
 \\documentclass[twoside]{book}
-\\usepackage{comment}")
+\\usepackage{comment}
+\\excludecomment{whenOrg}")
         )
       (when (equal bx:langs "fa+en")
         (insert "\
 \\documentclass[twoside]{book}
-\\usepackage{comment}")
+\\usepackage{comment}
+\\excludecomment{whenOrg}")
         )
       )
     
@@ -117,12 +122,14 @@ usepackage{comment}
                 (equal bx:langs "en+fa"))
         (insert "\
 \\documentclass{article}
-\\usepackage{comment}")
+\\usepackage{comment}
+\\excludecomment{whenOrg}")
         )
       (when (equal bx:langs "fa+en")
         (insert "\
 \\documentclass{article}
-\\usepackage{comment}")
+\\usepackage{comment}
+\\excludecomment{whenOrg}")
         )
       )
 
@@ -140,15 +147,16 @@ usepackage{comment}
 %\\nonstopmode
 
 \\documentclass[ignorenonframetext]{beamer}
-\\usepackage{comment}") 
+\\usepackage{comment}
+\\excludecomment{whenOrg}")
         )
       
       ;;; FARSI
       (when (equal bx:langs "fa+en")
         (insert "\
 \\documentclass[ignorenonframetext]{bidibeamer}
-\\usepackage{comment}") 
-
+\\usepackage{comment}
+\\excludecomment{whenOrg}")
         )
       )
     ))
@@ -4854,7 +4862,7 @@ Each of these dblock-params match a buffer-local variables.
         (@class (or (plist-get @params :class) ""))
         (@langs (or (plist-get @params :langs) ""))
         (@toggle (or (plist-get @params :toggle) "enabled"))
-        (@pageBreak (or (plist-get @params :pageBreak) nil))    
+        (@pageBreak (or (plist-get @params :pageBreak) nil))
         (@toc (or (plist-get @params :toc) nil))
         (@tables (or (plist-get @params :tables) nil))  
         (@figures (or (plist-get @params :figures) nil))                
