@@ -394,7 +394,7 @@ excludecomment{whenOrg}
      )
 
     (org-latex-node-insert-note
-     :label "DBLOCK:"
+     :label "PkgsEarly"
      :name (format
             "early-common-packages%s"
             $modernStr
@@ -986,8 +986,8 @@ excludecomment{whenOrg}
     ;; (org-latex-section-insert-dblock-name "common-packages-style-settings")
 
     (org-latex-node-insert-note
-     :label (format "DBLOCK: common-packages-style-settings")
-     :name ""
+     :label (format "pkgsStyles")
+     :name (format "common-packages-style-settings")
      :level 1
      :comment (format "")
      )    
@@ -1543,7 +1543,7 @@ Subject:   & This Matter\\\\
      ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\""
      )
 
-    (org-latex-node-insert-note
+    (org-latex-node-insert-note_inactive
      :label "DBLOCK:"
     :name (format
            "Geometry --- curBuild=%s paperSize=%s"
@@ -1553,6 +1553,18 @@ Subject:   & This Matter\\\\
      :level 1
      :comment (format "")
      )
+
+    (org-latex-node-insert-note
+     :label "Geometry"
+    :name (format
+           "--- curBuild=%s paperSize=%s"
+           @curBuild
+           @paperSize
+           )
+     :level 1
+     :comment (format "")
+     )
+
 
     (when (not @paperSize)
       (when (not @curBuild)
@@ -1578,6 +1590,11 @@ Subject:   & This Matter\\\\
     ;;;
     ;;; $paperSize is available now.
     ;;;
+
+
+    (insert "\n
+\\usepackage{layouts} %% Perhaps unused?")
+
 
     (when @paperSize
       
@@ -5901,7 +5918,7 @@ Star at the begining of line is avoided not to show up in org-mode view.
              ))
     ))
 
-(defun org-latex-node-insert-note (&rest @args)
+(defun org-latex-node-insert-note%%(&rest @args)
   "Insert a latex commented org-node.
 "
   (let (
@@ -5946,6 +5963,44 @@ Star at the begining of line is avoided not to show up in org-mode view.
              $commentEnd
              ))
     ))
+
+(defun org-latex-node-insert-note_inactive (&rest @args))
+
+(defun org-latex-node-insert-note (&rest @args)
+  "Insert a latex commented org-node.
+"
+  (let* (
+        (@label (or (plist-get @args :label) "Note:"))
+        (@name (or (plist-get @args :name) ""))
+        (@level (or (plist-get @args :level) 1))
+        (@comment (or (plist-get @args :comment) nil))
+        ;;;
+        ($orgLevelStr)
+        ($commentStart "=")
+        ($commentEnd "=")
+        ($labelNameSeparator " ")
+        ($frontStr (b:dblock:comeega|frontElement @label))
+        ($eolStr (b:dblock:comeega|eolControls))
+        )
+
+    (setq $orgLevelStr (make-string @level ?*))
+
+    (when (not @comment)
+      (setq @comment "")
+      (setq $commentStart "")
+      (setq $commentEnd "")
+      )
+
+    (when (equal @name "")
+      (setq $labelNameSeparator "")
+      )
+
+    (insert "\n\\begin{whenOrg}\n")
+    (insert (s-lex-format
+             "${$frontStr}  ${@name} --- ${@comment} ${$eolStr}"))
+    (insert "\n\\end{whenOrg}")
+    ))
+
 
 ;; (blee:dblock:params:desc 'latex-mode "Some String")
 

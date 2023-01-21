@@ -77,7 +77,7 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
-          (<inputFile (or (plist-get <params :input-file) ""))
+          (<inputFile (or (plist-get <params :inputFile) ""))
           (<inputedAs (or (plist-get <params :inputedAs) "INPUTED"))
           )
      (bxPanel:params$effective)
@@ -86,21 +86,20 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
      (defun outCommentPreContent ())
      (defun bodyContentPlus ())
      (defun bodyContent ()
-           (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "INPUTED"))
-                  ($eolStr (b:dblock:comeega|eolControls))
-                  )
-             (if (file-exists-p <inputFile)
-                 (insert (s-lex-format
-                          "${$frontStr}   ~Input File~  file:${<inputFile}"))
-               (insert (s-lex-format
-                        "${$frontStr} _MISSING_ ~Input File~  file:${<inputFile}")))
-             (insert (s-lex-format " ${$eolStr}\n"))))
-
+       (let* (
+              ($frontStr (b:dblock:comeega|frontElement "INPUTED"))
+              ($eolStr (b:dblock:comeega|eolControls))
+              )
+         (if (file-exists-p <inputFile)
+             (insert (s-lex-format
+                      "${$frontStr}   ~Input File~  file:${<inputFile}"))
+           (insert (s-lex-format
+                    "${$frontStr} _MISSING_ ~Input File~  file:${<inputFile}")))
+         (insert (s-lex-format " ${$eolStr}\n"))))
      (defun outCommentPostContent ()
        (if (file-exists-p <inputFile)
-               (insert (s-lex-format
-                        "\n\\input{${<inputFile}}"))))
+           (insert (s-lex-format
+                    "\n\\input{${<inputFile}}"))))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -164,72 +163,6 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
                         "\n%%%% Missing ${<includeFile}"))))
 
            )
-
-     (progn  ;; Actual Invocations
-       (outCommentPreContent)
-       (bx:invoke:withStdArgs$bx:dblock:governor:process)
-       (outCommentPostContent)
-       )))
-
-
-
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/includeOnly" :advice ("bx:dblock:control|wrapper")
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/includeOnly>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:latex:preamble/includeOnly :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:latex:preamble/includeOnly (<params)
-;;;#+END:
-   " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
-works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
-#+end_org "
-   (let* (
-          (<governor (letGet$governor)) (<extGov (letGet$extGov))
-          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-          (<style (letGet$style "openBlank" "closeBlank"))
-          (<comment (or (plist-get <params :comment) ""))
-          ($includeOnlyList)
-          )
-     (bxPanel:params$effective)
-
-     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
-     ;; (setq $includeOnlyList '())
-     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
-
-
-     (defun helpLine () "default controls" )
-     (defun outCommentPreContent ())
-     (defun bodyContentPlus ())
-     (defun bodyContent ()
-           (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "IncOnly"))
-                  ($eolStr (b:dblock:comeega|eolControls))
-                  )
-             (if $includeOnlyList
-                 (insert (s-lex-format
-                          "${$frontStr} _IncludeOnly=${$includeOnlyList}_ ~Setting whenIncludeOnly and Limited Processing~"))
-               (insert (s-lex-format
-                        "${$frontStr} _NO IncludeOnly_ ~Setting whenNotIncludeOnly and Processing Everything~")))
-             (insert (s-lex-format " ${$eolStr}\n"))))
-
-     (defun outCommentPostContent ()
-       (if $includeOnlyList
-           (progn
-             (insert (s-lex-format
-                      "\n\\includeonly{\n    "))
-             (loop-for-each $each $includeOnlyList
-               (insert (s-lex-format
-                      "${$each}, ")))
-             (insert (s-lex-format
-                      "\n}
-\\includecomment{whenIncludeOnly}
-\\excludecomment{whenNotIncludeOnly}")))
-         (progn
-           (insert (s-lex-format
-                    "\n
-\\excludecomment{whenIncludeOnly}
-\\includecomment{whenNotIncludeOnly}")))))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -659,6 +592,174 @@ Expects certain file-local variables to have been set
        )))
 
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/includeOnly" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/includeOnly>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/includeOnly :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/includeOnly (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          ($includeOnlyList)
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "IncOnly"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (if $includeOnlyList
+                 (insert (s-lex-format
+                          "${$frontStr} _IncludeOnly=${$includeOnlyList}_ ~Setting whenIncludeOnly and Limited Processing~"))
+               (insert (s-lex-format
+                        "${$frontStr} _NO IncludeOnly_ ~Setting whenNotIncludeOnly and Processing Everything~")))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (if $includeOnlyList
+           (progn
+             (insert (s-lex-format
+                      "\n\\includeonly{\n    "))
+             (loop-for-each $each $includeOnlyList
+               (insert (s-lex-format
+                      "${$each}, ")))
+             (insert (s-lex-format
+                      "\n}
+\\includecomment{whenIncludeOnly}
+\\excludecomment{whenNotIncludeOnly}")))
+         (progn
+           (insert (s-lex-format
+                    "\n
+\\excludecomment{whenIncludeOnly}
+\\includecomment{whenNotIncludeOnly}")))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenTypesPlus" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/whenTypesPlus>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/whenTypesPlus :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/whenTypesPlus (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<docWhenType (or (plist-get <params :docWhenType) "isComplete"))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "whenCond"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} docWhenType=${<docWhenType}"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (cond
+        ((string-equal <docWhenType "isComplete")
+         (insert (s-lex-format
+                  "\n
+\\includecomment{whenDocIsComplete}
+\\excludecomment{whenMailing}
+\\excludecomment{whenDocIsPartial}
+
+\\excludecomment{when-future}
+\\excludecomment{when-next}
+
+\\excludecomment{ignore}")))
+        (t
+         )))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/customWhenCondsMarker" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/customWhenCondsMarker>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/customWhenCondsMarker :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/customWhenCondsMarker (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "whenCond"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} ~Marker~  Custom whenConds ${<comment}"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ())
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/endMarker" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/endMarker>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
@@ -697,6 +798,289 @@ Expects certain file-local variables to have been set
        (outCommentPostContent)
        )))
 
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgAppendix" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/pkgAppendix>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/pkgAppendix :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/pkgAppendix (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "pkgAppndx"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} usepackage(appendix) -- ${<comment} ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (insert (s-lex-format "\n\\usepackage[toc,page]{appendix}")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgIndex" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/pkgIndex>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/pkgIndex :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/pkgIndex (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "pkgIndex"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} usepackage(imakeidx)+makeindex -- ${<comment} ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (insert (s-lex-format "
+\\usepackage{imakeidx}
+\\makeindex")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgGlossaries" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/pkgGlossaries>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/pkgGlossaries :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/pkgGlossaries (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "pkgGlssris"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} usepackage(glossaries)+glossaries -- ${<comment} ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (insert (s-lex-format "
+\\usepackage[toc]{glossaries}    % Should come after hyperref
+\\makeglossaries")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgBystarBidi" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/pkgBystarBidi>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/pkgBystarBidi :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/pkgBystarBidi (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "pkgBxBidi"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} Bystar Bidi Pkgs With HeVeA Support -- ${<comment} ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (insert (s-lex-format "
+\\newenvironment{bidiSepBeforeHevea}{}{}
+\\usepackage{bidi}
+\\newenvironment{bidiSepAfterHevea}{}{}
+
+\\usepackage{bystarpersian}   % Defines: \\newfontfamily{\\persian}, \\newcommand{\\farsi}, \\newenvironment{faPar},{fa}
+\\usepackage{bystararticle}   % Defines: \\excludecomment{presentationMode} \\newcommand{\\pnote}
+")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgTOCs" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/pkgTOCs>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/pkgTOCs :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/pkgTOCs (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "pkgTOCs"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} usepackage(shorttoc,minitoc)+chaptermark -- ${<comment} ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (insert (s-lex-format "
+\\usepackage{shorttoc}
+%%% Following chaptermark renew is needed for Preface chapter toc
+\\renewcommand{\\chaptermark}[1]{%
+  \\ifnum\\value{chapter}>0
+    \\markboth{Chapter \\thechapter{}: #1}{}%
+  \\else
+    \\markboth{#1}{}%
+  \\fi}
+
+\\begin{whenIncludeOnly}
+  \\usepackage{minitoc}
+\\end{whenIncludeOnly}")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgNotes" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/pkgNotes>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/pkgNotes :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/pkgNotes (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "pkgNotes"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} usepackage(enotez)+footnote,endnote -- ${<comment} ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (insert (s-lex-format "
+\\usepackage{enotez}
+\\DeclareInstance{enotez-list}{section}{paragraph}{heading=\\section{#1}}
+\\setenotez{list-style=section,split=section}
+\\let\\footnote=\\endnote%")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/frontmatter" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -978,7 +1362,7 @@ Expects certain file-local variables to have been set
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "Glssaris"))
+                  ($frontStr (b:dblock:comeega|frontElement "Glossaris"))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
@@ -1036,6 +1420,187 @@ Expects certain file-local variables to have been set
   \\addcontentsline{toc}{chapter}{Index}
   \\printindex
 \\end{whenNotIncludeOnly}"))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:bib/packagesControls" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:bib/packagesControls>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:bib/packagesControls :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:bib/packagesControls (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) ""))
+          (<bibProvider (or (plist-get <params :bibProvider) ""))
+          (<bibStyle (or (plist-get <params :bibStyle) "plain"))
+          ;;;
+          ($atLeastOnceWhen nil)
+          )
+     (bxPanel:params$effective)
+
+     (when (s-blank? <bibProvider)
+       ;; Check for boundp and assign default
+       (setq <bibProvider ~lcnt:bibProvider))
+     (unless (s-blank? <bibProvider)
+       (setq-local ~lcnt:bibProvider <bibProvider))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "Bib"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} bibPackage=${<bibProvider} and Controls -- ${<comment} ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (cond
+        ((s-equals? <bibProvider "biblatex")
+         (when (s-equals? <bibStyle "plain")
+           (setq <bibStyle "numeric"))
+         (insert (s-lex-format "
+\\usepackage[backend=biber,style=${<bibStyle}]{biblatex}")))
+        ((s-equals? <bibProvider "bibtex")
+         (insert (s-lex-format "
+\\bibliographystyle{${<bibStyle}}")))
+        (t
+         (insert (s-lex-format "
+%%%%% Problem -- Unknwon bibProvider=${<bibProvider}")))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:bib/addResourcesMarker" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:bib/addResourcesMarker>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:bib/addResourcesMarker :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:bib/addResourcesMarker (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<examples (or (plist-get <params :examples) nil))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "Bib"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} ~Marker~ Add Resources examples=${<examples} -- ${<comment} ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (when <examples
+         (insert (s-lex-format "
+\\addbibresource{/lcnt/BIB/plpcUrl.bib}
+\\addbibresource{/lcnt/BIB/rfcs.bib}
+\\addbibresource{/lcnt/BIB/bxsup.bib}"))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:bib/printBibsMarker" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:bib/printBibsMarker>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:bib/printBibsMarker :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:bib/printBibsMarker (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<examples (or (plist-get <params :examples) nil))
+          (<bibProvider (or (plist-get <params :bibProvider) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "Bib"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} ~Marker~ Print Bibs examples=${<examples} -- ${<comment} ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (when <examples
+         (insert (s-lex-format "\n
+\\begin{whenNotIncludeOnly}"))
+         (when (s-equals? ~lcnt:texClass "article")
+           (insert (s-lex-format "
+  \\phantomsection
+  \\addcontentsline{toc}{section}{Bibliography}")))
+
+         (when (s-equals?  ~lcnt:texClass "book")
+           (insert (s-lex-format "
+  \\phantomsection
+  \\addcontentsline{toc}{chapter}{Bibliography}")))
+
+         (cond
+          ((s-equals? <bibProvider "biblatex")
+           (insert (s-lex-format "
+  \\printbibliography[notkeyword={online},notkeyword={paper}]
+  \\printbibliography[keyword={online},title={Online Readings}]
+  \\printbibliography[keyword={paper},title={Paper Readings}]")))
+
+          ((s-equals? <bibProvider "bibtex")
+           (insert (s-lex-format "
+  \\bibliography{/lcnt/BIB/plpcUrl,/lcnt/BIB/rfcs,/lcnt/BIB/bxsup}")))
+          (t
+           (insert (s-lex-format "
+%%%%% Problem -- Unknwon bibProvider=${<bibProvider}"))))
+
+         (insert (s-lex-format "
+\\end{whenNotIncludeOnly}\n"))
+         ))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
