@@ -80,6 +80,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<style (letGet$style "openBlank" "closeBlank"))
          (<defName (or (plist-get <params :defName) nil))
          (<advice (or (plist-get <params :advice) ()))
+         (<comment (or (plist-get <params :comment) ""))
          )
     (bxPanel:params$effective)
 
@@ -88,7 +89,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
     (defun bodyContentPlus ())
     (defun bodyContent ()
-      (insert (b:dblock:body:elisp|prep "dblockDfn" <defName <advice)))
+      (insert (b:dblock:body:elisp|prep "dblockDfn" <defName <advice <comment)))
 
     (defun outCommentPostContent ()
       (b:func:advice|insert <defName <advice)

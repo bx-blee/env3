@@ -56,6 +56,428 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
 " orgCmntEnd)
 ;;;#+END:
 
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "LaTeX Master File Elements" :extraInfo "b:lcnt:matex:felem:"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _LaTeX Master File Elements_: |]]  b:lcnt:matex:felem:  [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+;;;#+END:
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:matex:felem/lcntProc" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:matex:felem/lcntProc>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:matex:felem/lcntProc :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:matex:felem/lcntProc (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "LcntProc"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  ($texMastersStr (s-join " " b:lcnt:tex:masters:~))
+                  )
+             (insert (s-lex-format
+                        "${$frontStr} Process this lcnt.tex file through its masters\n"))
+
+             (loop-for-each $eachMaster b:lcnt:tex:masters:~
+               (insert (s-lex-format
+                      "*     Build+Preview::  \
+[[elisp:(lsip-local-run-command-here \"lcntProc.cs --texIncludePath=${b:lcnt:tex:includePath:~} --includeOnly=${$thisFile} -i includeOnlyCurBuild  ${$eachMaster}\")]\
+[lcntProc.sh with: ${b:lcnt:tex:includePath:~} ${$thisFile} ${$eachMaster}]]\n"))
+               (insert (s-lex-format
+                      "*     Master File:: [[file:${$eachMaster}]]\n"))
+               )
+
+             (insert (s-lex-format
+                      "*     Build+Preview::  \
+[[elisp:(lsip-local-run-command-here \"lcntProc.cs --texIncludePath=${b:lcnt:tex:includePath:~} --includeOnly=${$thisFile} -i includeOnlyCurBuild  ${$texMastersStr}\")]\
+[lcntProc.sh with: ${b:lcnt:tex:includePath:~} ${$thisFile} ${$texMastersStr}]]\n"))
+
+             (insert (s-lex-format "* CloseOf       LcntProc ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ())
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:matex:felem/endOfFile" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:matex:felem/endOfFile>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:matex:felem/endOfFile :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:matex:felem/endOfFile (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<texMaster (or (plist-get <params :texMaster) "articleEnFa.ttytex"))
+          (<lcntTexMasters (or (plist-get <params :lcntTexMasters) '("../usEditionEnFa/articleEnFa.ttytex" "../intEditionEnFa/articleEnFa.ttytex")))
+          (<lcntTexIncludePath (or (plist-get <params :lcntTexIncludePath) "./common"))
+          ($lcntTexMasters:str (s-trim (pp-to-string <lcntTexMasters)))
+          ($lcntTexIncludePath:str (pp-to-string <lcntTexIncludePath))
+          ($texMaster:str (pp-to-string <texMaster))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "~EndOfFile~ "))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  )
+             (insert (s-lex-format
+   "${$frontStr} *emacs and org variables and control parameters* ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (let* (($cmntStr (b:major-mode:comment|lineStr)))
+         (insert "\n")
+         (insert (s-lex-format "\n${$cmntStr} +CATEGORY: lcnt.latex.inputed"))
+         (insert (s-lex-format "\n${$cmntStr} +STARTUP: content"))
+         (insert "\n")
+         (insert (s-lex-format "\n${$cmntStr} local variables:"))
+         (insert (s-lex-format "\n${$cmntStr} major-mode: latex-mode"))
+         (insert (s-lex-format "\n${$cmntStr} fill-column: 65"))
+         (insert (s-lex-format "\n${$cmntStr} TeX-master: ${$texMaster:str}"))
+         (insert (s-lex-format "\n${$cmntStr} eval: (setq b:lcnt:tex:masters:~ '${$lcntTexMasters:str})"))
+         (insert (s-lex-format "\n${$cmntStr} eval: (setq b:lcnt:tex:includePath:~ ${$lcntTexIncludePath:str})"))
+         (insert (s-lex-format "\n${$cmntStr} end:"))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "LaTeX Inputed File Elements" :extraInfo "b:lcnt:"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _LaTeX Inputed File Elements_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+;;;#+END:
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/lcntProc" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/lcntProc>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/lcntProc :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/lcntProc (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "LcntProc"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  ($texMastersStr (s-join " " b:lcnt:tex:masters:~))
+                  )
+             (insert (s-lex-format
+                        "${$frontStr} Process this lcnt.tex file through its masters\n"))
+
+             (loop-for-each $eachMaster b:lcnt:tex:masters:~
+               (insert (s-lex-format
+                      "*     Build+Preview::  \
+[[elisp:(lsip-local-run-command-here \"lcntProc.cs --texIncludePath=${b:lcnt:tex:includePath:~} --includeOnly=${$thisFile} -i includeOnlyCurBuild  ${$eachMaster}\")]\
+[lcntProc.sh with: ${b:lcnt:tex:includePath:~} ${$thisFile} ${$eachMaster}]]\n"))
+               (insert (s-lex-format
+                      "*     Master File:: [[file:${$eachMaster}]]\n"))
+               )
+
+             (insert (s-lex-format
+                      "*     Build+Preview::  \
+[[elisp:(lsip-local-run-command-here \"lcntProc.cs --texIncludePath=${b:lcnt:tex:includePath:~} --includeOnly=${$thisFile} -i includeOnlyCurBuild  ${$texMastersStr}\")]\
+[lcntProc.sh with: ${b:lcnt:tex:includePath:~} ${$thisFile} ${$texMastersStr}]]\n"))
+
+             (insert (s-lex-format "* CloseOf       LcntProc ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ())
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/lcntProc" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/lcntProc>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/lcntProc :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/lcntProc (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "LcntProc"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  ($texMastersStr (s-join " " b:lcnt:tex:masters:~))
+                  )
+             (insert (s-lex-format
+                        "${$frontStr} Process this lcnt.tex file through its masters\n"))
+
+             (loop-for-each $eachMaster b:lcnt:tex:masters:~
+               (insert (s-lex-format
+                      "*     Build+Preview::  \
+[[elisp:(lsip-local-run-command-here \"lcntProc.cs --texIncludePath=${b:lcnt:tex:includePath:~} --includeOnly=${$thisFile} -i includeOnlyCurBuild  ${$eachMaster}\")]\
+[lcntProc.sh with: ${b:lcnt:tex:includePath:~} ${$thisFile} ${$eachMaster}]]\n"))
+               (insert (s-lex-format
+                      "*     Master File:: [[file:${$eachMaster}]]\n"))
+               )
+
+             (insert (s-lex-format
+                      "*     Build+Preview::  \
+[[elisp:(lsip-local-run-command-here \"lcntProc.cs --texIncludePath=${b:lcnt:tex:includePath:~} --includeOnly=${$thisFile} -i includeOnlyCurBuild  ${$texMastersStr}\")]\
+[lcntProc.sh with: ${b:lcnt:tex:includePath:~} ${$thisFile} ${$texMastersStr}]]\n"))
+
+             (insert (s-lex-format "* CloseOf       LcntProc ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ())
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:felem/docOverview" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:felem/docOverview>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:felem/docOverview :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:felem/docOverview (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "Overview"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  )
+             (insert (s-lex-format
+   "${$frontStr} Overview:  [[elisp:(reftex-toc)][(RefTOC)]] Document Status, TODOs and Notes For ${$thisFile} -- ${<comment} ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ())
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/contentsList" :advice ("bx:dblock:control|wrapper") :comment "/OBSOLETED/"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/contentsList>> ~advice=(bx:dblock:control|wrapper)~ -- /OBSOLETED/  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/contentsList :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/contentsList (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "Contents"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  )
+             (insert (s-lex-format "OBSOLETED -- Use b:lcnt:latex:felem/docOverview instead\n"))
+             ;; (insert (s-lex-format
+   ;; "${$frontStr} ##### CONTENTS-LIST [[elisp:(reftex-toc)][(RefTOC)]] For ${$thisFile} #### ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ())
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/docStatus" :advice ("bx:dblock:control|wrapper") :comment "/OBSOLETED/"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/docStatus>> ~advice=(bx:dblock:control|wrapper)~ -- /OBSOLETED/  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/docStatus :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/docStatus (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "Status"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  )
+             (insert (s-lex-format "OBSOLETED -- Use b:lcnt:latex:felem/docOverview instead\n"))
+             ;; (insert (s-lex-format
+;;   "${$frontStr} *Document Status, TODOs and Notes* ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ())
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/endOfFile" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/endOfFile>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/endOfFile :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/endOfFile (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<texMaster (or (plist-get <params :texMaster) "articleEnFa.ttytex"))
+          (<lcntTexMasters (or (plist-get <params :lcntTexMasters) '("../usEditionEnFa/articleEnFa.ttytex" "../intEditionEnFa/articleEnFa.ttytex")))
+          (<lcntTexIncludePath (or (plist-get <params :lcntTexIncludePath) "./common"))
+          ($lcntTexMasters:str (s-trim (pp-to-string <lcntTexMasters)))
+          ($lcntTexIncludePath:str (pp-to-string <lcntTexIncludePath))
+          ($texMaster:str (pp-to-string <texMaster))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "~EndOfFile~ "))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  )
+             (insert (s-lex-format
+   "${$frontStr} *emacs and org variables and control parameters* ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (let* (($cmntStr (b:major-mode:comment|lineStr)))
+         (insert "\n")
+         (insert (s-lex-format "\n${$cmntStr} +CATEGORY: lcnt.latex.inputed"))
+         (insert (s-lex-format "\n${$cmntStr} +STARTUP: content"))
+         (insert "\n")
+         (insert (s-lex-format "\n${$cmntStr} local variables:"))
+         (insert (s-lex-format "\n${$cmntStr} major-mode: latex-mode"))
+         (insert (s-lex-format "\n${$cmntStr} fill-column: 65"))
+         (insert (s-lex-format "\n${$cmntStr} TeX-master: ${$texMaster:str}"))
+         (insert (s-lex-format "\n${$cmntStr} eval: (setq b:lcnt:tex:masters:~ '${$lcntTexMasters:str})"))
+         (insert (s-lex-format "\n${$cmntStr} eval: (setq b:lcnt:tex:includePath:~ ${$lcntTexIncludePath:str})"))
+         (insert (s-lex-format "\n${$cmntStr} end:"))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "LaTeX Input" :extraInfo "b:lcnt:"
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _dblock Frame Head Functions - Begin_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
@@ -171,203 +593,6 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
        )))
 
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/lcntProc" :advice ("bx:dblock:control|wrapper")
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/lcntProc>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:latex/lcntProc :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:latex/lcntProc (<params)
-;;;#+END:
-   " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
-Expects certain file-local variables to have been set
-#+end_org "
-   (let* (
-          (<governor (letGet$governor)) (<extGov (letGet$extGov))
-          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-          (<style (letGet$style "openBlank" "closeBlank"))
-          (<comment (or (plist-get <params :comment) ""))
-          )
-     (bxPanel:params$effective)
-
-     (defun helpLine () "default controls" )
-     (defun outCommentPreContent ())
-     (defun bodyContentPlus ())
-     (defun bodyContent ()
-           (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "LcntProc"))
-                  ($eolStr (b:dblock:comeega|eolControls))
-                  ($thisFile (f-filename (buffer-file-name)))
-                  ($texMastersStr (s-join " " b:lcnt:tex:masters:~))
-                  )
-             (insert (s-lex-format
-                        "${$frontStr} Process this lcnt.tex file through its masters\n"))
-
-             (loop-for-each $eachMaster b:lcnt:tex:masters:~
-               (insert (s-lex-format
-                      "*     Build+Preview::  \
-[[elisp:(lsip-local-run-command-here \"lcntProc.cs --texIncludePath=${b:lcnt:tex:includePath:~} --includeOnly=${$thisFile} -i includeOnlyCurBuild  ${$eachMaster}\")]\
-[lcntProc.sh with: ${b:lcnt:tex:includePath:~} ${$thisFile} ${$eachMaster}]]\n"))
-               (insert (s-lex-format
-                      "*     Master File:: [[file:${$eachMaster}]]\n"))
-               )
-
-             (insert (s-lex-format
-                      "*     Build+Preview::  \
-[[elisp:(lsip-local-run-command-here \"lcntProc.cs --texIncludePath=${b:lcnt:tex:includePath:~} --includeOnly=${$thisFile} -i includeOnlyCurBuild  ${$texMastersStr}\")]\
-[lcntProc.sh with: ${b:lcnt:tex:includePath:~} ${$thisFile} ${$texMastersStr}]]\n"))
-
-             (insert (s-lex-format "* CloseOf       LcntProc ${$eolStr}\n"))))
-
-     (defun outCommentPostContent ())
-
-     (progn  ;; Actual Invocations
-       (outCommentPreContent)
-       (bx:invoke:withStdArgs$bx:dblock:governor:process)
-       (outCommentPostContent)
-       )))
-
-
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/contentsList" :advice ("bx:dblock:control|wrapper")
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/contentsList>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:latex/contentsList :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:latex/contentsList (<params)
-;;;#+END:
-   " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
-Expects certain file-local variables to have been set
-#+end_org "
-   (let* (
-          (<governor (letGet$governor)) (<extGov (letGet$extGov))
-          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-          (<style (letGet$style "openBlank" "closeBlank"))
-          (<comment (or (plist-get <params :comment) ""))
-          )
-     (bxPanel:params$effective)
-
-     (defun helpLine () "default controls" )
-     (defun outCommentPreContent ())
-     (defun bodyContentPlus ())
-     (defun bodyContent ()
-           (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "Contents"))
-                  ($eolStr (b:dblock:comeega|eolControls))
-                  ($thisFile (f-filename (buffer-file-name)))
-                  )
-             (insert (s-lex-format
-   "${$frontStr} ##### CONTENTS-LIST [[elisp:(reftex-toc)][(RefTOC)]] For ${$thisFile} #### ${$eolStr}\n"))
-             ))
-
-     (defun outCommentPostContent ())
-
-     (progn  ;; Actual Invocations
-       (outCommentPreContent)
-       (bx:invoke:withStdArgs$bx:dblock:governor:process)
-       (outCommentPostContent)
-       )))
-
-
-
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/docStatus" :advice ("bx:dblock:control|wrapper")
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/docStatus>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:latex/docStatus :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:latex/docStatus (<params)
-;;;#+END:
-   " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
-Expects certain file-local variables to have been set
-#+end_org "
-   (let* (
-          (<governor (letGet$governor)) (<extGov (letGet$extGov))
-          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-          (<style (letGet$style "openBlank" "closeBlank"))
-          (<comment (or (plist-get <params :comment) ""))
-          )
-     (bxPanel:params$effective)
-
-     (defun helpLine () "default controls" )
-     (defun outCommentPreContent ())
-     (defun bodyContentPlus ())
-     (defun bodyContent ()
-           (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "Status"))
-                  ($eolStr (b:dblock:comeega|eolControls))
-                  ($thisFile (f-filename (buffer-file-name)))
-                  )
-             (insert (s-lex-format
-   "${$frontStr} *Document Status, TODOs and Notes* ${$eolStr}\n"))
-             ))
-
-     (defun outCommentPostContent ())
-
-     (progn  ;; Actual Invocations
-       (outCommentPreContent)
-       (bx:invoke:withStdArgs$bx:dblock:governor:process)
-       (outCommentPostContent)
-       )))
-
-
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/endOfFile" :advice ("bx:dblock:control|wrapper")
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/endOfFile>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:latex/endOfFile :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:latex/endOfFile (<params)
-;;;#+END:
-   " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
-Expects certain file-local variables to have been set
-#+end_org "
-   (let* (
-          (<governor (letGet$governor)) (<extGov (letGet$extGov))
-          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-          (<style (letGet$style "openBlank" "closeBlank"))
-          (<comment (or (plist-get <params :comment) ""))
-          (<texMaster (or (plist-get <params :texMaster) "articleEnFa.ttytex"))
-          (<lcntTexMasters (or (plist-get <params :lcntTexMasters) '("../usEditionEnFa/articleEnFa.ttytex" "../intEditionEnFa/articleEnFa.ttytex")))
-          (<lcntTexIncludePath (or (plist-get <params :lcntTexIncludePath) "./common"))
-          ($lcntTexMasters:str (s-trim (pp-to-string <lcntTexMasters)))
-          ($lcntTexIncludePath:str (pp-to-string <lcntTexIncludePath))
-          ($texMaster:str (pp-to-string <texMaster))
-          )
-     (bxPanel:params$effective)
-
-     (defun helpLine () "default controls" )
-     (defun outCommentPreContent ())
-     (defun bodyContentPlus ())
-     (defun bodyContent ()
-           (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "~EndOfFile~ "))
-                  ($eolStr (b:dblock:comeega|eolControls))
-                  ($thisFile (f-filename (buffer-file-name)))
-                  )
-             (insert (s-lex-format
-   "${$frontStr} *emacs and org variables and control parameters* ${$eolStr}\n"))
-             ))
-
-     (defun outCommentPostContent ()
-       (let* (($cmntStr (b:major-mode:comment|lineStr)))
-         (insert "\n")
-         (insert (s-lex-format "\n${$cmntStr} +CATEGORY: lcnt.latex.inputed"))
-         (insert (s-lex-format "\n${$cmntStr} +STARTUP: content"))
-         (insert "\n")
-         (insert (s-lex-format "\n${$cmntStr} local variables:"))
-         (insert (s-lex-format "\n${$cmntStr} major-mode: latex-mode"))
-         (insert (s-lex-format "\n${$cmntStr} fill-column: 65"))
-         (insert (s-lex-format "\n${$cmntStr} TeX-master: ${$texMaster:str}"))
-         (insert (s-lex-format "\n${$cmntStr} eval: (setq b:lcnt:tex:masters:~ '${$lcntTexMasters:str})"))
-         (insert (s-lex-format "\n${$cmntStr} eval: (setq b:lcnt:tex:includePath:~ ${$lcntTexIncludePath:str})"))
-         (insert (s-lex-format "\n${$cmntStr} end:"))))
-
-     (progn  ;; Actual Invocations
-       (outCommentPreContent)
-       (bx:invoke:withStdArgs$bx:dblock:governor:process)
-       (outCommentPostContent)
-       )))
 
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/appendicesBegin" :advice ("bx:dblock:control|wrapper")
@@ -1082,6 +1307,56 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (outCommentPostContent)
        )))
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgTikZ" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/pkgTikZ>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/pkgTikZ :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/pkgTikZ (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "pkgTikZ"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} usepackage(tikz,ifpdf)+shapes,calc -- ${<comment} ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (insert (s-lex-format "
+\\usepackage{ifpdf}
+\\usepackage{tikz}
+%\\usepackage[active,tightpage]{preview}
+\\usetikzlibrary{shapes,calc}
+\\ifpdf
+  %
+\\else
+  % Implement Outline text using pstricks if regular LaTeX->dvi->ps->pdf route
+  \\usepackage{pst-all}
+\\fi")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/frontmatter" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/frontmatter>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
@@ -1463,7 +1738,7 @@ Expects certain file-local variables to have been set
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "Bib"))
+                  ($frontStr (b:dblock:comeega|frontElement "pkgBib"))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
@@ -1516,7 +1791,7 @@ Expects certain file-local variables to have been set
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "Bib"))
+                  ($frontStr (b:dblock:comeega|frontElement "addBibFile"))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
