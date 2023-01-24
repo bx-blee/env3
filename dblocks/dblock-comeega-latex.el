@@ -605,6 +605,90 @@ Expects certain file-local variables to have been set
 
 
 
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "MaTeX Document Class" :extraInfo "b:lcnt:"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _MaTeX Document Class_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+;;;#+END:
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:matex/documentClass" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:matex/documentClass>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:matex/documentClass :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:matex/documentClass (<params)
+;;;#+END:
+   " #+begin_org
+   ** [[elisp:(org-cycle)][| DocStr |]]
+A4 -- coverwidth=210mm,coverheight=297mm
+8.5x11 == 215.9 by 279.4 mm
+6x9 == 152.4 x 228.6 mm
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<paperSize (or (plist-get <params :paperSize) nil))
+          (<spineWidth (or (plist-get <params :spineWidth) nil))
+          ($curBuild:paperSize nil)
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ())
+
+     (defun outCommentPostContent ()
+       (when (and (not <paperSize) (not <spineWidth))
+         (when (not <curBuild)
+           (insert "\n%%% ERROR:: Either paperSize or curBuild should be specified.")))
+
+       (when <curBuild
+        (when (bx:lcnt:curBuild:base-read)
+          (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+          ;;; NOTYET, verify that $curBuild:paperSize is valid
+          (setq <paperSize $curBuild:paperSize)
+          (unless <spineWidth
+            (setq <spineWidth (get 'bx:lcnt:curBuild:base 'spineWidth)))
+          (unless <spineWidth
+            (insert (s-lex-format "\n%%% ERROR:: curBuild spineWidth=${<spineWidth} not is not valid.")))))
+
+       (unless <paperSize
+          (insert (s-lex-format "\n%%% ERROR:: curBuild paperSize=${<paperSize} not is not valid.")))
+
+       ;; <paperSize should be available now.
+       (when <paperSize
+         (cond
+           ((s-equals? <paperSize "a4")
+            (insert (s-lex-format "\
+\\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=210mm,coverheight=297mm]{bookcover}   % ${<paperSize} Paper")))
+           ((s-equals? <paperSize "8.5x11")
+            (insert (s-lex-format "\
+\\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=8.5in,coverheight=11in]{bookcover}   % ${<paperSize} Paper")))
+           ((s-equals? <paperSize "6x9")
+            (insert (s-lex-format "\
+\\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=6in,coverheight=9in]{bookcover}   % ${<paperSize} Paper")))
+           ((s-equals? <paperSize "17.5x23.5")
+            (insert (s-lex-format "\
+\\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=175mm,coverheight=235mm]{bookcover}   % ${<paperSize} Paper")))
+           (t
+            (insert (s-lex-format "\n%%% ERROR:: Unknown paperSize=${<paperSize}"))))
+
+         (insert "
+\\usepackage{comment}
+\\excludecomment{whenOrg}")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       ;;(bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "MaTeX Segments (Begin/End)" :extraInfo "b:lcnt:"
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _MaTeX Segments (Begin/End)_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
@@ -955,6 +1039,90 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 \\excludecomment{ignore}")))
         (t
          )))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenGeometry" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/whenGeometry>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/whenGeometry :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/whenGeometry (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<paperSize (or (plist-get <params :paperSize) nil))
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq <paperSize (get 'bx:lcnt:curBuild:base 'paperSize)))
+
+       (unless <paperSize
+          (insert (s-lex-format "\n%%% ERROR:: curBuild paperSize=${<paperSize} not is not valid."))))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "whenGmtry"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} whenPaperGeometry ~paperSize=${<paperSize}~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (when <paperSize
+         (cond
+           ((s-equals? <paperSize "a4")
+            (insert (s-lex-format "
+\\includecomment{whenPaperA4}
+\\includecomment{whenPaperLarge}
+\\excludecomment{whenPaperSmall}
+\\excludecomment{whenPaperLetter}
+\\excludecomment{whenPaper6x9}
+\\excludecomment{whenPaper17x23}")))
+           ((s-equals? <paperSize "8.5x11")
+            (insert (s-lex-format "
+\\includecomment{whenPaperLetter}
+\\includecomment{whenPaperLarge}
+\\excludecomment{whenPaperSmall}
+\\excludecomment{whenPaperA4}
+\\excludecomment{whenPaper6x9}
+\\excludecomment{whenPaper17x23}")))
+           ((s-equals? <paperSize "6x9")
+            (insert (s-lex-format "
+\\includecomment{whenPaper6x9}
+\\includecomment{whenPaperSmall}
+\\excludecomment{whenPaperLarge}
+\\excludecomment{whenPaperA4}
+\\excludecomment{whenPaperLetter}
+\\excludecomment{whenPaper17x23}")))
+           ((s-equals? <paperSize "17.5x23.5")
+            (insert (s-lex-format "
+\\includecomment{whenPaper17x23}
+\\includecomment{whenPaperSmall}
+\\excludecomment{whenPaperLarge}
+\\excludecomment{whenPaperA4}
+\\excludecomment{whenPaperLetter}
+\\excludecomment{whenPaper6x9}")))
+           (t
+            (insert (s-lex-format "\n%%% ERROR:: Unknown paperSize=${<paperSize}"))))))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)

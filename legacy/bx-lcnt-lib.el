@@ -365,7 +365,13 @@ bx:lcnt:curBuild:base-show
 	   (shell-command-to-string 
 	    (format "echo -n $( head -1 %s/paperSize )" $curBuildBaseDir))
 	   )
-      
+
+      (put 'bx:lcnt:curBuild:base
+	   'spineWidth
+	   (shell-command-to-string
+	    (format "echo -n $( head -1 %s/spineWidth )" $curBuildBaseDir))
+	   )
+
       ;;(get 'bx:lcnt:curBuild:base 'buildName)
       (put 'bx:lcnt:curBuild:base 
 	   'buildName
