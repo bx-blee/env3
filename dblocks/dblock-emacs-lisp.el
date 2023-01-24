@@ -451,7 +451,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
    (format "  [[elisp:(org-cycle)][| ]]\n#+end_org \"\"\"\n")))
 
 
-(defun b:dblock:body:elisp|prep (<sectionType <funcName <advice)
+(defun b:dblock:body:elisp|prep (<sectionType <funcName <advice <comment)
   (let* (
 	 ($adviceStr "")
          ($openStr "")
@@ -479,7 +479,7 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
     (setq
      $middleStr
      (s-lex-format
-      "  <<${<funcName}>> ${$adviceStr}"))
+      "  <<${<funcName}>> ${$adviceStr} -- ${<comment}"))
 
     (setq $result (concat $openStr $middleStr $closeStr))))
 
