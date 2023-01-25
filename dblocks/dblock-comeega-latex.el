@@ -406,6 +406,48 @@ Expects certain file-local variables to have been set
        (outCommentPostContent)
        )))
 
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:felem/genericMarker" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:felem/genericMarker>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:felem/genericMarker :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:felem/genericMarker (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] A generic dblock marker with :frontMarker and :mainMarker
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<frontMarker (or (plist-get <params :frontMarker) ""))
+          (<mainMarker (or (plist-get <params :mainMarker) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement (s-lex-format "${<frontMarker}")))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr}  /Marker:/ ${<mainMarker} -- ${<comment} ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ())
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/contentsList" :advice ("bx:dblock:control|wrapper") :comment "/OBSOLETED/"
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/contentsList>> ~advice=(bx:dblock:control|wrapper)~ -- /OBSOLETED/  [[elisp:(org-cycle)][| ]]
@@ -620,16 +662,23 @@ Expects certain file-local variables to have been set
 (defun org-dblock-write:b:lcnt:matex/documentClass (<params)
 ;;;#+END:
    " #+begin_org
-   ** [[elisp:(org-cycle)][| DocStr |]]
-A4 -- coverwidth=210mm,coverheight=297mm
-8.5x11 == 215.9 by 279.4 mm
-6x9 == 152.4 x 228.6 mm
+   ** [[elisp:(org-cycle)][| DocStr |]] Comes at very top. Specifies class/lcnt-class, sides, texClass, langs.
+
+Each of these become buffer local variables that can be used by other dblocks in same buffer.
+inserts:
+documentclass[$effectiveTexOptions]{$effectiveTexClass}
+usepackage{comment}
+excludecomment{whenOrg}
 #+end_org "
    (let* (
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
           (<comment (or (plist-get <params :comment) ""))
+          (<bxClass (or (plist-get <params :bxClass) ""))
+          (<bxLangs (or (plist-get <params :bxLangs) ""))
+          (<texClass (or (plist-get <params :texClass) nil))
+          (<sides (or (plist-get <params :sides) "two"))
           (<curBuild (or (plist-get <params :curBuild) nil))
           (<paperSize (or (plist-get <params :paperSize) nil))
           (<spineWidth (or (plist-get <params :spineWidth) nil))
@@ -640,52 +689,91 @@ A4 -- coverwidth=210mm,coverheight=297mm
      (defun helpLine () "default controls" )
      (defun outCommentPreContent ())
      (defun bodyContentPlus ())
-     (defun bodyContent ())
+     (defun bodyContent ()
+       (let* (
+              ($frontStr (b:dblock:comeega|frontElement "_DocClass_ "))
+              ($eolStr (b:dblock:comeega|eolControls))
+              )
+         (insert (s-lex-format
+                  "${$frontStr} ~bxClass=${<bxClass}~ -- ${<comment} ${$eolStr}\n"))
+         ))
 
      (defun outCommentPostContent ()
-       (when (and (not <paperSize) (not <spineWidth))
-         (when (not <curBuild)
-           (insert "\n%%% ERROR:: Either paperSize or curBuild should be specified.")))
+       "Everything Really Happens In Here"
 
-       (when <curBuild
-        (when (bx:lcnt:curBuild:base-read)
-          (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
-          ;;; NOTYET, verify that $curBuild:paperSize is valid
-          (setq <paperSize $curBuild:paperSize)
-          (unless <spineWidth
-            (setq <spineWidth (get 'bx:lcnt:curBuild:base 'spineWidth)))
-          (unless <spineWidth
-            (insert (s-lex-format "\n%%% ERROR:: curBuild spineWidth=${<spineWidth} not is not valid.")))))
+       (setq-local ~lcnt:texClass <texClass)
+       (setq-local ~lcnt:class <bxClass)
 
-       (unless <paperSize
-          (insert (s-lex-format "\n%%% ERROR:: curBuild paperSize=${<paperSize} not is not valid.")))
+        (cond
+        ((s-equals? <bxClass "memo")
+         (insert (s-lex-format "\\documentclass{article}")))
 
-       ;; <paperSize should be available now.
-       (when <paperSize
+        ((s-equals? <bxClass "book")
+         (insert (s-lex-format "\\documentclass[twoside]{book}")))
+
+        ((or (s-equals? <bxClass "art")
+             (s-equals? <bxClass "art+pres"))
+         (insert (s-lex-format "\\documentclass{article}")))
+
+        ((or (s-equals? <bxClass "pres")
+             (s-equals? <bxClass "pres+art"))
+         ;; ENGLISH
+         (when (or (equal <bxLangs "en") (equal <bxLangs "en+fa"))
+           (insert "\\documentclass[ignorenonframetext]{beamer}"))
+         ;; FARSI
+         (when (equal bx:langs "fa+en")
+           (insert "\\documentclass[ignorenonframetext]{bidibeamer}")))
+
+        ((s-equals? <bxClass "bookcover")
+         (when (and (not <paperSize) (not <spineWidth))
+           (when (not <curBuild)
+             (insert "\n%%% ERROR:: Either paperSize or curBuild should be specified.")))
+
+         (when <curBuild
+           (when (bx:lcnt:curBuild:base-read)
+             (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+             ;; NOTYET, verify that $curBuild:paperSize is valid
+             (setq <paperSize $curBuild:paperSize)
+             (unless <spineWidth
+               (setq <spineWidth (get 'bx:lcnt:curBuild:base 'spineWidth)))
+             (unless <spineWidth
+               (insert (s-lex-format "\n%%% ERROR:: curBuild spineWidth=${<spineWidth} not is not valid.")))))
+
+         (unless <paperSize
+           (insert (s-lex-format "\n%%% ERROR:: curBuild paperSize=${<paperSize} not is not valid.")))
+
+         ;; <paperSize should be available now.
          (cond
-           ((s-equals? <paperSize "a4")
-            (insert (s-lex-format "\
+          ((s-equals? <paperSize "a4")
+           (insert (s-lex-format "\
 \\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=210mm,coverheight=297mm]{bookcover}   % ${<paperSize} Paper")))
-           ((s-equals? <paperSize "8.5x11")
+
+          ((s-equals? <paperSize "8.5x11")
             (insert (s-lex-format "\
 \\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=8.5in,coverheight=11in]{bookcover}   % ${<paperSize} Paper")))
-           ((s-equals? <paperSize "6x9")
+
+          ((s-equals? <paperSize "6x9")
             (insert (s-lex-format "\
 \\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=6in,coverheight=9in]{bookcover}   % ${<paperSize} Paper")))
-           ((s-equals? <paperSize "17.5x23.5")
+
+          ((s-equals? <paperSize "17.5x23.5")
             (insert (s-lex-format "\
 \\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=175mm,coverheight=235mm]{bookcover}   % ${<paperSize} Paper")))
-           (t
-            (insert (s-lex-format "\n%%% ERROR:: Unknown paperSize=${<paperSize}"))))
 
-         (insert "
+          (t
+            (insert (s-lex-format "\n%%% ERROR:: Unknown paperSize=${<paperSize}")))))
+
+        (t
+            (insert (s-lex-format "\n%%% ERROR:: Unknown bxClass=${<bxClass}"))))
+
+        (insert "
 \\usepackage{comment}
-\\excludecomment{whenOrg}")))
+\\excludecomment{whenOrg}\n"))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
-       ;;(bx:invoke:withStdArgs$bx:dblock:governor:process)
        (outCommentPostContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
        )))
 
 
