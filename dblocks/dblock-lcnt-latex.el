@@ -2966,8 +2966,8 @@ This is a Libre-Halaal poly-existential.
 
 
 (defun org-dblock-write:bx:dblock:lcnt:latex:mention-lcnt (params)
-  " Produces a full description citation if lcnt-nu. Typical usage:
-%%%#+BEGIN: bx:dblock:lcnt:latex:mention-lcnt :class \"art\" :lcnt-nu \"plpc-120038\"
+  "Obsoleted By b:lcnt:latex/mentionLcnt. Produces a full description citation if lcnt-nu. Typical usage:
+%%%#+BEGIN: bx:dblock:lcnt:latex:mention-lcnt :class \"art\" :lcnt-nu \"plpc-120033\"
 
 %%%#+END:
 "
@@ -2996,7 +2996,7 @@ This is a Libre-Halaal poly-existential.
 
       (insert (format "
 \\begin{whenOrg}
-***** DBLOCK -- mention-lcnt %s
+***** DBLOCK -- mention-lcnt %s -- Obsoleted By b:lcnt:latex/mentionLcnt
 \\end{whenOrg}
 
 \\begin{quote}

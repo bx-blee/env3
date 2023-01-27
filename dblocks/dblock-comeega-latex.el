@@ -407,47 +407,6 @@ Expects certain file-local variables to have been set
        )))
 
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:felem/genericMarker" :advice ("bx:dblock:control|wrapper")
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:felem/genericMarker>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:latex:felem/genericMarker :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:latex:felem/genericMarker (<params)
-;;;#+END:
-   " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]] A generic dblock marker with :frontMarker and :mainMarker
-#+end_org "
-   (let* (
-          (<governor (letGet$governor)) (<extGov (letGet$extGov))
-          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-          (<style (letGet$style "openBlank" "closeBlank"))
-          (<comment (or (plist-get <params :comment) ""))
-          (<frontMarker (or (plist-get <params :frontMarker) ""))
-          (<mainMarker (or (plist-get <params :mainMarker) ""))
-          )
-     (bxPanel:params$effective)
-
-     (defun helpLine () "default controls" )
-     (defun outCommentPreContent ())
-     (defun bodyContentPlus ())
-     (defun bodyContent ()
-           (let* (
-                  ($frontStr (b:dblock:comeega|frontElement (s-lex-format "${<frontMarker}")))
-                  ($eolStr (b:dblock:comeega|eolControls))
-                  )
-             (insert (s-lex-format
-                      "${$frontStr}  /Marker:/ ${<mainMarker} -- ${<comment} ${$eolStr}\n"))
-             ))
-
-     (defun outCommentPostContent ())
-
-     (progn  ;; Actual Invocations
-       (outCommentPreContent)
-       (bx:invoke:withStdArgs$bx:dblock:governor:process)
-       (outCommentPostContent)
-       )))
-
-
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/contentsList" :advice ("bx:dblock:control|wrapper") :comment "/OBSOLETED/"
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/contentsList>> ~advice=(bx:dblock:control|wrapper)~ -- /OBSOLETED/  [[elisp:(org-cycle)][| ]]
@@ -644,6 +603,89 @@ Expects certain file-local variables to have been set
        (bx:invoke:withStdArgs$bx:dblock:governor:process)
        (outCommentPostContent)
        )))
+
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/mentionLcnt" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/mentionLcnt>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/mentionLcnt :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/mentionLcnt (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]]  Produces a full description citation of lcnt-nu. Typical usage
+%%%#+BEGIN: b:lcnt:latex/mentionLcnt :lcntNu \"plpc-120033\" :cite? t
+
+%%%#+END:
+
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<lcntNu (or (plist-get <params :lcntNu) ""))
+          (<cite? (or (plist-get <params :cite?) nil))
+          ($lcntBase)
+          )
+     (bxPanel:params$effective)
+
+     (setq $lcntBase
+          (shell-command-to-string
+           (s-lex-format
+            "echo -n $( lcnLcntSelect.sh  ${<lcntNu} 2> /dev/null | head -1 )")))
+
+     (bx:lcnt:info:base-read-dir $lcntBase)
+
+     (let (
+          (lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+          (lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+          (lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+          (lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+          (lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+          (lcnt-version (get 'bx:lcnt:info:base 'version))
+          (lcnt-url (get 'bx:lcnt:info:base 'url))
+          )
+
+      (defun helpLine () "default controls" )
+      (defun outCommentPreContent ())
+      (defun bodyContentPlus ())
+      (defun bodyContent ())
+
+      (defun outCommentPostContent ()
+       (insert (s-lex-format "
+\\begin{whenOrg}
+***** DBLOCK -- mention-lcnt ${<lcntNu}
+\\end{whenOrg}
+
+\\begin{quote}
+  \\textbf{${lcnt-mainTitle}}\\newline"))
+
+       (when (not (string-equal (format "%s" lcnt-subTitle) ""))
+         (insert (s-lex-format "
+  \\textbf{${lcnt-subTitle}}\\newline")))
+
+
+       (when (not (string-equal (format "%s" lcnt-subSubTitle) ""))
+         (insert (s-lex-format "
+  \\textbf{${lcnt-subSubTitle}}\\newline")))
+
+       (insert (s-lex-format "
+  \\href{${lcnt-url}}{${lcnt-url}}\n"))
+
+       (when <cite?
+         (insert (s-lex-format "  --- \\cite{${<lcntNu}}\\newline\n")))
+
+       (insert "\\end{quote}"))
+
+
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       ;;(bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       ))))
+
 
 
 
