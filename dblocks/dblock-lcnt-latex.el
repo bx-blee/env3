@@ -5141,7 +5141,7 @@ Each of these dblock-params match a buffer-local variables.
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (lcnt:latex:insertSegment orgDepth segType segTitle labelInfo) [[elisp:(org-cycle)][| ]]
   ")
 
-(defun lcnt:latex:insertSegment (orgDepth segType segTitle @shortTitle labelInfo)
+(defun lcnt:latex:insertSegment (orgDepth segType segTitle @shortTitle labelInfo noMiniToc)
   "segType is one of chapter, section, subsection, etc.
 When labelInfo is UnSpecified, no label is inserted.
 When labelInfo is 'auto', the label is derived from segTitle --
@@ -5234,10 +5234,11 @@ otherwise labelInfo is inserted as label"
                (concat (getTagForLabelFromSegType segType) labelInfo)
                )))
     (when (string-equal segType "chapter")
-      (insert (s-lex-format "
+      (when (not noMiniToc)
+        (insert (s-lex-format "
 \\begin{whenIncludeOnly}
   \\minitoc%
-\\end{whenIncludeOnly}")))
+\\end{whenIncludeOnly}"))))
     ))
 
 
@@ -5385,12 +5386,13 @@ otherwise labelInfo is inserted as label"
                    (segTitle (or (plist-get params :seg-title) "UnSpecified"))
                    (shortTitle (or (plist-get params :short-title) nil))                   
                    (labelInfo (or (plist-get params :label) "UnSpecified"))
+                   (noMiniToc (or (plist-get params :noMiniToc) nil))
                    )
                (when (blee:dblock:mode:disabledP dblockMode)
                  (blee:dblock:mode:disabledIndicate))
                  
                (when (not (blee:dblock:mode:disabledP dblockMode))
-                 (lcnt:latex:insertSegment ,orgDepth ,segType segTitle shortTitle labelInfo)
+                 (lcnt:latex:insertSegment ,orgDepth ,segType segTitle shortTitle labelInfo noMiniToc)
                  )
                ))
            )

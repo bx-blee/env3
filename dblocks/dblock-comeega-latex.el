@@ -274,6 +274,7 @@ Expects certain file-local variables to have been set
                   ($thisFile (f-filename (buffer-file-name)))
                   ($texMastersStr (s-join " " b:lcnt:tex:masters:~))
                   )
+             (setq $frontStr (b:dblock:comeega|frontElement "LcntProc _{_"))
              (insert (s-lex-format
                         "${$frontStr} Process this lcnt.tex file through its masters\n"))
 
@@ -291,7 +292,8 @@ Expects certain file-local variables to have been set
 [[elisp:(lsip-local-run-command-here \"lcntProc.cs --texIncludePath=${b:lcnt:tex:includePath:~} --includeOnly=${$thisFile} -i includeOnlyCurBuild  ${$texMastersStr}\")]\
 [lcntProc.sh with: ${b:lcnt:tex:includePath:~} ${$thisFile} ${$texMastersStr}]]\n"))
 
-             (insert (s-lex-format "* CloseOf       LcntProc ${$eolStr}\n"))))
+             (setq $frontStr (b:dblock:comeega|frontElement "LcntProc _}_"))
+             (insert (s-lex-format "${$frontStr} ${$eolStr}\n"))))
 
      (defun outCommentPostContent ())
 
@@ -655,7 +657,7 @@ Expects certain file-local variables to have been set
       (defun outCommentPostContent ()
        (insert (s-lex-format "
 \\begin{whenOrg}
-***** DBLOCK -- mention-lcnt ${<lcntNu}
+***** DBLOCK --- mention-lcnt ${<lcntNu}
 \\end{whenOrg}
 
 \\begin{quote}
@@ -674,7 +676,7 @@ Expects certain file-local variables to have been set
   \\href{${lcnt-url}}{${lcnt-url}}\n"))
 
        (when <cite?
-         (insert (s-lex-format "  --- \\cite{${<lcntNu}}\\newline\n")))
+         (insert (s-lex-format "  ---~\\cite{${<lcntNu}}\\newline\n")))
 
        (insert "\\end{quote}"))
 
@@ -1616,10 +1618,12 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 
      (defun outCommentPostContent ()
        (insert (s-lex-format "
+%BEGIN LATEX
 \\usepackage{enotez}
 \\DeclareInstance{enotez-list}{section}{paragraph}{heading=\\section{#1}}
 \\setenotez{list-style=section,split=section}
-\\let\\footnote=\\endnote%")))
+\\let\\footnote=\\endnote%
+%END LATEX")))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
