@@ -1257,7 +1257,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 \\excludecomment{whenPaperLetter}
 \\excludecomment{whenPaperVirtual}
 \\excludecomment{whenPaper6x9}")))
-           ((s-equals? <paperSize "virtual")
+           ((or (s-equals? <paperSize "virtual") (s-equals? <paperSize "html"))
             (insert (s-lex-format "
 \\includecomment{whenPaperVirtual}
 \\excludecomment{whenPaper17x23}

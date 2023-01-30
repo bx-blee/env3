@@ -2410,13 +2410,13 @@ If there is :lock and ~blee:dblockController is blank, then reinsert content.
 If there is :lock and ~blee:dblockController is not blank, then subject it to ~blee:dblockEnabler.
 "
 
-  (let (
+  (let* (
         (<content)
         (<name)
         (<lock)
         ($paramsAsParams)
+        ($disabledP nil)
         )
-
 
     ;;
     ;; <params is passed as a list of a list.
@@ -2427,6 +2427,12 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
     
     (setq <content (plist-get $paramsAsParams :content))
     (setq <name (plist-get $paramsAsParams :name))
+
+    ;;; unspecified lock is nil
+    (when (plist-member $paramsAsParams :disabled?)
+      (setq $disabledP (plist-get $paramsAsParams :disabled?)))
+    (unless (plist-member $paramsAsParams :disabled?)
+      (setq $disabledP nil))
 
     ;;; unspecified lock is nil
     (when (plist-member $paramsAsParams :lock)
@@ -2444,7 +2450,7 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
       (message "OOPS -- ~blee:dblockEnabler nil")
       )
     
-    (defun disabledReport ()
+    (defun lockedReport ()
       (setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
       (when (string= ~blee:dblockController "interactive")
         (display-warning "dblock" (format
@@ -2457,27 +2463,29 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
       (bx:dblock|reInsertContent <content)
       )
 
-    (when (string= ~blee:dblockController "blank")
-      (message "blee-org-dblock-wrapper -- Blanking dblock")
-      (when <lock
-        (bx:dblock|reInsertContent <content))
-      (unless <lock
-        (org-dblock-bx-blank-this))
-      )
+    (defun disabledReport ()
+      (insert (s-lex-format "%%% Disabled Function: ${<name}")))
 
-    (unless (string= ~blee:dblockController "blank")
-      (when <lock 
-        (when ~blee:dblockEnabler
-          (apply <origFunc <params))
-        (unless ~blee:dblockEnabler
-            (disabledReport))
-        )
-      (unless <lock
-        (apply <origFunc <params)
-        )
-      )
+    (when $disabledP
+      (disabledReport))
+
+    (unless $disabledP
+      (when (string= ~blee:dblockController "blank")
+        (message "blee-org-dblock-wrapper -- Blanking dblock")
+        (when <lock
+          (bx:dblock|reInsertContent <content))
+        (unless <lock
+          (org-dblock-bx-blank-this)))
+
+      (unless (string= ~blee:dblockController "blank")
+        (when <lock
+          (when ~blee:dblockEnabler
+            (apply <origFunc <params))
+          (unless ~blee:dblockEnabler
+            (lockedReport)))
+        (unless <lock
+          (apply <origFunc <params))()))
     ))
-
        
 
 (defun blee:dblockEnablerFunc-OBSOLETED (@origFunc &rest @params)
