@@ -1228,6 +1228,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 \\excludecomment{whenPaperSmall}
 \\excludecomment{whenPaperLetter}
 \\excludecomment{whenPaper6x9}
+\\excludecomment{whenPaperVirtual}
 \\excludecomment{whenPaper17x23}")))
            ((s-equals? <paperSize "8.5x11")
             (insert (s-lex-format "
@@ -1236,6 +1237,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 \\excludecomment{whenPaperSmall}
 \\excludecomment{whenPaperA4}
 \\excludecomment{whenPaper6x9}
+\\excludecomment{whenPaperVirtual}
 \\excludecomment{whenPaper17x23}")))
            ((s-equals? <paperSize "6x9")
             (insert (s-lex-format "
@@ -1244,11 +1246,22 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 \\excludecomment{whenPaperLarge}
 \\excludecomment{whenPaperA4}
 \\excludecomment{whenPaperLetter}
+\\excludecomment{whenPaperVirtual}
 \\excludecomment{whenPaper17x23}")))
            ((s-equals? <paperSize "17.5x23.5")
             (insert (s-lex-format "
 \\includecomment{whenPaper17x23}
 \\includecomment{whenPaperSmall}
+\\excludecomment{whenPaperLarge}
+\\excludecomment{whenPaperA4}
+\\excludecomment{whenPaperLetter}
+\\excludecomment{whenPaperVirtual}
+\\excludecomment{whenPaper6x9}")))
+           ((s-equals? <paperSize "virtual")
+            (insert (s-lex-format "
+\\includecomment{whenPaperVirtual}
+\\excludecomment{whenPaper17x23}
+\\excludecomment{whenPaperSmall}
 \\excludecomment{whenPaperLarge}
 \\excludecomment{whenPaperA4}
 \\excludecomment{whenPaperLetter}
