@@ -637,6 +637,11 @@ Expects certain file-local variables to have been set
            (s-lex-format
             "echo -n $( lcnLcntSelect.sh  ${<lcntNu} 2> /dev/null | head -1 )")))
 
+     (when (s-blank? $lcntBase)
+       (insert (s-lex-format "%% Problem: $lcntBase is blank")))
+
+     (insert (s-lex-format "%% DEBUG: ${$lcntBase}"))
+
      (bx:lcnt:info:base-read-dir $lcntBase)
 
      (let (
@@ -933,7 +938,7 @@ Expects certain file-local variables to have been set
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "~Appndce{~  "))
+                  ($frontStr (b:dblock:comeega|frontElement "~Appndce{~  " :orgDepth <outLevel))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
@@ -984,7 +989,7 @@ Expects certain file-local variables to have been set
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "~Appndcs}~  "))
+                  ($frontStr (b:dblock:comeega|frontElement "~Appndcs}~  " :orgDepth <outLevel))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
@@ -1039,7 +1044,7 @@ Expects certain file-local variables to have been set
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "_Preamble{_"))
+                  ($frontStr (b:dblock:comeega|frontElement "_Preamble{_" :orgDepth <outLevel))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
@@ -1085,7 +1090,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "IncOnly"))
+                  ($frontStr (b:dblock:comeega|frontElement "IncOnly" :orgDepth <outLevel))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (if $includeOnlyList

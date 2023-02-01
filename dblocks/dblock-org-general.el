@@ -2405,6 +2405,7 @@ End:"
 
 (defun bx:dblock:control|wrapper (<origFunc &rest <params)
   "Enforces common features of bx:dblocks. including :lock, ~blee:dblockController.
+If there is :disabled? t, then just mark it using disbledReport. Don't run anything.
 If there is no :lock and ~blee:dblockController is blank, then blank it. (look at existing code)
 If there is :lock and ~blee:dblockController is blank, then reinsert content.
 If there is :lock and ~blee:dblockController is not blank, then subject it to ~blee:dblockEnabler.
@@ -2416,6 +2417,7 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
         (<lock)
         ($paramsAsParams)
         ($disabledP nil)
+        (<outLevel)
         )
 
     ;;
@@ -2427,6 +2429,7 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
     
     (setq <content (plist-get $paramsAsParams :content))
     (setq <name (plist-get $paramsAsParams :name))
+    (setq <outLevel (or (plist-get $paramsAsParams :outLevel) 1))
 
     ;;; unspecified lock is nil
     (when (plist-member $paramsAsParams :disabled?)
@@ -2464,7 +2467,15 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
       )
 
     (defun disabledReport ()
-      (insert (s-lex-format "%%% Disabled Function: ${<name}")))
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "/DISABLED/  " :orgDepth <outLevel))
+             ($eolStr (b:dblock:comeega|eolControls))
+             )
+        (bx:dblock:global:moded:insert-begin major-mode :outLevel <outLevel)
+        (insert (s-lex-format
+                 "${$frontStr} *Disabled Function: ${<name}* ${$eolStr}\n"))
+        (bx:dblock:global:moded:insert-end major-mode :outLevel <outLevel)
+        ))
 
     (when $disabledP
       (disabledReport))

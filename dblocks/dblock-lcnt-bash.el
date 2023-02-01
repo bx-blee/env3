@@ -33,7 +33,7 @@ _CommentEnd_
     (insert "dirsList=\"\n")
     (insert
      (shell-command-to-string 
-      "find .  -maxdepth 1 -type d -print  | sed -e s:^./:: | egrep -v '^\.$' | egrep -v '^CVS$'" )
+      "find -L .  -maxdepth 1 -type d -print  | sed -e s:^./:: | egrep -v '^\.$' | egrep -v '^CVS$'" )
       )
     (insert "\"")
     ))
