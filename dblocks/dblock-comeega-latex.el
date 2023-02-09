@@ -343,7 +343,11 @@ Expects certain file-local variables to have been set
              ))
 
      (defun outCommentPostContent ()
-       (let* (($cmntStr (b:major-mode:comment|lineStr)))
+       (let* (
+              ($cmntStr (b:major-mode:comment|lineStr))
+              ($texMaster:str (-first-item <lcntTexMasters))
+              )
+
          (insert "\n")
          (insert (s-lex-format "\n${$cmntStr} +CATEGORY: lcnt.latex.inputed"))
          (insert (s-lex-format "\n${$cmntStr} +STARTUP: content"))
