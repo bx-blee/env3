@@ -104,6 +104,13 @@ and side-effects are documented here
    (require 'bcpg:commonLibs)
    (bcpg:commonLibs|fullUpdate)
 
+  (require 'bcpg:chatGptPlus)
+  (bcpg:chatGptPlus|fullUpdate)
+
+  (require 'bcpg:codeGptPlus)
+  (bcpg:codeGptPlus|fullUpdate)
+
+
    ;; (require 'bcpg:orgPlus)
    ;; (bcpg:orgPlus|fullUpdate)
 
