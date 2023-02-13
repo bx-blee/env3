@@ -33,6 +33,7 @@
 (require 'modes-menu-flyspell-prog)
 
 (require 'bidi-menu)
+;; (require 'chatGptInv-menu)
 
 ;; (modes:menu-bar|install)
 (defun modes:menu-bar|install ()
@@ -91,6 +92,8 @@ For use in delimiters in easy-menu-define"
 
     (b:bidi:menu:plugin|install
      modes:menu:global (s-- 3))
+
+    (b:chatGpt:menu:plugin|install modes:menu:global (s-- 3))
 
     (mcdt:menu:plugin|install
      modes:menu:global (s-- 4))

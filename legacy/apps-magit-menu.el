@@ -12,32 +12,38 @@
 ;; [[elisp:(popup-menu (symbol-value (modes:menu:help|define)))][Help Me]]
 ;; (popup-menu (symbol-value (bx:menu:panelAndHelp|define "/bisos/panels/bisos-dev/_nodeBase_"  "bx:menu:panelAndHelp|define" (intern (symbol-name (gensym))))))
 ;;
-(defun bx:menu:panelAndHelp|define%%%  (<panelName <funcName <menuName)
-  "Creates a menu item for visiting <panelName and <funcName."
+(defun bx:menu:panelAndHelp|define  (<panelName <funcName <menuName)
+  "Creates a menu item for visiting <panelName and <funcName.
+This function is used by many menus and its args are evaluated with backquote.
+"
   (let (
 	($thisFuncName (compile-time-function-name))
+        ($menuName (symbol-name (gensym)))
         )
+    (ignore <menuName)
+
     (easy-menu-define
-      <menuName
+      b:menu:help
       nil
       (s-lex-format "Help Menu Defined In ${$thisFuncName}")
       `(
         "Blee Panels And Help Menu:"
-	[,(format "Go To Panel: %s" <panelName)
-	 (blee:bnsm:panel-goto ,<panelName)
-	 t
-	 ]
+        [,(format "Go To Panel: %s" <panelName)
+         (blee:bnsm:panel-goto ,<panelName)
+         t
+         ]
         "---"
-	[,(format "Visit %s" <funcName)
-	 (find-function (intern ,<funcName))
-	 t
-	 ]
-	)
+        [,(format "Visit %s" <funcName)
+         (find-function (intern ,<funcName))
+         t
+         ]
+        )
       )
-    '<menuName
+    'b:menu:help
     ))
 
-(defun bx:menu:panelAndHelp|define  (<panelName <funcName <menuName)
+
+(defun bx:menu:panelAndHelp|define%%%  (<panelName <funcName <menuName)
   (apps:magit:menuItem:status|define)
   )
 
@@ -259,7 +265,8 @@ As such what happens below should be exactly what is necessary and no more."
      (bx:menu:panelAndHelp|define
       "/bisos/git/auth/bxRepos/blee-binders/bisos-core/sync/githubSync/_nodeBase_"
       $thisFuncName
-      (intern (symbol-name (gensym))))
+      nil)
+      ;;; (intern (symbol-name (gensym))))
      (s-- 8))
 
     'apps:magit:githubMenu

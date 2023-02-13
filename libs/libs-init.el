@@ -97,19 +97,25 @@ and side-effects are documented here
    (require 'bnpa:bidi-menu)
    (b:npa:bidi-menu|fullUpdate)
 
-
    (require 'bnpa:bisos)
    (bnpa:bisos|fullUpdate)
 
    (require 'bcpg:commonLibs)
    (bcpg:commonLibs|fullUpdate)
 
-  (require 'bcpg:chatGptPlus)
-  (bcpg:chatGptPlus|fullUpdate)
+   ;; (require 'bcpg:chatGptPlus)
+   ;; (bcpg:chatGptPlus|fullUpdate)
 
-  (require 'bcpg:codeGptPlus)
-  (bcpg:codeGptPlus|fullUpdate)
+   ;; (require 'bcpg:codeGptPlus)
+   ;; (bcpg:codeGptPlus|fullUpdate)
 
+
+   ;; (require 'bnpa:chatGptInv)
+   ;; (b:npa:chatGptInv|fullUpdate)
+   (when b:g:dev:mode?
+     (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatgpt.el")
+     (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatGptInv-menu.el")
+     )
 
    ;; (require 'bcpg:orgPlus)
    ;; (bcpg:orgPlus|fullUpdate)
