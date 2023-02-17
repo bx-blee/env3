@@ -5172,6 +5172,7 @@ otherwise labelInfo is inserted as label"
         ($shortTitleStr "")
         ($labelTitleStr "")
         ($miniTocAdjStr "")
+        ($thisFile (f-filename (buffer-file-name)))
         )
 
     (blee:dblock:params:desc
@@ -5241,6 +5242,9 @@ otherwise labelInfo is inserted as label"
         (insert (s-lex-format "
 \\begin{whenIncludeOnly}
   ${$miniTocAdjStr}  \\minitoc%
+
+This File: \\url{${$thisFile}}
+
 \\end{whenIncludeOnly}"))))
     ))
 

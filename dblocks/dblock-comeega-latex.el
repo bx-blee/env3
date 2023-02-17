@@ -1925,12 +1925,13 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
 
     (insert "\n\\end{whenNotIncludeOnly}")
 
-    (insert "\n
+    (insert (s-lex-format "\n
 \\begin{whenIncludeOnly}
   \\dominitoc%
   \\faketableofcontents%
   \\mtcaddchapter%
-\\end{whenIncludeOnly}")
+\\end{whenIncludeOnly}
+"))
 
     ;;(insert "\n\n\\pagenumbering{arabic}\n")
     )
