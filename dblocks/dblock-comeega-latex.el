@@ -345,7 +345,7 @@ Expects certain file-local variables to have been set
      (defun outCommentPostContent ()
        (let* (
               ($cmntStr (b:major-mode:comment|lineStr))
-              ($texMaster:str (-first-item <lcntTexMasters))
+              ($texMaster:str (expand-file-name (-first-item <lcntTexMasters)))
               )
 
          (insert "\n")
@@ -355,7 +355,7 @@ Expects certain file-local variables to have been set
          (insert (s-lex-format "\n${$cmntStr} local variables:"))
          (insert (s-lex-format "\n${$cmntStr} major-mode: latex-mode"))
          (insert (s-lex-format "\n${$cmntStr} fill-column: 65"))
-         (insert (s-lex-format "\n${$cmntStr} TeX-master: ${$texMaster:str}"))
+         (insert (s-lex-format "\n${$cmntStr} TeX-master: \"${$texMaster:str}\""))
          (insert (s-lex-format "\n${$cmntStr} eval: (setq b:lcnt:tex:masters:~ '${$lcntTexMasters:str})"))
          (insert (s-lex-format "\n${$cmntStr} eval: (setq b:lcnt:tex:includePath:~ ${$lcntTexIncludePath:str})"))
          (insert (s-lex-format "\n${$cmntStr} end:"))))
