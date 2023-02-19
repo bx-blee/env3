@@ -549,7 +549,7 @@
                              (concat (file-name-sans-extension bx:fig-file) ".caption"))))
           )
 
-      (bx:lcnt:info:base-read)
+      ;;(bx:lcnt:info:base-read)
 
       (insert (format "\\begin{comment}\n"))
       (insert (format "**     ======[[elisp:(org-cycle)][Fold]]======  /Figure:/ %s -- %s\n"
