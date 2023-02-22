@@ -640,8 +640,8 @@
       (insert (format "\\caption{%s}\n"
                       fig-title))
 
-      ;;(insert (format "\\label{fig:%s}\n" (fig-base-name bx:fig-file)))
-      (insert (format "\\label{fig:%s}\n" (file-name-sans-extension bx:fig-file)))
+      (insert (format "\\label{fig:%s}\n" (fig-base-name bx:fig-file)))
+      ;;(insert (format "\\label{fig:%s}\n" (file-name-sans-extension bx:fig-file)))
 
       (insert "\\end{figure}
 \\end{htmlonly}
