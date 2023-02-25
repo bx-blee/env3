@@ -5232,7 +5232,7 @@ otherwise labelInfo is inserted as label"
     (when (not (or (string-equal labelInfo "UnSpecified") (string-equal labelInfo "")))
       (insert
        (format "
-\\label{%s}"
+~\\label{%s}"
                (concat (getTagForLabelFromSegType segType) labelInfo)
                )))
     (when (string-equal segType "chapter")
