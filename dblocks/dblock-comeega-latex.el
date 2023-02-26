@@ -1899,11 +1899,16 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
        (when <pageBreak
          (insert "\n\n\\clearpage"))
 
-       (insert "\n\\begin{whenNotIncludeOnly}")
+       (insert "\n\n\\begin{whenNotIncludeOnly}")
 
      (cond
       ((and <toc <shortToc)
        (insert "
+
+\\begin{whenPaper6x9}
+\\begin{adjustwidth}{-0.42in}{-0.42in}
+\\end{whenPaper6x9}
+
   \\shorttoc{Short Contents}{0}  % Parts and chapters
 
   \\renewcommand*\\contentsname{Detailed Contents}
@@ -1923,7 +1928,13 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
     (when <figures
       (insert "\n  \\listoffigures"))
 
-    (insert "\n\\end{whenNotIncludeOnly}")
+    (insert "
+
+\\begin{whenPaper6x9}
+\\end{adjustwidth}
+\\end{whenPaper6x9}
+
+\\end{whenNotIncludeOnly}")
 
     (insert (s-lex-format "\n
 \\begin{whenIncludeOnly}
