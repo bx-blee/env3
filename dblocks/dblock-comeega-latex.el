@@ -1590,6 +1590,15 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
      (defun outCommentPostContent ()
        (insert (s-lex-format "
 \\usepackage{shorttoc}
+
+\\begin{whenIncludeOnly}
+  \\usepackage{minitoc}
+\\end{whenIncludeOnly}")))
+
+
+     (defun outCommentPostContent%% ()
+       (insert (s-lex-format "
+\\usepackage{shorttoc}
 %%% Following chaptermark renew is needed for Preface chapter toc
 \\renewcommand{\\chaptermark}[1]{%
   \\ifnum\\value{chapter}>0
@@ -1642,10 +1651,20 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (insert (s-lex-format "
 %BEGIN LATEX
 \\usepackage{enotez}
+\\DeclareInstance{enotez-list}{section}{paragraph}{heading=\\bigskip}
+\\setenotez{list-style=section,split=section}
+\\let\\footnote=\\endnote%
+%END LATEX")))
+
+     (defun outCommentPostContent%% ()
+       (insert (s-lex-format "
+%BEGIN LATEX
+\\usepackage{enotez}
 \\DeclareInstance{enotez-list}{section}{paragraph}{heading=\\section{#1}}
 \\setenotez{list-style=section,split=section}
 \\let\\footnote=\\endnote%
 %END LATEX")))
+
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -1906,7 +1925,7 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
        (insert "
 
 \\begin{whenPaper6x9}
-\\begin{adjustwidth}{-0.42in}{-0.42in}
+\\begin{adjustwidth}{-0.41in}{-0.41in}
 \\end{whenPaper6x9}
 
   \\shorttoc{Short Contents}{0}  % Parts and chapters
@@ -2078,11 +2097,22 @@ Expects certain file-local variables to have been set
                       "${$frontStr} ~printendnotes~ With Format Specified In Preamble -- ${<comment} ${$eolStr}\n"))
              ))
 
+     ;; %\\addcontentsline{toc}{chapter}{Notes}
      (defun outCommentPostContent ()
        (insert "\n
 \\begin{whenNotIncludeOnly}
-  \\addcontentsline{toc}{chapter}{Notes}
-  \\printendnotes
+
+\\begingroup
+\\markboth{Notes}{Notes}
+
+ \\chapter*{Notes}
+
+We have not identified sources when the facts involved are not in
+dispute and when the relevant information can easily be found.
+
+\\printendnotes
+\\endgroup
+
 \\end{whenNotIncludeOnly}"))
 
      (progn  ;; Actual Invocations
