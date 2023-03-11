@@ -1651,8 +1651,8 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (insert (s-lex-format "
 %BEGIN LATEX
 \\usepackage{enotez}
-\\DeclareInstance{enotez-list}{section}{paragraph}{heading=\\bigskip}
-\\setenotez{list-style=section,split=section}
+\\DeclareInstance{enotez-list}{section}{paragraph}{heading=\\bigskip,notes-sep=0pt}
+\\setenotez{list-style=section,split=section,backref=true}
 \\let\\footnote=\\endnote%
 %END LATEX")))
 
@@ -1925,7 +1925,7 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
        (insert "
 
 \\begin{whenPaper6x9}
-\\begin{adjustwidth}{-0.41in}{-0.41in}
+\\begin{adjustwidth}{-0.25in}{-0.25in}
 \\end{whenPaper6x9}
 
   \\shorttoc{Short Contents}{0}  % Parts and chapters
@@ -2105,7 +2105,8 @@ Expects certain file-local variables to have been set
 \\begingroup
 \\markboth{Notes}{Notes}
 
- \\chapter*{Notes}
+\\addcontentsline{toc}{chapter}{Notes}
+\\chapter*{Notes}
 
 We have not identified sources when the facts involved are not in
 dispute and when the relevant information can easily be found.
