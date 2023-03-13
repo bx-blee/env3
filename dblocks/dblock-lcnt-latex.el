@@ -632,8 +632,9 @@ excludecomment{whenOrg}
 
 \\usepackage{qrcode}  %%% Must come after beamerarticle
 
-\\usepackage{tikz}
+
 ")
+       ;; Moved to its own package\\usepackage{tikz}
        )
      )
 
