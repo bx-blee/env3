@@ -1288,6 +1288,404 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        )))
 
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenBuildDocClass" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/whenBuildDocClass>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/whenBuildDocClass :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/whenBuildDocClass (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<buildDocClass (or (plist-get <params :buildDocClass) nil))
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq <buildDocClass (get 'bx:lcnt:curBuild:base 'buildDocClass)))
+
+       (unless <buildDocClass
+          (insert (s-lex-format "\n%%% ERROR:: curBuild buildDocClass=${<buildDocClass} not is not valid."))))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "whenDocCls"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} whendocCls ~buildDocClass=${<buildDocClass}~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (when <buildDocClass
+         (cond
+           ((s-equals? <buildDocClass "book")
+            (insert (s-lex-format "
+\\includecomment{whenDocClsBook}
+\\excludecomment{whenDocClsArticle}")))
+           ((s-equals? <buildDocClass "article")
+            (insert (s-lex-format "
+\\includecomment{whenDocClsArticle}
+\\excludecomment{whenDocClsBook}")))
+           (t
+            (insert (s-lex-format "\n%%% ERROR:: Unknown buildDocClass=${<buildDocClass}"))))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenPrintColor" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/whenPrintColor>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/whenPrintColor :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/whenPrintColor (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<printColor (or (plist-get <params :printColor) nil))
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq <printColor (get 'bx:lcnt:curBuild:base 'printColor)))
+
+       (unless <printColor
+          (insert (s-lex-format "\n%%% ERROR:: curBuild printColor=${<printColor} not is not valid."))))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "whenDocCls"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} whendocCls ~printColor=${<printColor}~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (when <printColor
+         (cond
+           ((s-equals? <printColor "bw")
+            (insert (s-lex-format "
+\\includecomment{whenPrintColorBw}
+\\excludecomment{whenPrintColorColor}")))
+           ((s-equals? <printColor "color")
+            (insert (s-lex-format "
+\\includecomment{whenPrintColorColor}
+\\excludecomment{whenPrintColorBw}")))
+           (t
+            (insert (s-lex-format "\n%%% ERROR:: Unknown printColor=${<printColor}"))))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenCover" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/whenCover>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/whenCover :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/whenCover (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<cover (or (plist-get <params :cover) nil))
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq <cover (get 'bx:lcnt:curBuild:base 'cover)))
+
+       (unless <cover
+          (insert (s-lex-format "\n%%% ERROR:: curBuild cover=${<cover} not is not valid."))))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "whenDocCls"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} whendocCls ~cover=${<cover}~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (when <cover
+         (cond
+           ((s-equals? <cover "soft")
+            (insert (s-lex-format "
+\\includecomment{whenCoverSoft}
+\\excludecomment{whenCoverHard}")))
+           ((s-equals? <cover "hard")
+            (insert (s-lex-format "
+\\includecomment{whenCoverHard}
+\\excludecomment{whenCoverSoft}")))
+           (t
+            (insert (s-lex-format "\n%%% ERROR:: Unknown cover=${<cover}"))))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenMedium" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/whenMedium>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/whenMedium :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/whenMedium (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<medium (or (plist-get <params :medium) nil))
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq <medium (get 'bx:lcnt:curBuild:base 'medium)))
+
+       (unless <medium
+          (insert (s-lex-format "\n%%% ERROR:: curBuild medium=${<medium} not is not valid."))))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "whenMedium"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} whendocCls ~medium=${<medium}~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (when <medium
+         (cond
+           ((s-equals? <medium "paper")
+            (insert (s-lex-format "
+\\includecomment{whenMediumPaper}
+\\excludecomment{whenMediumHtml}
+\\excludecomment{whenMediumEpub}")))
+           ((s-equals? <medium "html")
+            (insert (s-lex-format "
+\\includecomment{whenMediumHtml}
+\\excludecomment{whenMediumPaper}
+\\excludecomment{whenMediumEpub}")))
+           ((s-equals? <medium "epub")
+            (insert (s-lex-format "
+\\includecomment{whenMediumEpub}
+\\excludecomment{whenMediumPaper}
+\\excludecomment{whenMediumHtml}")))
+           (t
+            (insert (s-lex-format "\n%%% ERROR:: Unknown medium=${<medium}"))))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/buildSpineWidth" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/buildSpineWidth>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/buildSpineWidth :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/buildSpineWidth (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<spineWidth (or (plist-get <params :spineWidth) nil))
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq <spineWidth (get 'bx:lcnt:curBuild:base 'spineWidth)))
+
+       (unless <spineWidth
+          (insert (s-lex-format "\n%%% ERROR:: curBuild spineWidth=${<spineWidth} not is not valid."))))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "spineWidth"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr}  ~spineWidth=${<spineWidth}~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (if <spineWidth
+           (insert (s-lex-format "\n\\def\\spineWidth{${<spineWidth}}"))
+         (insert (s-lex-format "\n%%% ERROR:: Unknown spineWidth=${<spineWidth}"))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/buildIsbn13Nu" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/buildIsbn13Nu>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/buildIsbn13Nu :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/buildIsbn13Nu (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<isbn13Nu (or (plist-get <params :isbn13Nu) nil))
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq <isbn13Nu (get 'bx:lcnt:curBuild:base 'isbn13Nu)))
+
+       (unless <isbn13Nu
+          (insert (s-lex-format "\n%%% ERROR:: curBuild isbn13Nu=${<isbn13Nu} not is not valid."))))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "isbn13Nu"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr}  ~isbn13Nu=${<isbn13Nu}~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (if <isbn13Nu
+           (insert (s-lex-format "\n\\def\\isbnNu{${<isbn13Nu}}"))
+         (insert (s-lex-format "\n%%% ERROR:: Unknown isbn13Nu=${<isbn13Nu}"))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/ean13isbn" :advice ("bx:dblock:control|wrapper") :comment "Inserts ISBN"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/ean13isbn>> ~advice=(bx:dblock:control|wrapper)~ -- Inserts ISBN  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/ean13isbn :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/ean13isbn (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<isbn13Nu (or (plist-get <params :isbn13Nu) nil))
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq <isbn13Nu (get 'bx:lcnt:curBuild:base 'isbn13Nu)))
+
+       (unless <isbn13Nu
+          (insert (s-lex-format "\n%%% ERROR:: curBuild isbn13Nu=${<isbn13Nu} not is not valid."))))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "pkgEan13isbn"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr}  usepackage(ean13isbn) ~isbn13Nu=${<isbn13Nu}~ -- ${<comment}"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (if <isbn13Nu
+           (insert (s-lex-format "\n\usepackage[ISBN=${<isbn13Nu}]{ean13isbn}"))
+         (insert (s-lex-format "\n%%% ERROR:: Unknown isbn13Nu=${<isbn13Nu}"))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/customWhenCondsMarker" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/customWhenCondsMarker>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
@@ -1514,21 +1912,6 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex.
-% \newfontfamily\cjkfont{Noto Sans CJK SC} % Or any appropriate font you have
-
-\usepackage{xeCJK}
-% \setCJKmainfont{SimSun}
-\setCJKmainfont{AR PL UMing CN}
-% Droid Sans Fallback
-
-\usepackage{afterpage}
-
-\newcommand\blankpage{%
-    \null
-    \thispagestyle{empty}%
-    \addtocounter{page}{-1}%
-    \newpage}
-
 #+end_org "
    (let* (
           (<governor (letGet$governor)) (<extGov (letGet$extGov))

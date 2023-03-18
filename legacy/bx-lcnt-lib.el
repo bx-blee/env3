@@ -406,7 +406,43 @@ bx:lcnt:curBuild:base-show
 	   (shell-command-to-string 
 	    (format "echo -n $( head -1 %s/buildDocClass )" $curBuildBaseDir))
 	   )
-      
+
+      ;;(get 'bx:lcnt:curBuild:base 'medium)
+      (put 'bx:lcnt:curBuild:base
+	   'medium
+	   (shell-command-to-string
+	    (format "echo -n $( head -1 %s/medium )" $curBuildBaseDir))
+	   )
+
+      ;;(get 'bx:lcnt:curBuild:base 'printColor)
+      (put 'bx:lcnt:curBuild:base
+	   'printColor
+	   (shell-command-to-string
+	    (format "echo -n $( head -1 %s/printColor )" $curBuildBaseDir))
+	   )
+
+      ;;(get 'bx:lcnt:curBuild:base 'cover)
+      (put 'bx:lcnt:curBuild:base
+	   'cover
+	   (shell-command-to-string
+	    (format "echo -n $( head -1 %s/cover )" $curBuildBaseDir))
+	   )
+
+      ;;(get 'bx:lcnt:curBuild:base 'spineWidth)
+      (put 'bx:lcnt:curBuild:base
+	   'spineWidth
+	   (shell-command-to-string
+	    (format "echo -n $( head -1 %s/spineWidth )" $curBuildBaseDir))
+	   )
+
+      ;;(get 'bx:lcnt:curBuild:base 'isbn13Nu
+      (put 'bx:lcnt:curBuild:base
+	   'isbn13Nu
+	   (shell-command-to-string
+	    (format "echo -n $( head -1 %s/isbn13Nu )" $curBuildBaseDir))
+	   )
+
+
       t
       )
     )

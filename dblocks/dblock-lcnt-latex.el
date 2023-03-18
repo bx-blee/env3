@@ -402,7 +402,7 @@ excludecomment{whenOrg}
      :level 1
      :comment (format "")
      )
-    
+
     
     (lambda () "
 **  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || memo  [[elisp:(org-cycle)][| ]]
@@ -449,7 +449,7 @@ excludecomment{whenOrg}
 \\end{rawhtml}
 }
 "))
-        
+
         (insert "
 
 \\usepackage{rcs}
@@ -541,7 +541,7 @@ excludecomment{whenOrg}
     (lambda () "
 **  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || art+pres OR art  [[elisp:(org-cycle)][| ]]
 ")
-    
+
 
     (when (or (equal bx:class "art+pres")
               (equal bx:class "art"))
@@ -632,7 +632,11 @@ excludecomment{whenOrg}
 
 \\usepackage{qrcode}  %%% Must come after beamerarticle
 
+\\usepackage{censor}
 
+\\usepackage{ragged2e}
+\\usepackage{fontawesome5}
+\\usepackage{changepage}
 ")
        ;; Moved to its own package\\usepackage{tikz}
        )
