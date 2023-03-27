@@ -1561,8 +1561,8 @@ Subject:   & This Matter\\\\
 
     (org-latex-node-insert-note
      :label "Geometry"
-    :name (format
-           "--- curBuild=%s paperSize=%s"
+     :name (format
+           "usepackage(geometry) and set sizes --- curBuild=%s paperSize=%s"
            @curBuild
            @paperSize
            )

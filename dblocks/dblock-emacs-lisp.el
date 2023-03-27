@@ -451,7 +451,8 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
    (format "  [[elisp:(org-cycle)][| ]]\n#+end_org \"\"\"\n")))
 
 
-(defun b:dblock:body:elisp|prep (<sectionType <funcName <advice <comment)
+(defun b:dblock:body:elisp|prep (<sectionType <funcName <advice &optional <comment)
+  (or <comment (setq <comment ""))
   (let* (
 	 ($adviceStr "")
          ($openStr "")

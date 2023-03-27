@@ -735,7 +735,9 @@ excludecomment{whenOrg}
           (<curBuild (or (plist-get <params :curBuild) nil))
           (<paperSize (or (plist-get <params :paperSize) nil))
           (<spineWidth (or (plist-get <params :spineWidth) nil))
+          (<printAgent (or (plist-get <params :printAgent) nil))
           ($curBuild:paperSize nil)
+          ($curBuild:markLength "")
           )
      (bxPanel:params$effective)
 
@@ -790,7 +792,20 @@ excludecomment{whenOrg}
              (unless <spineWidth
                (setq <spineWidth (get 'bx:lcnt:curBuild:base 'spineWidth)))
              (unless <spineWidth
-               (insert (s-lex-format "\n%%% ERROR:: curBuild spineWidth=${<spineWidth} not is not valid.")))))
+               (insert (s-lex-format "\n%%% ERROR:: curBuild spineWidth=${<spineWidth} not is not valid.")))
+             (unless <printAgent
+               (setq <printAgent (get 'bx:lcnt:curBuild:base 'printAgent)))
+             (unless <printAgent
+               (insert (s-lex-format "\n%%% ERROR:: curBuild printAgent=${<printAgent} not is not valid.")))
+             ))
+
+         ;; <printAgent should be available now.
+         (when (or
+                (s-equals? <printAgent "odp")
+                (s-equals? <printAgent "kdp")
+                (s-equals? <printAgent "ingmar")
+                )
+           (setq $curBuild:markLength "marklength=0mm,bleedwidth=0.125in,"))
 
          (unless <paperSize
            (insert (s-lex-format "\n%%% ERROR:: curBuild paperSize=${<paperSize} not is not valid.")))
@@ -799,19 +814,19 @@ excludecomment{whenOrg}
          (cond
           ((s-equals? <paperSize "a4")
            (insert (s-lex-format "\
-\\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=210mm,coverheight=297mm]{bookcover}   % ${<paperSize} Paper")))
+\\documentclass[markcolor=black,${$curBuild:markLength}dvipsnames,spinewidth=${<spineWidth},coverwidth=210mm,coverheight=297mm]{bookcover}   % ${<paperSize} Paper")))
 
           ((s-equals? <paperSize "8.5x11")
             (insert (s-lex-format "\
-\\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=8.5in,coverheight=11in]{bookcover}   % ${<paperSize} Paper")))
+\\documentclass[markcolor=black,${$curBuild:markLength}dvipsnames,spinewidth=${<spineWidth},coverwidth=8.5in,coverheight=11in]{bookcover}   % ${<paperSize} Paper")))
 
           ((s-equals? <paperSize "6x9")
             (insert (s-lex-format "\
-\\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=6in,coverheight=9in]{bookcover}   % ${<paperSize} Paper")))
+\\documentclass[markcolor=black,${$curBuild:markLength}dvipsnames,spinewidth=${<spineWidth},coverwidth=6in,coverheight=9in]{bookcover}   % ${<paperSize} Paper")))
 
           ((s-equals? <paperSize "17.5x23.5")
             (insert (s-lex-format "\
-\\documentclass[markcolor=black,dvipsnames,spinewidth=${<spineWidth},coverwidth=175mm,coverheight=235mm]{bookcover}   % ${<paperSize} Paper")))
+\\documentclass[markcolor=black,${$curBuild:markLength}dvipsnames,spinewidth=${<spineWidth},coverwidth=175mm,coverheight=235mm]{bookcover}   % ${<paperSize} Paper")))
 
           (t
             (insert (s-lex-format "\n%%% ERROR:: Unknown paperSize=${<paperSize}")))))
@@ -835,6 +850,54 @@ excludecomment{whenOrg}
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _MaTeX Segments (Begin/End)_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
 ;;;#+END:
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/pdfMetaData" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/pdfMetaData>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/pdfMetaData :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/pdfMetaData (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "_pdfMetaData_ "))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} ~PDF Meta Data --- NOTYET, incomplete~ -- ${<comment} ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (insert (s-lex-format "
+\\AfterPreamble{\\hypersetup{
+  pdfauthor={Mohsen Banan},
+  pdftitle={Nature of Polyexistentials},
+  pdfsubject={Intellectual Property},
+  pdfkeywords={IP},
+  pdfproducer={lcnt},
+  pdfcreator={lcntpdf}
+}}")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
 
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/documentBegin" :advice ("bx:dblock:control|wrapper")
@@ -1324,7 +1387,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
-                      "${$frontStr} whendocCls ~buildDocClass=${<buildDocClass}~"))
+                      "${$frontStr} whenBuildDocCls ~buildDocClass=${<buildDocClass}~"))
              (insert (s-lex-format " ${$eolStr}\n"))))
 
      (defun outCommentPostContent ()
@@ -1379,11 +1442,11 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "whenDocCls"))
+                  ($frontStr (b:dblock:comeega|frontElement "whenPrClr"))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
-                      "${$frontStr} whendocCls ~printColor=${<printColor}~"))
+                      "${$frontStr} whenPrintColor ~printColor=${<printColor}~"))
              (insert (s-lex-format " ${$eolStr}\n"))))
 
      (defun outCommentPostContent ()
@@ -1440,11 +1503,11 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "whenDocCls"))
+                  ($frontStr (b:dblock:comeega|frontElement "whenCover"))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
-                      "${$frontStr} whendocCls ~cover=${<cover}~"))
+                      "${$frontStr} whenCover ~cover=${<cover}~"))
              (insert (s-lex-format " ${$eolStr}\n"))))
 
      (defun outCommentPostContent ()
@@ -1504,7 +1567,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
-                      "${$frontStr} whendocCls ~medium=${<medium}~"))
+                      "${$frontStr} whenMedium ~medium=${<medium}~"))
              (insert (s-lex-format " ${$eolStr}\n"))))
 
      (defun outCommentPostContent ()
@@ -1635,12 +1698,248 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (outCommentPostContent)
        )))
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/ean13isbn" :advice ("bx:dblock:control|wrapper") :comment "Inserts ISBN"
+;;;#+BEGIN: b:elisp:defs/defun :defName "buildTagMediumGet" :advice ()
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/ean13isbn>> ~advice=(bx:dblock:control|wrapper)~ -- Inserts ISBN  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<buildTagMediumGet>>  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:latex:preamble/ean13isbn :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:latex:preamble/ean13isbn (<params)
+(defun buildTagMediumGet (
+;;;#+END:
+                             <medium
+                             )
+   " #+begin_org
+** DocStr: Based on =<medium= return tag to be sued in lcntNuBuildTag
+#+end_org "
+   (let* ((retVal ""))
+     (cond
+      ((s-equals? <medium "paper")
+       (setq retVal "p"))
+      ((s-equals? <medium "epub")
+       (setq retVal "e"))
+      ((s-equals? <medium "html")
+       (setq retVal "h"))
+      ((s-equals? <paperSize "file")
+       (setq retVal "f"))
+      (t
+       (setq retVal "")))
+     retVal))
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(buildTagMediumGet (symbol-name 'paper))
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+" orgCmntEnd)
+
+
+;;;#+BEGIN: b:elisp:defs/defun :defName "buildTagPaperSizeGet" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<buildTagPaperSizeGet>>  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun buildTagPaperSizeGet (
+;;;#+END:
+                             <paperSize
+                             )
+   " #+begin_org
+** DocStr: Based on =<paperSize= return tag to be sued in lcntNuBuildTag
+#+end_org "
+   (let* ((retVal ""))
+     (cond
+      ((s-equals? <paperSize "6x9")
+       (setq retVal "1"))
+      ((s-equals? <paperSize "17.5x23.5")
+       (setq retVal "2"))
+      ((s-equals? <paperSize "8.5x11")
+       (setq retVal "3"))
+      ((s-equals? <paperSize "a4")
+       (setq retVal "4"))
+      (t
+       (setq retVal "")))
+     retVal))
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(buildTagPaperSizeGet (symbol-name '6x9))
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+" orgCmntEnd)
+
+;;;#+BEGIN: b:elisp:defs/defun :defName "buildTagColorGet" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<buildTagColorGet>>  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun buildTagColorGet (
+;;;#+END:
+                             <color
+                             )
+   " #+begin_org
+** DocStr: Based on =<paperSize= return tag to be sued in lcntNuBuildTag
+#+end_org "
+   (let* ((retVal ""))
+     (cond
+      ((s-equals? <color "bw")
+       (setq retVal "b"))
+      ((s-equals? <color "color")
+       (setq retVal "c"))
+      (t
+       (setq retVal "")))
+     retVal))
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(buildTagColorGet (symbol-name 'b&w))
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+" orgCmntEnd)
+
+;;;#+BEGIN: b:elisp:defs/defun :defName "buildTagCoverGet" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<buildTagCoverGet>>  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun buildTagCoverGet (
+;;;#+END:
+                         <cover
+                         )
+   " #+begin_org
+** DocStr: Based on =<paperSize= return tag to be sued in lcntNuBuildTag
+#+end_org "
+   (let* ((retVal ""))
+     (cond
+      ((s-equals? <cover "soft")
+       (setq retVal "s"))
+      ((s-equals? <cover "hard")
+       (setq retVal "h"))
+      (t
+       (setq retVal "")))
+     retVal))
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(buildTagCoverGet (symbol-name 'soft))
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+" orgCmntEnd)
+
+;;;#+BEGIN: b:elisp:defs/defun :defName "buildTagPrintAgentGet" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<buildTagPrintAgentGet>>  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun buildTagPrintAgentGet (
+;;;#+END:
+                              <printAgent
+                              )
+   " #+begin_org
+** DocStr: Based on =<printAgent= return tag to be used in lcntNuBuildTag
+#+end_org "
+   (let* ((retVal ""))
+     (cond
+      ((s-equals? <printAgent "odp")
+       (setq retVal "o"))
+      ((s-equals? <printAgent "kdp")
+       (setq retVal "k"))
+      ((s-equals? <printAgent "ingram")
+       (setq retVal "i"))
+      ((s-equals? <printAgent "local")
+       (setq retVal "l"))
+      (t
+       (setq retVal "")))
+     retVal))
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(buildTagPrintAgentGet (symbol-name 'local))
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+" orgCmntEnd)
+
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/buildTag" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/buildTag>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/buildTag :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/buildTag (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<lcntNuBuildTag (or (plist-get <params :lcntNuBuildTag) nil))
+          ($mediumTag "")
+          ($paperSizeTag "")
+          ($colorTag "")
+          ($coverTag "")
+          ($printAgentTag "")
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq $mediumTag (buildTagMediumGet (get 'bx:lcnt:curBuild:base 'medium)))
+         (setq $paperSizeTag (buildTagPaperSizeGet (get 'bx:lcnt:curBuild:base 'paperSize)))
+         (setq $colorTag (buildTagColorGet (get 'bx:lcnt:curBuild:base 'printColor)))
+         (setq $coverTag (buildTagCoverGet (get 'bx:lcnt:curBuild:base 'cover)))
+         (setq $printAgentTag (buildTagPrintAgentGet (get 'bx:lcnt:curBuild:base 'printAgent)))
+               ))
+
+     (unless <lcntNuBuildTag
+       (setq <lcntNuBuildTag (s-lex-format "${$mediumTag}${$paperSizeTag}${$colorTag}${$coverTag}${$printAgentTag}")))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "buildTag"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr}  ~lcntNuBuildTag=${<lcntNuBuildTag}~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (if <lcntNuBuildTag
+           (insert (s-lex-format "\n\\newcommand{\\lcntNuBuildTag}{${<lcntNuBuildTag}}"))
+         (insert (s-lex-format "\n%%% ERROR:: Unknown cntNuBuildTag=${<lcntNuBuildTag}"))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgEan13isbn" :advice ("bx:dblock:control|wrapper") :comment "Inserts ISBN"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/pkgEan13isbn>> ~advice=(bx:dblock:control|wrapper)~ -- Inserts ISBN  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/pkgEan13isbn :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/pkgEan13isbn (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Can be used both in article and
@@ -1676,8 +1975,10 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 
      (defun outCommentPostContent ()
        (if <isbn13Nu
-           (insert (s-lex-format "\n\usepackage[ISBN=${<isbn13Nu}]{ean13isbn}"))
-         (insert (s-lex-format "\n%%% ERROR:: Unknown isbn13Nu=${<isbn13Nu}"))))
+           (insert (s-lex-format "\n\\usepackage[ISBN=${<isbn13Nu}]{ean13isbn}"))
+         (progn
+           (insert (s-lex-format "\n\\usepackage[ISBN=978-3-16-148410-0]{ean13isbn}"))
+           (insert (s-lex-format "\n%%% ERROR:: Unknown isbn13Nu=${<isbn13Nu} -- Example Being Used")))))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -1926,7 +2227,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
      (defun bodyContentPlus ())
      (defun bodyContent ()
            (let* (
-                  ($frontStr (b:dblock:comeega|frontElement "chineseFonts"))
+                  ($frontStr (b:dblock:comeega|frontElement "chineseFnt"))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format

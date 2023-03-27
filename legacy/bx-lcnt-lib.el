@@ -421,6 +421,13 @@ bx:lcnt:curBuild:base-show
 	    (format "echo -n $( head -1 %s/printColor )" $curBuildBaseDir))
 	   )
 
+      ;;(get 'bx:lcnt:curBuild:base 'printAgent)
+      (put 'bx:lcnt:curBuild:base
+	   'printAgent
+	   (shell-command-to-string
+	    (format "echo -n $( head -1 %s/printAgent )" $curBuildBaseDir))
+	   )
+
       ;;(get 'bx:lcnt:curBuild:base 'cover)
       (put 'bx:lcnt:curBuild:base
 	   'cover
