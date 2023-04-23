@@ -830,6 +830,7 @@ Sections are specified as :outLevel 1,n
         (@subTitle (or (plist-get @params :subTitle) ""))                
         ;;
         ($localVarPlaceHolder)
+        ($star "*")
         )
 
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
@@ -843,6 +844,7 @@ Sections are specified as :outLevel 1,n
 
     (defun bodyContent ()
       "NOTYET, use @panelType to choose images."
+
       (when (string= @title "auto")
         (when (fto:withBase:isLeaf? ".")        
           (setq @title (format "~Leaf:: %s/%s -- %s~"
@@ -857,16 +859,24 @@ Sections are specified as :outLevel 1,n
                                (file-name-nondirectory (expand-file-name ".."))
                                )))
         )
-        
-      (insert
-       (format "
-%s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _   %s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
+      (cond
+       ((s-starts-with? "/bisos/" (buffer-file-name))
+        (insert (s-lex-format "
+${$star}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _   ${@title}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
 "
-               ;;;%s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _  %s: %s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
-               "*"
-               ;;@panelType
-               @title
-               ))
+               )))
+       ((s-starts-with? "/bxo/" (buffer-file-name))
+        (insert (s-lex-format "
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   ${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+"
+               )))
+       (t
+        (insert (s-lex-format "
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   Unknown${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+"
+               )))
+        )
+
 
       ;; NOTYET, this needs to become centered insert
       (unless (string= @subTitle "")
