@@ -1642,6 +1642,15 @@ Subject:   & This Matter\\\\
                  )
          )
         )
+      (when (equal @paperSize "html")
+        (setq $atLeastOnceWhen t)
+        (insert
+         (format "
+%% No geometry for html
+"
+                 )
+         )
+        )
       (bx:eh:assert:atLeastOnceWhen
        $atLeastOnceWhen
        :context "latex"

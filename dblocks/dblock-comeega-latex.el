@@ -1516,11 +1516,27 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
            ((s-equals? <cover "soft")
             (insert (s-lex-format "
 \\includecomment{whenCoverSoft}
-\\excludecomment{whenCoverHard}")))
+\\excludecomment{whenCoverHard}
+\\excludecomment{whenCoverEmbedded}
+\\excludecomment{whenCoverNone}")))
            ((s-equals? <cover "hard")
             (insert (s-lex-format "
 \\includecomment{whenCoverHard}
-\\excludecomment{whenCoverSoft}")))
+\\excludecomment{whenCoverSoft}
+\\excludecomment{whenCoverEmbedded}
+\\excludecomment{whenCoverNone}")))
+           ((s-equals? <cover "embedded")
+            (insert (s-lex-format "
+\\includecomment{whenCoverEmbedded}
+\\excludecomment{whenCoverHard}
+\\excludecomment{whenCoverSoft}
+\\excludecomment{whenCoverNone}")))
+           ((s-equals? <cover "none")
+            (insert (s-lex-format "
+\\includecomment{whenCoverNone}
+\\excludecomment{whenCoverHard}
+\\excludecomment{whenCoverSoft}
+\\excludecomment{whenCoverEmbedded}")))
            (t
             (insert (s-lex-format "\n%%% ERROR:: Unknown cover=${<cover}"))))))
 
@@ -1577,17 +1593,26 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
             (insert (s-lex-format "
 \\includecomment{whenMediumPaper}
 \\excludecomment{whenMediumHtml}
-\\excludecomment{whenMediumEpub}")))
+\\excludecomment{whenMediumEpub}
+\\excludecomment{whenMediumFile}")))
            ((s-equals? <medium "html")
             (insert (s-lex-format "
 \\includecomment{whenMediumHtml}
 \\excludecomment{whenMediumPaper}
-\\excludecomment{whenMediumEpub}")))
+\\excludecomment{whenMediumEpub}
+\\excludecomment{whenMediumFile}")))
            ((s-equals? <medium "epub")
             (insert (s-lex-format "
 \\includecomment{whenMediumEpub}
 \\excludecomment{whenMediumPaper}
-\\excludecomment{whenMediumHtml}")))
+\\excludecomment{whenMediumHtml}
+\\excludecomment{whenMediumFile}")))
+           ((s-equals? <medium "file")
+            (insert (s-lex-format "
+\\includecomment{whenMediumFile}
+\\excludecomment{whenMediumPaper}
+\\excludecomment{whenMediumHtml}
+\\excludecomment{whenMediumEpub}")))
            (t
             (insert (s-lex-format "\n%%% ERROR:: Unknown medium=${<medium}"))))))
 
@@ -1756,6 +1781,8 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (setq retVal "3"))
       ((s-equals? <paperSize "a4")
        (setq retVal "4"))
+      ((s-equals? <paperSize "html")
+       (setq retVal "0"))
       (t
        (setq retVal "")))
      retVal))
@@ -1820,6 +1847,10 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (setq retVal "s"))
       ((s-equals? <cover "hard")
        (setq retVal "h"))
+      ((s-equals? <cover "embedded")
+       (setq retVal "e"))
+      ((s-equals? <cover "none")
+       (setq retVal "n"))
       (t
        (setq retVal "")))
      retVal))
@@ -1856,6 +1887,8 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (setq retVal "i"))
       ((s-equals? <printAgent "local")
        (setq retVal "l"))
+      ((s-equals? <printAgent "public")
+       (setq retVal "p"))
       (t
        (setq retVal "")))
      retVal))
@@ -1907,6 +1940,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
          (setq $printAgentTag (buildTagPrintAgentGet (get 'bx:lcnt:curBuild:base 'printAgent)))
                ))
 
+
      (unless <lcntNuBuildTag
        (setq <lcntNuBuildTag (s-lex-format "${$mediumTag}${$paperSizeTag}${$colorTag}${$coverTag}${$printAgentTag}")))
 
@@ -1918,6 +1952,13 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
                   ($frontStr (b:dblock:comeega|frontElement "buildTag"))
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
+
+             (when (s-blank? $mediumTag) (insert (s-lex-format "\n%%% ERROR:: Missing medium")))
+             (when (s-blank? $paperSizeTag) (insert (s-lex-format "\n%%% ERROR:: Missing paperSize")))
+             (when (s-blank? $colorTag) (insert (s-lex-format "\n%%% ERROR:: Missing printColor")))
+             (when (s-blank? $coverTag) (insert (s-lex-format "\n%%% ERROR:: Missing cover")))
+             (when (s-blank? $printAgentTag) (insert (s-lex-format "\n%%% ERROR:: Missing printAgent")))
+
              (insert (s-lex-format
                       "${$frontStr}  ~lcntNuBuildTag=${<lcntNuBuildTag}~"))
              (insert (s-lex-format " ${$eolStr}\n"))))
@@ -2607,7 +2648,10 @@ Expects certain file-local variables to have been set
 \\bibliographystyle{${<bibStyle}}")))
         (t
          (insert (s-lex-format "
-%%%%% Problem -- Unknwon bibProvider=${<bibProvider}")))))
+%%%%% Problem -- Unknwon bibProvider=${<bibProvider}"))))
+         (insert (s-lex-format "\n
+%HEVEA\\bibliographystyle{plain}")))
+
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -2759,7 +2803,9 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
 \\begin{adjustwidth}{-0.25in}{-0.25in}
 \\end{whenPaper6x9}
 
+\\begin{latexonly}
   \\shorttoc{Short Contents}{0}  % Parts and chapters
+\\end{latexonly}
 
   \\renewcommand*\\contentsname{Detailed Contents}
 
@@ -2772,11 +2818,11 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
         (insert "\n \\tableofcontents"))
       )
 
-    (when <tables
-      (insert "\n  \\listoftables"))
-
     (when <figures
       (insert "\n  \\listoffigures"))
+
+    (when <tables
+      (insert "\n  \\listoftables"))
 
     (insert "
 

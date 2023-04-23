@@ -94,15 +94,30 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 ;;;#+END:
 
 
-(setq holiday-bahai-holidays nil)
-
 (require 'calendar)
 (require 'cal-persia)
 (require 'cal-islam)
 
-(setq calendar-islamic-month-name-array
+
+(defun b:diary-persian-date ()
+  "Replaces diary-persian-date -- Without Persian date."
+  (setq calendar-persian-month-name-array
+      ["فروردین" "اردیبهشت" "خرداد" "تیر" "مرداد" "شهریور" "مهر" "آبان" "آذر" "دی" "بهمن" "اسفند" ]
+      )
+  (format "PD: %s" (calendar-persian-date-string date)))
+
+
+(defun b:diary-islamic-date ()
+  "Replaces diary-islamic-date -- Islamic date (until sunset):."
+  (setq calendar-islamic-month-name-array
       ["ٱلْمُحَرَّم" "صَفَر" "رَبِيع ٱلْأَوَّل" "رَبِيع ٱلْآخِر" "جُمَادَىٰ ٱلْأَوَّل" "جُمَادَىٰ ٱلْآخِرَة" "رَجَب" "شَعْبَان" "رَمَضَان" "شَوَّال" "ذُو ٱلْقَعْدَة" "ذُو ٱلْحِجَّة"]
       )
+  (let ((i (calendar-islamic-date-string date)))
+    (if (string-equal i "")
+        "Date is pre-Islamic"
+      (format "ID: %s" i))))
+
+
 
 ;;;#+BEGIN:  b:elisp:pkg/install :outLevel 2 :pkgsType "component" :pkgName "calfw" :pkgDesc "pkgDesc"
 (orgCmntBegin "
@@ -272,6 +287,10 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 ;;;
 (setq calendar-persian-month-name-array
       ["فروردین" "اردیبهشت" "خرداد" "تیر" "مرداد" "شهریور" "مهر" "آبان" "آذر" "دی" "بهمن" "اسفند" ]
+      )
+
+(setq calendar-islamic-month-name-array
+      ["ٱلْمُحَرَّم" "صَفَر" "رَبِيع ٱلْأَوَّل" "رَبِيع ٱلْآخِر" "جُمَادَىٰ ٱلْأَوَّل" "جُمَادَىٰ ٱلْآخِرَة" "رَجَب" "شَعْبَان" "رَمَضَان" "شَوَّال" "ذُو ٱلْقَعْدَة" "ذُو ٱلْحِجَّة"]
       )
 
 ;;; Begin perso-arabic.el
