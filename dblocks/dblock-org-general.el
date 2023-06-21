@@ -1577,7 +1577,7 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
       (when (string= @model "auto")
         (insert (blee:panel:delimiterFrontControl (1- @outLevel) :inDblock t))
         (insert (format
-                 "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]   :: %s <<%s>> [[elisp:(org-cycle)][| *=* |]]"
+                 "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]  [[elisp:(org-cycle)][| *=* |]] :: %s <<%s>>"
                  @dest
                  (blee:panel:fto|atBaseGetDestDesc @dest @destDesc)
                  agendaIndicator

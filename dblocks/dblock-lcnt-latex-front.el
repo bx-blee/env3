@@ -312,15 +312,15 @@
 
 \\settextfont[Scale=1]{XB Zar}
 \\setlatintextfont{Times New Roman}
-\\setdigitfont[Scale=1]{XB Zar}
+% \\setdigitfont[Scale=1]{XB Zar}
 
-\\newfontfamily{\\persian}[Script=Arabic]{XB Zar
+% \\newfontfamily{\\persian}[Script=Arabic]{XB Zar}
 %\\newfontfamily\\arabicfont[Script=Arabic,Scale=1]{B Nazanin}%
 %\\newfontfamily\\arabicfontsf[Script=Arabic,Scale=1]{B Nazanin}%
 %\\newfontinstance{\\persian}[Script=Arabic]{B Nazanin}
 
 % for in-line Arabic we need R-L control
-\\newenvironment{fa}{\\beginR\\persian}{\\endR}
+% \\newenvironment{fa}{\\beginR\\persian}{\\endR}
 ")
         )
       )
@@ -435,14 +435,14 @@
 \\setlength{\\evensidemargin}{0.0cm}
 
 
-\\pagestyle{fancy}
-\\fancyhead{} % clear all header fields  
+%% \\pagestyle{fancy}
+%% \\fancyhead{} % clear all header fields
 %% \\fancyhead[C]{{\\small  {\\tt Work In Progress}}}
-\\renewcommand{\\headrulewidth}{0pt} % no line in header area
-\\fancyfoot{} % clear all footer fields
+%% \\renewcommand{\\headrulewidth}{0pt} % no line in header area
+%% \\fancyfoot{} % clear all footer fields
 %%\\fancyfoot[LE,RO]{\\thepage}           % page number in \"outer\" position of footer line
 %% \\fancyfoot[RE,LO]{{\\tt --EARLY DRAFT DOCUMENT--\\hspace{20 mm} --Reflects Work In Progress-- }}
-\\fancyfoot[RE,LO]{}
+%% \\fancyfoot[RE,LO]{}
 
 
 \\parindent 0 true pc

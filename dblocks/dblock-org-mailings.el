@@ -13,6 +13,7 @@
          ;  [[elisp:(find-file "./mailing.ttytex")][Visit ./mailing.ttytex]] | [[elisp:(message-mode)][message-mode]] | [[elisp:(message-mode)][message-mode]] | [[elisp:(mcdt:setup-and-compose/with-curBuffer)][Compose]] | [[elisp:(mcdt:setup-and-originate/with-curBuffer)][Originate]];
          (<mailingFile (or (plist-get <params :mailingFile) "auto"))
          (<foldDesc (or (plist-get <params :foldDesc) nil))
+         (<extraInfo (or (plist-get <params :extraInfo) nil))
          )
 
     (bxPanel:params$effective)
@@ -44,6 +45,9 @@
             "|| [[elisp:(mcdt:setup-and-originate/with-file \"${<mailingFile}\")][Originate]] ")))
         (message (format "%s" $type))
         (insert (format "|| [[file:%s][Visit]]   " <mailingFile))
+        (when <extraInfo
+          (insert (s-lex-format
+                    "_${<extraInfo}_")))
         )
       )
 
