@@ -117,6 +117,17 @@ and side-effects are documented here
      (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatGptInv-menu.el")
      )
 
+   ;; (require 'bnpa:mtdt)
+   ;; (b:npa:mtdt|fullUpdate)
+
+   (when b:g:dev:mode?
+     (load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-if.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-menu.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:email.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:distr.el")
+     )
+
+
    ;; (require 'bcpg:orgPlus)
    ;; (bcpg:orgPlus|fullUpdate)
 

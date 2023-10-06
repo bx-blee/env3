@@ -15,8 +15,8 @@
 
 (require 'browsers-menu)
 
-(require 'mcdt-menu)
-
+;;(require 'mcdt-menu)
+(require 'mtdt-menu)
 
 (require 'nafm-menu)
 
@@ -95,7 +95,7 @@ For use in delimiters in easy-menu-define"
 
     (b:chatGpt:menu:plugin|install modes:menu:global (s-- 3))
 
-    (mcdt:menu:plugin|install
+    (mtdt:menu:plugin|install
      modes:menu:global (s-- 4))
 
     (web:search:modes:menu:plugin/install

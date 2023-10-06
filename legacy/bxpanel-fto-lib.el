@@ -114,7 +114,13 @@ When :format is line, a complete line.
 	($result (s-lex-format "OOPS --- Neither Leaf, Nor Branch ftpBase=${<ftoBase}"))
 	(<format (or (plist-get <args :format) "terse"))
 	($ftoName)
+        ($symLinkMarkerLeft "")
+        ($symLinkMarkerRight "")
 	)
+    (when (file-symlink-p <ftoBase)
+      (setq $symLinkMarkerLeft " /<")
+      (setq $symLinkMarkerRight ">/ ")
+        )
     (when (fto:treeElem|atBaseIsLeaf? <ftoBase)
       (when (string= <format "terse")
 	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))	
@@ -143,9 +149,11 @@ When :format is line, a complete line.
 	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))
 	(setq $result 
 	      (format
-	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][ =%s= ]]"
+	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][ =%s%s%s= ]]"
 	       (fto:node|atBaseGetNodeBase <ftoBase)
+               $symLinkMarkerLeft
 	       $ftoName
+               $symLinkMarkerRight
 	       )
 	      )
 	)

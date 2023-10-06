@@ -72,12 +72,13 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: b:elisp:pkg/fullUpdate :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "commonLibs"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:commonLibs|fullUpdate>> [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:commonLibs|fullUpdate>>  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
 (defun bcpg:commonLibs|fullUpdate ()
- "commonLibs package adoption control."
- (b:log|entry (b:func$entry))
-  (when bcpg:commonLibs:usgEnabled?
+   " #+begin_org
+** DocStr: *commonLibs* package adoption full update template.
+#+end_org "
+ (b:log|entry (b:func$entry)) (when bcpg:commonLibs:usgEnabled?
     (bcpg:commonLibs:install|update)
     (bcpg:commonLibs:config|main)
     )
@@ -86,10 +87,12 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: b:elisp:pkg:install/update :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "commonLibs"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:commonLibs:install|update>> [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:commonLibs:install|update>>  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
 (defun bcpg:commonLibs:install|update ()
- "commonLibs package adoption install or update template."
+   " #+begin_org
+** DocStr: commonLibs Component Package Adoption install or update template.
+#+end_org "
  (b:log|entry (b:func$entry))
 ;;;#+END:
 
@@ -120,10 +123,12 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: b:elisp:pkg:config/main :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "commonLibs"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:commonLibs:install|update>> [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:commonLibs:config|main>>  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
 (defun bcpg:commonLibs:config|main ()
- "commonLibs package adoption config template."
+   " #+begin_org
+** DocStr: *commonLibs* package adoption config template.
+#+end_org "
  (b:log|entry (b:func$entry))
 ;;;#+END:
    ;;; Configuration Material Comes Here
