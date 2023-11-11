@@ -48,6 +48,8 @@
   (setq org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil author:nil email:nil \\n:t")
   (setq org-msg-startup "hidestars indent inlineimages")
 
+  (setq org-msg-attached-file-reference "ShouldNeverMatch")
+
   ;; (setq org-msg-greeting-fmt "\nHi%s,\n\n")
   ;; (setq org-msg-recipient-names '(("jeremy.compostella@gmail.com" . "Jérémy")))
   ;; (setq org-msg-greeting-name-limit 3)

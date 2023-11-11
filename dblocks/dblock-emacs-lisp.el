@@ -314,8 +314,36 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
   (let* (
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<defName (or (plist-get <params :defName) nil))
+         (<advice (or (plist-get <params :advice) ()))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "NOTYET" )
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (insert (b:dblock:defmacro|prep <defName <advice)))
+
+    (defun outCommentPostContent ()
+      (b:func:advice|insert <defName <advice)
+      (insert (s-lex-format "\n(defmacro ${<defName} (")))
+
+    (bx:invoke:withStdArgs$bx:dblock:governor:process)
+    (outCommentPostContent)
+    ))
+
+(advice-add 'org-dblock-write:b:elisp:defs/defmacro%% :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:elisp:defs/defmacro%% (<params)
+  "
+** When ~:modName~ is nil determine modName based on filName. Otherwise  use ~:modName~.
+Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
+"
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
-         (<defName (or (plist-get <params :defName) nil))         
+         (<defName (or (plist-get <params :defName) nil))
          )
     (bxPanel:params$effective)
 
@@ -326,12 +354,13 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
       (insert
        (s-lex-format
         "  =defmacro= <<${<defName}>>")))
-    
+
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
     (insert
        (s-lex-format
         "\n(defmacro ${<defName} ("))
     ))
+
 
 (advice-add 'org-dblock-write:b:elisp:pkg/usgEnabled?defvar :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:b:elisp:pkg/usgEnabled?defvar (<params)
@@ -485,6 +514,8 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
     (setq $result (concat $openStr $middleStr $closeStr))))
 
 
+(defun b:dblock:defmacro|prep (<funcName <advice)
+  (b:dblock:body:elisp|prep "defmacro" <funcName <advice))
 
 (defun b:dblock:defun|prep (<funcName <advice)
   (b:dblock:body:elisp|prep "defun" <funcName <advice))

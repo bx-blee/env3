@@ -121,12 +121,20 @@ and side-effects are documented here
    ;; (b:npa:mtdt|fullUpdate)
 
    (when b:g:dev:mode?
-     (load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-if.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-menu.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:eval-file.el")
+     ;;(load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-if.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:mailings.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:derive.el")
      (load-file "/bisos/git/bxRepos/blee/mtdt/b:email.el")
      (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:distr.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:recipients.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:names.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:bbdb3.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:send.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/dblock-mtdt.el")
+     ;;(load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-menu.el")
+     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:menu.el")
      )
-
 
    ;; (require 'bcpg:orgPlus)
    ;; (bcpg:orgPlus|fullUpdate)

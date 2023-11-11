@@ -85,6 +85,11 @@
   (define-key global-map [(f3) (c) (f) ] 'bystar:mail:compose:from-friend)
   (define-key global-map [(f3) (c) (c) ] 'bystar:mail:compose:panel)
 
+  (define-key global-map [(f3) (s)] nil)
+  (define-key global-map [(f3) (s) (s) ] 'b:mtdt:compose/popupMenu)
+
+  (defun b:mtdt:compose/popupMenu () (interactive) (popup-menu (symbol-value (b:mtdt:menu:define|derivedMailingInvoke))))
+
   ;;;
   ;;; Compose Email In Alt Language
   ;;;
