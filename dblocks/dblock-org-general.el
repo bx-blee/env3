@@ -11,6 +11,14 @@
     (format "[[elisp:(lsip-local-run-command \"%s\")][%s]]"
             @commandStr @commandStr))
 
+;; (blee:panel:button:shCmndMan "nmcli")
+(defun blee:panel:button:shCmndMan (<cmndStr)
+    (s-lex-format "[[elisp:(manual-entry \"${<cmndStr}\")][Man]]"))
+
+;; (blee:panel:button:shCmndHelp "nmcli")
+(defun blee:panel:button:shCmndHelp (<cmndStr)
+    (s-lex-format "[[elisp:(lsip-local-run-command \"${<cmndStr} --help\")][${<cmndStr} --help]]"))
+
 
 (defun blee:panel:icm:bash:intro (<icmName)
   "Returns String"
@@ -2856,9 +2864,13 @@ Similar to runResult with results as nil.
         (insert (format " [[elisp:(org-cycle)][| /%s/ |]] :: " @label)))
       
       (insert (blee:panel:button:shCommand @command))
+      (insert " _|_ ")
+      (insert (blee:panel:button:shCmndMan @command))
+      (insert " _|_ ")
+      (insert (blee:panel:button:shCmndHelp @command))
       
       (when @comment
-        (insert " *|* ")
+        (insert " *#* ")
         (insert 
          (format " =%s=" @comment)))
 
