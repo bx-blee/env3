@@ -76,7 +76,10 @@ and side-effects are documented here
    ;;    ))
 
    (b:base:main|pureBlee-init)
-      )
+
+   ;; NOTYET, where is the right place to put this?
+   (setq find-file-visit-truename nil)
+   )
 
 
 (orgCmntBegin "

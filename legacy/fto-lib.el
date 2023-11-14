@@ -343,6 +343,8 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 
 
 ;;;
+;;; (insert (expand-file-name "/bisos/git/auth/bxRepos/blee-binders/blee-core/blee-pkgs/mtdt/_nodeBase_"))/bisos/git/auth/bxRepos/blee-binders/blee-core/blee-pkgs/mtdt/_nodeBase_
+;;; (insert (expand-file-name "/bisos/git/auth/bxRepos/blee/mtdt/panels/mtdt/_nodeBase_"))/bisos/git/auth/bxRepos/blee/mtdt/panels/mtdt/_nodeBase_
 ;;; (fto:node|atBaseGetDirBase "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
 ;;; (fto:node|atBaseGetDirBase "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs")
 ;;; (fto:node|atBaseGetDirBase "/acct/employee/lsipusr/org/assests")
@@ -355,7 +357,7 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 	)
     (setq <ftoBase (expand-file-name <ftoBase))
     (unless (fto:treeElem|atBaseIsNode? <ftoBase)
-      (message "NOTYET problem reporting")
+      (message "Problem: Expected a Node")
       )
     (when (fto:treeElem|atBaseIsNode? <ftoBase)
       (unless (string= (file-name-nondirectory <ftoBase) "_nodeBase_")
@@ -373,6 +375,7 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
   )
 
 ;;;
+;;; (fto:node|atBaseGetNodeBase "/bisos/git/auth/bxRepos/blee-binders/blee-core/blee-pkgs/mtdt/_nodeBase_")
 ;;; (fto:node|atBaseGetNodeBase "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
 ;;; (fto:node|atBaseGetNodeBase "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs")
 ;;; (fto:node|atBaseGetNodeBase "/acct/employee/lsipusr/org/assests")

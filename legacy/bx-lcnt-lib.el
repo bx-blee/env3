@@ -148,6 +148,19 @@
 	     (shell-command-to-string 
 	      (format "echo -n $( cat %s/bystarUid )" lcnt-info-base-dir))
 	     )
+
+	(put 'bx:lcnt:info:base
+	     'docDirection
+	     (shell-command-to-string
+	      (format "echo -n $( cat %s/docDirection )" lcnt-info-base-dir))
+	     )
+
+	(put 'bx:lcnt:info:base
+	     'docStage
+	     (shell-command-to-string
+	      (format "echo -n $( cat %s/docStage )" lcnt-info-base-dir))
+	     )
+
 	;; (put 'bx:lcnt:info:base 
 	;;      'articleFileName
 	;;      (shell-command-to-string 
@@ -343,7 +356,9 @@ bx:lcnt:curBuild:base-show
 
 ;;;   (bx:lcnt:curBuild:base-read-dir "/lcnt/lgpc/mohsen/permanent/polyExistential/mb_polyExistentials")
 (defun bx:lcnt:curBuild:base-read-dir (@dir)
-  " For documentation see: /libre/ByStar/InitialTemplates/activeDocs/blee/lcntPublications/lcntBuilds/fullUsagePanel-en.org
+  " Puts attributes for each parameters.
+NOTYET: Should also obtain the name of build directory.
+For documentation see: /libre/ByStar/InitialTemplates/activeDocs/blee/lcntPublications/lcntBuilds/fullUsagePanel-en.org
 "
   (interactive "DEnter Directory:")
 
@@ -449,6 +464,14 @@ bx:lcnt:curBuild:base-show
 	    (format "echo -n $( head -1 %s/isbn13Nu )" $curBuildBaseDir))
 	   )
 
+      ;;(get 'bx:lcnt:curBuild:base 'build.tex
+      (put 'bx:lcnt:curBuild:base
+	   'build.tex
+           nil)
+        (when (f-exists? (concat bx:lcnt:curBuild:base "/build.tex"))
+          (put 'bx:lcnt:curBuild:base
+	       'build.tex
+               (concat bx:lcnt:curBuild:base "/build.tex")))
 
       t
       )

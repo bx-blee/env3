@@ -10,9 +10,10 @@
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
-         ;  [[elisp:(find-file "./mailing.ttytex")][Visit ./mailing.ttytex]] | [[elisp:(message-mode)][message-mode]] | [[elisp:(message-mode)][message-mode]] | [[elisp:(mcdt:setup-and-compose/with-curBuffer)][Compose]] | [[elisp:(mcdt:setup-and-originate/with-curBuffer)][Originate]];
+         ;  [[elisp:(find-file "./mailing.ttytex")][Visit ./mailing.ttytex]] | [[elisp:(message-mode)][message-mode]] | [[elisp:(message-mode)][message-mode]] | [[elisp:(mtdt:setup-and-compose/with-curBuffer)][Compose]] | [[elisp:(mtdt:setup-and-originate/with-curBuffer)][Originate]];
          (<mailingFile (or (plist-get <params :mailingFile) "auto"))
          (<foldDesc (or (plist-get <params :foldDesc) nil))
+         (<extraInfo (or (plist-get <params :extraInfo) nil))
          )
 
     (bxPanel:params$effective)
@@ -31,24 +32,80 @@
              ($extensionFileName)
              ($mailingName)
              ($mailingBuf (find-file <mailingFile))
-	     ($mailingParams (mcdt:mailing:params|from-buf $mailingBuf))
+	     ($mailingParams (mtdt:mailing:params|from-buf $mailingBuf))
              ($type (or (plist-get $mailingParams :type) nil))
              )
-        (setq $mailingName (mcdt:mailing:getName|with-file <mailingFile))
+        (setq $mailingName (mtdt:mailing:getName|with-file <mailingFile))
         (when <foldDesc
           (insert (format "  [[elisp:(org-cycle)][| /%s/ |]] " <foldDesc)))
-        (insert (format "    [[elisp:(mcdt:setup-and-compose/with-file \"%s\")][%s]] " <mailingFile $mailingName))
+        (insert (format "    [[elisp:(mtdt:setup-and-compose/with-file \"%s\")][%s]] " <mailingFile $mailingName))
         (when (equalp $type 'originate )
           (insert
            (s-lex-format
-            "|| [[elisp:(mcdt:setup-and-originate/with-file \"${<mailingFile}\")][Originate]] ")))
+            "|| [[elisp:(mtdt:setup-and-originate/with-file \"${<mailingFile}\")][Originate]] ")))
         (message (format "%s" $type))
         (insert (format "|| [[file:%s][Visit]]   " <mailingFile))
+        (when <extraInfo
+          (insert (s-lex-format
+                    "_${<extraInfo}_")))
         )
       )
 
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
     ))
+
+
+(advice-add 'org-dblock-write:bxPanel:mtdt/compose :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:bxPanel:mtdt/compose  (<params)
+  "Creates terse links for navigation surrounding current panel in treeElem."
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openTerseNoNl" "closeContinue"))
+         ;  [[elisp:(find-file "./mailing.ttytex")][Visit ./mailing.ttytex]] | [[elisp:(message-mode)][message-mode]] | [[elisp:(message-mode)][message-mode]] | [[elisp:(mtdt:setup-and-compose/with-curBuffer)][Compose]] | [[elisp:(mtdt:setup-and-originate/with-curBuffer)][Originate]];
+         (<mailingFile (or (plist-get <params :mailingFile) "auto"))
+         (<foldDesc (or (plist-get <params :foldDesc) nil))
+         (<extraInfo (or (plist-get <params :extraInfo) nil))
+         )
+
+    (bxPanel:params$effective)
+
+    (defun helpLine ()
+      ":bxoId \"auto or bxoId\""
+      )
+
+    (defun bodyContentPlus ()
+      ;;(bxPanel:lineDeliminator|top <realm)
+      )
+
+    (defun bodyContent ()
+      "If there is user data, insert it."
+      (let* (
+             ($extensionFileName)
+             ($mailingName)
+             ($mailingBuf (find-file <mailingFile))
+	     ($mailingParams (mtdt:mailing:params|from-buf $mailingBuf))
+             ($type (or (plist-get $mailingParams :type) nil))
+             )
+        (setq $mailingName (mtdt:mailing:getName|with-file <mailingFile))
+        (when <foldDesc
+          (insert (format "  [[elisp:(org-cycle)][| /%s/ |]] " <foldDesc)))
+        (insert (format "    [[elisp:(mtdt:setup-and-compose/with-file \"%s\")][%s]] " <mailingFile $mailingName))
+        (when (equalp $type 'originate )
+          (insert
+           (s-lex-format
+            "|| [[elisp:(mtdt:setup-and-originate/with-file \"${<mailingFile}\")][Originate]] ")))
+        (message (format "%s" $type))
+        (insert (format "|| [[file:%s][Visit]]   " <mailingFile))
+        (when <extraInfo
+          (insert (s-lex-format
+                    "_${<extraInfo}_")))
+        )
+      )
+
+    (bx:invoke:withStdArgs$bx:dblock:governor:process)
+    ))
+
 
 
 (advice-add 'org-dblock-write:bx:mtdt:content/actions :around #'bx:dblock:control|wrapper)
@@ -78,20 +135,20 @@ Behaviour should be different based on what type of buffer we are in."
              ($mailingName)
              ($mailingBuf (current-buffer))
              ($mailingFile (buffer-file-name (current-buffer)))
-	     ($mailingParams (mcdt:mailing:params|from-buf $mailingBuf))
+	     ($mailingParams (mtdt:mailing:params|from-buf $mailingBuf))
              ($type (or (plist-get $mailingParams :type) nil))
              ($headersList)
              )
-        ;;(setq $mailingName (mcdt:mailing:getName|with-file $mailingFile))
+        ;;(setq $mailingName (mtdt:mailing:getName|with-file $mailingFile))
         ;;
 
         (defun selectLaTeX-ltr (<basePath)
           (insert (s-lex-format
-                   "  [[elisp:(mcdt:mailing:baseDir|set \"${<basePath}\")][Select LTR Base]]")))
+                   "  [[elisp:(mtdt:mailing:baseDir|set \"${<basePath}\")][Select LTR Base]]")))
 
         (defun selectLaTeX-rtl (<basePath)
           (insert (s-lex-format
-                   "  [[elisp:(mcdt:mailing:baseDir|set \"${<basePath}\")][Select RTL Base]]")))
+                   "  [[elisp:(mtdt:mailing:baseDir|set \"${<basePath}\")][Select RTL Base]]")))
 
         (save-excursion
           (beginning-of-buffer)
@@ -117,9 +174,9 @@ Behaviour should be different based on what type of buffer we are in."
         (insert (s-lex-format
                 " | [[elisp:(message-mode)][message-mode]]"))
         (insert (s-lex-format
-                " | [[elisp:(mcdt:setup-and-compose/with-curBuffer)][Compose]]"))
+                " | [[elisp:(mtdt:setup-and-compose/with-curBuffer)][Compose]]"))
         (insert (s-lex-format
-                 " | [[elisp:(mcdt:setup-and-originate/with-curBuffer)][Originate]]"))
+                 " | [[elisp:(mtdt:setup-and-originate/with-curBuffer)][Originate]]"))
         (insert "\n#+END_COMMENT")
         )
       )

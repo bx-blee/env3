@@ -1585,7 +1585,7 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
       (when (string= @model "auto")
         (insert (blee:panel:delimiterFrontControl (1- @outLevel) :inDblock t))
         (insert (format
-                 "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]   :: %s <<%s>> [[elisp:(org-cycle)][| *=* |]]"
+                 "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]  [[elisp:(org-cycle)][| *=* |]] :: %s <<%s>>"
                  @dest
                  (blee:panel:fto|atBaseGetDestDesc @dest @destDesc)
                  agendaIndicator
@@ -2045,6 +2045,7 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
         (@origin (or (plist-get @params :origin) ""))
         ;;
         ($out-string)
+        ($trueFileName (file-truename buffer-file-name))
         )
 
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
@@ -2093,7 +2094,11 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
           (setq $out-string (concat $out-string "\n** Origin    :: /libre/ByStar/InitialTemplates/activeDocs/common/activitiesPanels/" $origin))
         )
       (insert $out-string)
-      
+      (unless (string-equal buffer-file-name $trueFileName)
+        (insert (s-lex-format "* /file-truename:/  ${$trueFileName}\n")))
+
+      ;; (insert (s-lex-format "* /file-truename:/  ${buffer-file-truename\n"))
+
       (insert
        (format
         "%s \
@@ -2234,7 +2239,7 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
 #+STARTUP: inlineimages
 #+SEQ_TODO: TODO WAITING DELEGATED | DONE DEFERRED CANCELLED
 #+TAGS: @desk(d) @home(h) @work(w) @withInternet(i) @road(r) call(c) errand(e)
-#+CATEGORY: %s\
+#+CATEGORY: %s
 "
                (blee:org:agenda:category-get)    
                ))

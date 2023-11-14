@@ -970,7 +970,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              ($eolStr (b:dblock:comeega|eolControls))
              )
       (insert
-         (s-lex-format "${$frontStr} /${<methodName}/ deco=${<decorate} "))
+         (s-lex-format "${$frontStr} /${<methodName}/ "))
 
       (if (not (string= <comment ""))
           (insert (s-lex-format " =${<comment}=")))

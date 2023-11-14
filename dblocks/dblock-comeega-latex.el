@@ -566,6 +566,7 @@ Expects certain file-local variables to have been set
           (<includeFile (or (plist-get <params :includeFile) ""))
           (<includedAs (or (plist-get <params :includedAs) "INCLUDED"))
           (<notClearDoublePage (or (plist-get <params :notClearDoublePage) nil))
+          (<whenCond (or (plist-get <params :whenCond) ""))
           )
      (bxPanel:params$effective)
 
@@ -576,12 +577,15 @@ Expects certain file-local variables to have been set
            (let* (
                   ($frontStr (b:dblock:comeega|frontElement <includedAs))
                   ($eolStr (b:dblock:comeega|eolControls))
+                  ($whenCondMsg "")
                   )
+             (unless (s-blank? <whenCond)
+               (setq $whenCondMsg (s-lex-format "whenCond=${<whenCond}")))
              (if (file-exists-p <includeFile)
                  (insert (s-lex-format
-                          "${$frontStr}   ~Include File~  file:${<includeFile}"))
+                          "${$frontStr} ${$whenCondMsg} ~Include File~  file:${<includeFile}"))
                (insert (s-lex-format
-                        "${$frontStr} _MISSING_ ~Include File~  file:${<includeFile}")))
+                        "${$frontStr} ${$whenCondMsg} _MISSING_ ~Include File~  file:${<includeFile}")))
              (insert (s-lex-format " ${$eolStr}\n"))))
 
      (defun outCommentPostContent ()
@@ -592,12 +596,21 @@ Expects certain file-local variables to have been set
 \\begin{whenNotIncludeOnly}
   \\cleardoublepage%
 \\end{whenNotIncludeOnly}")))
+             (unless (s-blank? <whenCond)
+               (insert (s-lex-format "
+\\begin{${<whenCond}}"
+                                     )))
              (insert (s-lex-format "
 \\begingroup
 \\let\\clearpage\\relax
 \\include{${<includeFile}}
 \\endgroup"
-              )))
+              ))
+             (unless (s-blank? <whenCond)
+               (insert (s-lex-format "
+\\end{${<whenCond}}"
+                                     )))
+             )
          (progn
            (insert (s-lex-format
                         "\n%%%% Missing ${<includeFile}"))))
@@ -1211,6 +1224,8 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
           (<docWhenType (or (plist-get <params :docWhenType) "isComplete"))
           )
      (bxPanel:params$effective)
+     (bx:lcnt:info:base-read)
+
 
      ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
      ;; (setq $includeOnlyList '())
@@ -1223,15 +1238,24 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
            (let* (
                   ($frontStr (b:dblock:comeega|frontElement "whenCond"))
                   ($eolStr (b:dblock:comeega|eolControls))
+                  ($docDirection (get 'bx:lcnt:info:base 'docDirection))
+                  ($docStage (get 'bx:lcnt:info:base 'docStage))
                   )
              (insert (s-lex-format
                       "${$frontStr} docWhenType=${<docWhenType}"))
              (insert (s-lex-format " ${$eolStr}\n"))))
 
      (defun outCommentPostContent ()
-       (cond
-        ((string-equal <docWhenType "isComplete")
-         (insert (s-lex-format
+       (let* (
+              ($docDirection (get 'bx:lcnt:info:base 'docDirection))
+              ($docStage (get 'bx:lcnt:info:base 'docStage))
+              )
+
+         (message (s-lex-format "docDir and Stage ${$docDirection} ${$docStage}"))
+
+         (when
+          (string-equal <docWhenType "isComplete")
+           (insert (s-lex-format
                   "\n
 \\includecomment{whenIsBook}         % With Chapters
 \\excludecomment{whenIsArticle}      % Without Chapters
@@ -1244,8 +1268,32 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 \\excludecomment{whenNext}
 
 \\excludecomment{ignore}")))
-        (t
-         )))
+
+         (when
+          (string-equal $docDirection "ltr")
+           (insert (s-lex-format "\n
+\\includecomment{whenDocDirectionLtr}
+\\excludecomment{whenDocDirectionRtl}")))
+
+         (when
+          (string-equal $docDirection "rtl")
+           (insert (s-lex-format "\n
+\\includecomment{whenDocDirectionRtl}
+\\excludecomment{whenDocDirectionLtr}")))
+
+         (when
+          (string-equal $docStage "production")
+           (insert (s-lex-format "\n
+\\includecomment{whenProduction}         % No Debuging
+\\excludecomment{whenDevelopment}        % For Debuging")))
+
+         (when
+          (string-equal $docStage "development")
+           (insert (s-lex-format "\n
+\\excludecomment{whenProduction}         % No Debuging
+\\includecomment{whenDevelopment}        % For Debuging")))
+
+         ))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -1409,6 +1457,61 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (bx:invoke:withStdArgs$bx:dblock:governor:process)
        (outCommentPostContent)
        )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenCurBuild" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/whenCurBuild>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/whenCurBuild :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/whenCurBuild (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Inserts build.tex of curBuild (if any) inside of dblock.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<curBuild (or (plist-get <params :curBuild) nil))
+          (<when (or (plist-get <params :when) nil))
+          ($curBuild:buildTex nil)
+          ($curBuild:buildName nil)
+          )
+     (bxPanel:params$effective)
+
+     (when <curBuild
+       (when (bx:lcnt:curBuild:base-read)
+         (setq $curBuild:buildTex  (get 'bx:lcnt:curBuild:base 'build.tex))
+         (setq $curBuild:buildName  (get 'bx:lcnt:curBuild:base 'buildName))
+         ))
+
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "whenCurBld"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} whencurBuild ~curBuild=${$curBuild:buildName}~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (when (equal <when "main")
+         (when $curBuild:buildTex
+           (insert "\n")
+           (insert-file-contents $curBuild:buildTex))))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenPrintColor" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
