@@ -137,6 +137,7 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
          (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
          (<extrasSection (or (plist-get <params :extrasSection) nil))
+         ($sshDest <ipAddr)
          )
 
     (bxPanel:params$effective)
@@ -239,9 +240,12 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
          (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
          (<extrasSection (or (plist-get <params :extrasSection) nil))
+         ($sshDest <ipAddr)
          )
 
     (bxPanel:params$effective)
+    (when <user
+      (setq $sshDest (s-lex-format "${<user}@${<ipAddr}")))
 
     (defun helpLine ()
       ":sysName \"platformName\""
@@ -259,7 +263,7 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
                        <outLevel
                        (s-lex-format "*(${<ipAddr})* /${<abode} -- HOST-${<sysStage}/ -- ${<label}") ;;  title
                        (s-lex-format "${<sysName}") ;; anchor
-                       (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr}\")][ssh]] - ~${<status}~ loc:${<loc}")
+                       (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${$sshDest}\")][ssh]] - ~${<status}~ loc:${<loc}")
                        :inDblock t
                        :rawTitle t
                        :sep <sep
@@ -277,15 +281,15 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
         (b:bisos:sys|prepHeading <outLevel)
         (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ping -c 3 ${<ipAddr}\")][ping3]]"))
         (b:bisos:sys|cmndsDivider)
-        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -font 10x20\")][ssh+xterm]]"))
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${$sshDest} -f xterm -font 10x20\")][ssh+xterm]]"))
         (b:bisos:sys|cmndsDivider)
-        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -hold -e bleeclient -i emacsLocalAttachFrame\")][EmacsAttach]]"))
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${$sshDest} -f xterm -hold -e bleeclient -i emacsLocalAttachFrame\")][EmacsAttach]]"))
         (b:bisos:sys|cmndsDivider)
-        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -hold -e emacs\")][ssh+xterm+emacs]]"))
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${$sshDest} -f xterm -hold -e emacs\")][ssh+xterm+emacs]]"))
         ;;(b:bisos:sys|prepHeading <outLevel)
         (b:bisos:sys|cmndsDivider)
         (insert (s-lex-format
-                 "[[elisp:(lsip-local-run-command \"lcaSshAdmin.sh  -v -n showRun -p localUser=bystar -p remoteUser=bystar -p remoteHost=${<ipAddr}  -i authorizedKeysUpdate\")][authorizedKeysUpdate]]"))
+                 "[[elisp:(lsip-local-run-command \"lcaSshAdmin.sh  -v -n showRun -p localUser=bystar -p remoteUser=${<user} -p remoteHost=${<ipAddr}  -i authorizedKeysUpdate\")][authorizedKeysUpdate]]"))
 
         (when <bpo
           (b:bisos:sys|prepHeading <outLevel)
@@ -388,7 +392,7 @@ TODO: has not been tested.
         ;;(b:bisos:sys|prepHeading <outLevel)
         (b:bisos:sys|cmndsDivider)
         (insert (s-lex-format
-                 "[[elisp:(lsip-local-run-command \"lcaSshAdmin.sh  -v -n showRun -p localUser=bystar -p remoteUser=bystar -p remoteHost=${<ipAddr}  -i authorizedKeysUpdate\")][authorizedKeysUpdate]]"))
+                 "[[elisp:(lsip-local-run-command \"lcaSshAdmin.sh  -v -n showRun -p localUser=${<user} -p remoteUser=${<user} -p remoteHost=${<ipAddr}  -i authorizedKeysUpdate\")][authorizedKeysUpdate]]"))
 
         (when <bpo
           (b:bisos:sys|prepHeading <outLevel)
