@@ -274,13 +274,15 @@ We then distinguish between chapter and section based on indentation and TitleSt
         (@inDblock (or (plist-get @args :inDblock) nil))
         (@rawTitle (or (plist-get @args :rawTitle) nil))
         (@sep (or (plist-get @args :sep) nil))
-        (@folding? (or (plist-get @args :folding?) t))  
+        (@folding? (or (plist-get @args :folding?) t))
+        (<dense (or (plist-get @args :dense) nil))
         ;;
         ($openTitleStr "==")
         ($closeTitleStr "==")
         ($indentationStr "")
         ;;
         ($result nil)
+        ($gap "  ")
         )
 
     (unless (plist-member @args :rawTitle)
@@ -341,14 +343,18 @@ We then distinguish between chapter and section based on indentation and TitleSt
                (blee:panel:outLevelStr @outLevel)
                )))
 
+    (when <dense
+      (setq $gap ""))
+
     (when @folding?
       (setq $result 
             (format "\
 %s \
-%s   [[elisp:(outline-show-subtree+toggle)][| %s%s:%s |]] %s %s \
+%s%s [[elisp:(outline-show-subtree+toggle)][| %s%s:%s |]] %s %s \
 "
                     (blee:panel:frontControl @outLevel :inDblock @inDblock)
                     $indentationStr
+                    $gap
                     $openTitleStr
                     @title
                     $closeTitleStr
@@ -359,10 +365,11 @@ We then distinguish between chapter and section based on indentation and TitleSt
       (setq $result       
             (format "\
 %s \
-%s    %s%s:%s %s %s \
+%s%s   %s%s:%s %s %s \
 "
                     (blee:panel:frontControl @outLevel :inDblock @inDblock)
                     $indentationStr
+                    $gap
                     $openTitleStr
                     @title
                     $closeTitleStr

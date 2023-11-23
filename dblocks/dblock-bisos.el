@@ -68,6 +68,47 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
 " orgCmntEnd)
 ;;;#+END:
 
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:bisos:sys|prepHeading" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:bisos:sys|prepHeading>>  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun b:bisos:sys|prepHeading (
+;;;#+END:
+                                <outLevel
+                                )
+   " #+begin_org
+** DocStr: Insert  <outLevel + 1 number of * s at the begining of the line.
+#+end_org "
+  (insert "\n")
+  (insert (s-repeat (+ <outLevel 1) "*"))
+  (insert " "))
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(b:bisos:sys|prepHeading 2)
+#+END_SRC
+" orgCmntEnd)
+
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:bisos:sys|cmndsDivider" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:bisos:sys|cmndsDivider>>  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun b:bisos:sys|cmndsDivider (
+;;;#+END:
+                                )
+   " #+begin_org
+** DocStr: Insert a divider.
+#+end_org "
+     (insert " || "))
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(b:bisos:sys|cmndsDivider)
+#+END_SRC
+" orgCmntEnd)
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:bisos:sys/guestPlatform" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -77,23 +118,25 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
 (defun org-dblock-write:b:bisos:sys/guestPlatform (<params)
 ;;;#+END:
    " #+begin_org
-** DocStr:
+** DocStr: Provide access and information to a guest platfrom.
 #+end_org "
   (let* (
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-         (<style (letGet$style "openBlank" "closeContinue"))
+         (<style (letGet$style "openBlank" "closeBlank"))
          ;;
-         (<outLevel (or (plist-get <params :outLevel) 2)) ;; Outline Level
          (<sep (or (plist-get <params :sep) nil))    ;; seperator line
          (<extraInfo (or (plist-get <params :extraInfo) nil))
          ;;
+         (<bpo (or (plist-get <params :bpo) nil))
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
+         (<user (or (plist-get <params :user) "bystar"))
          (<curHost (or (plist-get <params :curHost) nil))
          (<abode (or (plist-get <params :abode) nil))
-         (<sysStage (or (plist-get <params :sysStage) nil))
-         (<status (or (plist-get <params :status) nil))
+         (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
+         (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
+         (<extrasSection (or (plist-get <params :extrasSection) nil))
          )
 
     (bxPanel:params$effective)
@@ -112,32 +155,53 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
              )
         (setq $sectionStr (blee:panel:foldingSection
                        <outLevel
-                       (s-lex-format "${<abode} (${<ipAddr}) -- Guest-${<sysStage}") ;;  title
+                       (s-lex-format "*(${<ipAddr})* /${<abode} -- Guest-${<sysStage}/") ;;  title
                        (s-lex-format "${<sysName}") ;; anchor
-                       (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -font 10x20\")][ssh+xterm]] - ~${<status}~ in [[${<curHost}]]")
+                       (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr}\")][ssh]] - ~${<status}~ in [[host:${<curHost}]]")
                        :inDblock t
-                       :rawTitle nil
+                       :rawTitle t
                        :sep <sep
+                       :dense t
                        ))
 
         (insert (s-lex-format "${$sectionStr}"))
         (insert (s-lex-format "|| ~${<extraInfo}~"))
       ))
 
-    (defun prepHeading ()
-        (insert "\n")
-        (insert (s-repeat (+ <outLevel 1) "*"))
-        (insert " "))
-
     (defun outCommentPostContent ()
-      (let (($moduleName (file-name-sans-extension (bx:buf-fname)))
-            ($version (format-time-string "%Y%m%d%M%S"))
+      (let (
+            ($sectionStr)
             )
-        (prepHeading)
-        (insert (s-lex-format "emacsAttach"))
+        (b:bisos:sys|prepHeading <outLevel)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ping -c 3 ${<ipAddr}\")][ping3]]"))
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -font 10x20\")][ssh+xterm]]"))
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -hold -e bleeclient -i emacsLocalAttachFrame\")][EmacsAttach]]"))
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -hold -e emacs\")][ssh+xterm+emacs]]"))
+        ;;(b:bisos:sys|prepHeading <outLevel)
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format
+                 "[[elisp:(lsip-local-run-command \"lcaSshAdmin.sh  -v -n showRun -p localUser=bystar -p remoteUser=bystar -p remoteHost=${<ipAddr}  -i authorizedKeysUpdate\")][authorizedKeysUpdate]]"))
 
-        ;; mmaSshAdmin.sh -p localUser=lsipusr -p remoteUser=lsipusr -p remoteHost=192.168.0.199 -i authorizedKeysUpdate
+        (when <bpo
+          (b:bisos:sys|prepHeading <outLevel)
+          (insert (s-lex-format "BPO: ${<bpo}")))
 
+        (when <extrasSection
+          (setq $sectionStr (blee:panel:foldingSection
+                       (+ <outLevel 1)
+                       (s-lex-format "Extra Information") ;;  title
+                       (s-lex-format "") ;; anchor
+                       (s-lex-format "")
+                       :inDblock t
+                       :rawTitle nil
+                       :sep nil
+                       :dense t
+                       ))
+          (insert "\n")
+          (insert (s-lex-format "${$sectionStr}")))
         ))
 
     (progn  ;; Actual Invocations
@@ -155,22 +219,26 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
 (defun org-dblock-write:b:bisos:sys/hostPlatform (<params)
 ;;;#+END:
    " #+begin_org
-** DocStr:
+** DocStr: Provide access and information to a guest platfrom.
 #+end_org "
   (let* (
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-         (<style (letGet$style "openBlank" "closeContinue"))
+         (<style (letGet$style "openBlank" "closeBlank"))
          ;;
-         (<outLevel (or (plist-get <params :outLevel) 2)) ;; Outline Level
          (<sep (or (plist-get <params :sep) nil))    ;; seperator line
          (<extraInfo (or (plist-get <params :extraInfo) nil))
          ;;
+         (<bpo (or (plist-get <params :bpo) nil))
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
+         (<label (or (plist-get <params :label) nil))
+         (<user (or (plist-get <params :user) "bystar"))
+         (<loc (or (plist-get <params :loc) nil))
          (<abode (or (plist-get <params :abode) nil))
-         (<sysStage (or (plist-get <params :sysStage) nil))  ;; System, BISOS Platform, BISOS Loaded
-         (<status (or (plist-get <params :status) nil))
+         (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
+         (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
+         (<extrasSection (or (plist-get <params :extrasSection) nil))
          )
 
     (bxPanel:params$effective)
@@ -189,32 +257,53 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
              )
         (setq $sectionStr (blee:panel:foldingSection
                        <outLevel
-                       (s-lex-format "${<abode} (${<ipAddr}) -- Host-${<sysStage}") ;;  title
+                       (s-lex-format "*(${<ipAddr})* /${<abode} -- HOST-${<sysStage}/ -- ${<label}") ;;  title
                        (s-lex-format "${<sysName}") ;; anchor
-                       (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -font 10x20\")][ssh+xterm]] - ~${<status}~")
+                       (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr}\")][ssh]] - ~${<status}~ loc:${<loc}")
                        :inDblock t
-                       :rawTitle nil
+                       :rawTitle t
                        :sep <sep
+                       :dense t
                        ))
 
         (insert (s-lex-format "${$sectionStr}"))
         (insert (s-lex-format "|| ~${<extraInfo}~"))
       ))
 
-    (defun prepHeading ()
-        (insert "\n")
-        (insert (s-repeat (+ <outLevel 1) "*"))
-        (insert " "))
-
     (defun outCommentPostContent ()
-      (let (($moduleName (file-name-sans-extension (bx:buf-fname)))
-            ($version (format-time-string "%Y%m%d%M%S"))
+      (let (
+            ($sectionStr)
             )
-        (prepHeading)
-        (insert (s-lex-format "emacsAttach"))
+        (b:bisos:sys|prepHeading <outLevel)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ping -c 3 ${<ipAddr}\")][ping3]]"))
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -font 10x20\")][ssh+xterm]]"))
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -hold -e bleeclient -i emacsLocalAttachFrame\")][EmacsAttach]]"))
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -hold -e emacs\")][ssh+xterm+emacs]]"))
+        ;;(b:bisos:sys|prepHeading <outLevel)
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format
+                 "[[elisp:(lsip-local-run-command \"lcaSshAdmin.sh  -v -n showRun -p localUser=bystar -p remoteUser=bystar -p remoteHost=${<ipAddr}  -i authorizedKeysUpdate\")][authorizedKeysUpdate]]"))
 
-        ;; mmaSshAdmin.sh -p localUser=lsipusr -p remoteUser=lsipusr -p remoteHost=192.168.0.199 -i authorizedKeysUpdate
+        (when <bpo
+          (b:bisos:sys|prepHeading <outLevel)
+          (insert (s-lex-format "BPO: ${<bpo}")))
 
+        (when <extrasSection
+          (setq $sectionStr (blee:panel:foldingSection
+                       (+ <outLevel 1)
+                       (s-lex-format "Extra Information") ;;  title
+                       (s-lex-format "") ;; anchor
+                       (s-lex-format "")
+                       :inDblock t
+                       :rawTitle nil
+                       :sep nil
+                       :dense t
+                       ))
+          (insert "\n")
+          (insert (s-lex-format "${$sectionStr}")))
         ))
 
     (progn  ;; Actual Invocations
@@ -223,6 +312,108 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
       (outCommentPostContent)
       )))
 
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:bisos:sys/purePlatform" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:bisos:sys/purePlatform>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:bisos:sys/purePlatform :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:bisos:sys/purePlatform (<params)
+;;;#+END:
+   " #+begin_org
+** DocStr: Provide access and information to a pure platfrom. No virtualization.
+TODO: has not been tested.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         ;;
+         (<sep (or (plist-get <params :sep) nil))    ;; seperator line
+         (<extraInfo (or (plist-get <params :extraInfo) nil))
+         ;;
+         (<bpo (or (plist-get <params :bpo) nil))
+         (<sysName (or (plist-get <params :sysName) nil))
+         (<ipAddr (or (plist-get <params :ipAddr) nil))
+         (<label (or (plist-get <params :label) nil))
+         (<user (or (plist-get <params :user) "bystar"))
+         (<loc (or (plist-get <params :loc) nil))
+         (<abode (or (plist-get <params :abode) nil))
+         (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
+         (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
+         (<extrasSection (or (plist-get <params :extrasSection) nil))
+         )
+
+    (bxPanel:params$effective)
+
+    (defun helpLine ()
+      ":sysName \"platformName\""
+      )
+
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+
+    (defun bodyContent ()
+      ""
+      (let* (
+             ($sectionStr)
+             )
+        (setq $sectionStr (blee:panel:foldingSection
+                       <outLevel
+                       (s-lex-format "*(${<ipAddr})* /${<abode} -- HOST-${<sysStage}/ -- ${<label}") ;;  title
+                       (s-lex-format "${<sysName}") ;; anchor
+                       (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr}\")][ssh]] - ~${<status}~ loc:${<loc}")
+                       :inDblock t
+                       :rawTitle t
+                       :sep <sep
+                       :dense t
+                       ))
+
+        (insert (s-lex-format "${$sectionStr}"))
+        (insert (s-lex-format "|| ~${<extraInfo}~"))
+      ))
+
+    (defun outCommentPostContent ()
+      (let (
+            ($sectionStr)
+            )
+        (b:bisos:sys|prepHeading <outLevel)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ping -c 3 ${<ipAddr}\")][ping3]]"))
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -font 10x20\")][ssh+xterm]]"))
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -hold -e bleeclient -i emacsLocalAttachFrame\")][EmacsAttach]]"))
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format "[[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr} -f xterm -hold -e emacs\")][ssh+xterm+emacs]]"))
+        ;;(b:bisos:sys|prepHeading <outLevel)
+        (b:bisos:sys|cmndsDivider)
+        (insert (s-lex-format
+                 "[[elisp:(lsip-local-run-command \"lcaSshAdmin.sh  -v -n showRun -p localUser=bystar -p remoteUser=bystar -p remoteHost=${<ipAddr}  -i authorizedKeysUpdate\")][authorizedKeysUpdate]]"))
+
+        (when <bpo
+          (b:bisos:sys|prepHeading <outLevel)
+          (insert (s-lex-format "BPO: ${<bpo}")))
+
+        (when <extrasSection
+          (setq $sectionStr (blee:panel:foldingSection
+                       (+ <outLevel 1)
+                       (s-lex-format "Extra Information") ;;  title
+                       (s-lex-format "") ;; anchor
+                       (s-lex-format "")
+                       :inDblock t
+                       :rawTitle nil
+                       :sep nil
+                       :dense t
+                       ))
+          (insert "\n")
+          (insert (s-lex-format "${$sectionStr}")))
+        ))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
 
 
 
