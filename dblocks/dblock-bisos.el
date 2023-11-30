@@ -187,7 +187,7 @@ Parameter Descriptions:
              )
         (setq $sectionStr (blee:panel:foldingSection
                        <outLevel
-                       (s-lex-format "*(${<ipAddr})* /${<abode} -- Guest-${<sysStage}/") ;;  title
+                       (s-lex-format "=Guest-${<sysStage} -- ${<abode}= *(${<ipAddr})*") ;;  title
                        (s-lex-format "${<sysName}") ;; anchor
                        (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr}\")][ssh]] - ~${<status}~ in host:[[${<host}]]")
                        :inDblock t
@@ -395,7 +395,7 @@ TODO: has not been tested.
              )
         (setq $sectionStr (blee:panel:foldingSection
                        <outLevel
-                       (s-lex-format "*(${<ipAddr})* /${<abode} -- HOST-${<sysStage}/ -- ${<label}") ;;  title
+                       (s-lex-format " ~PURE-${<sysStage} ${<abode} -- ${<label}~ *(${<ipAddr})*") ;;  title
                        (s-lex-format "${<sysName}") ;; anchor
                        (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr}\")][ssh]] - ~${<status}~ loc:${<loc}")
                        :inDblock t
