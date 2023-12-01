@@ -38,27 +38,37 @@ Dblocks for the following types of systems is supported:
 | sys:disnet         | Device with no IP capabilities, UPS  |
 |--------------------+--------------------------------------|
 
-Parameter Descriptions:
+Parameters Default and  Description:
+(default is the value when not specified which can be different for each  sys:)
 
-|----------+---------------------------------------------|
-| bpo      | System bpo that may also point to device    |
-| sysName  | As it appears in hostname and dns           |
-| ipAddr   | ip                                          |
-| user     | user                                        |
-| host     | Points to host. Only valid in guest         |
-| abode    | One of inner-rim, outer-rim,  exp-rim, ring |
-| sysStage | One of SYS, BP, BSP                         |
-| status   | One of dev, sealed,                         |
-| phoneNu  | Only applies to Android                     |
-| osVer    | Debian 11/12, Android xx                    |
-| BisosVer | Release Nu                                  |
-|----------+---------------------------------------------|
+|----------+---------+---------------------------------------------|
+| field    | default | description                                 |
+|----------+---------+---------------------------------------------|
+| bpo      | nil     | System bpo that may also point to device    |
+| sysName  | nil     | As it appears in hostname and dns           |
+| ipAddr   | nil     | Address                                     |
+| user     | bystar  | Username for ssh                            |
+| passwd   | nil     | When nil, sshkeys are used                  |
+| host     | nil     | Points to host. Only valid in guest         |
+| abode    | I-Rim   | One of inner-rim, outer-rim,  exp-rim, ring |
+| sysStage | BSP     | One of SYS, BP, BSP                         |
+| status   | dev     | One of dev, sealed,                         |
+| phoneNu  | nil     | Only applies to Android                     |
+| osVer    | Deb11   | Debian 11/12, Android xx                    |
+| bisosVer | 3.0     | Release Nu                                  |
+| results  | all     | As per blee:bxPanel:runResult               |
+|----------+---------+---------------------------------------------|
 
 
 ** Relevant Panels:
 ** Status: In use with blee3
 ** /[[elisp:(org-cycle)][| Planned Improvements |]]/ :
-*** TODO  workbench is incomplete and minimal.
+*** +
+*** DONE [#A]  Add a general purpose default parameter value instead of (or nil) model
+SCHEDULED: <2023-11-29 Wed>
+*** DONE [#B] Add results as param. Apply it to run results.
+*** DONE Add facter to all.
+*** -
 " orgCmntEnd)
 
 ;;;#+BEGIN: b:prog:file/orgTopControls :outLevel 1
@@ -99,6 +109,38 @@ Parameter Descriptions:
 " orgCmntEnd)
 ;;;#+END:
 
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:bisos|sshpassStr" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:bisos|sshpassStr>>  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun b:bisos|sshpassStr (
+;;;#+END:
+                           <passwd
+                           )
+   " #+begin_org
+** DocStr: Return a string that can be used in front of ssh using sshpass.
+#+end_org "
+   (let* (($result "")
+          )
+     (when <passwd
+       (setq $result (s-lex-format "sshpass -p ${<passwd} ")))
+     $result))
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(progn
+   (b:bisos|sshpassStr nil)
+   (b:bisos|sshpassStr (symbol-name 'somePasswd))
+   )
+#+END_SRC
+
+#+RESULTS:
+: sshpass -p somePasswd
+
+" orgCmntEnd)
+
+
 ;;;#+BEGIN:  b:elisp:defs/defun :defName "b:bisos:sys|prepHeading" :advice ()
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:bisos:sys|prepHeading>>  --   [[elisp:(org-cycle)][| ]]
@@ -117,6 +159,7 @@ Parameter Descriptions:
 (orgCmntBegin "
 ** Basic Usage:
 #+BEGIN_SRC emacs-lisp
+because of inserts, you can not eval this in org-mode
 (b:bisos:sys|prepHeading 2)
 #+END_SRC
 " orgCmntEnd)
@@ -136,6 +179,7 @@ Parameter Descriptions:
 (orgCmntBegin "
 ** Basic Usage:
 #+BEGIN_SRC emacs-lisp
+because of inserts, you can not eval this in org-mode
 (b:bisos:sys|cmndsDivider)
 #+END_SRC
 " orgCmntEnd)
@@ -162,13 +206,20 @@ Parameter Descriptions:
          (<bpo (or (plist-get <params :bpo) nil))
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
-         (<user (or (plist-get <params :user) nil))
+         (<user (plistGetOrDef <params :user "bystar"))
+         (<passwd (plistGetOrDef <params :passwd nil))
          (<host (or (plist-get <params :host) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
          (<noExtrasSection (or (plist-get <params :noExtrasSection) nil))
+         (<results (plistGetOrDef <params :results "all"))
+         (<osVer (plistGetOrDef <params :osVer "Deb11"))
+         (<bisosVer (plistGetOrDef <params :bisosVer "3.0"))
+         ;;
          ($sshDest <ipAddr)
+         ($outLevelStars (s-repeat (1+ <outLevel) "*"))
+         ($sshpassStr (b:bisos|sshpassStr <passwd))
          )
 
     (bxPanel:params$effective)
@@ -221,6 +272,19 @@ Parameter Descriptions:
           (b:bisos:sys|prepHeading <outLevel)
           (insert (s-lex-format "BPO: ${<bpo}")))
 
+        (b:bisos:sys|prepHeading <outLevel)
+        (insert (s-lex-format "Assumed: osVer=${<osVer}  bisosVer=${<bisosVer}"))
+
+        (insert "\n")
+
+        (org-dblock-write:blee:bxPanel:runResult
+         (list
+          :outLevel (+ <outLevel 1)
+          :command (s-lex-format "${$sshpassStr}ssh ${$sshDest} facter -y | yaml-to-org | sed -e 's/^/${$outLevelStars}/'")
+          :results <results
+          :comment ""
+          :afterComment ""))
+
         (unless <noExtrasSection
           (setq $sectionStr (blee:panel:foldingSection
                        (+ <outLevel 1)
@@ -265,13 +329,20 @@ Parameter Descriptions:
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
          (<label (or (plist-get <params :label) nil))
-         (<user (or (plist-get <params :user) "bystar"))
+         (<user (plistGetOrDef <params :user "bystar"))
+         (<passwd (plistGetOrDef <params :passwd nil))
          (<loc (or (plist-get <params :loc) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
          (<noExtrasSection (or (plist-get <params :noExtrasSection) nil))
+         (<results (plistGetOrDef <params :results "all"))
+         (<osVer (plistGetOrDef <params :osVer "Deb11"))
+         (<bisosVer (plistGetOrDef <params :bisosVer "3.0"))
+         ;;
          ($sshDest <ipAddr)
+         ($outLevelStars (s-repeat (1+ <outLevel) "*"))
+         ($sshpassStr (b:bisos|sshpassStr <passwd))
          )
 
     (bxPanel:params$effective)
@@ -326,6 +397,29 @@ Parameter Descriptions:
           (b:bisos:sys|prepHeading <outLevel)
           (insert (s-lex-format "BPO: ${<bpo}")))
 
+        (b:bisos:sys|prepHeading <outLevel)
+        (insert (s-lex-format "Assumed: osVer=${<osVer}  bisosVer=${<bisosVer}"))
+
+        (insert "\n")
+
+        (org-dblock-write:blee:bxPanel:runResult
+         (list
+          :outLevel (+ <outLevel 1)
+          :command (s-lex-format "${$sshpassStr}ssh ${$sshDest} facter -y | yaml-to-org | sed -e 's/^/${$outLevelStars}/'")
+          :results <results
+          :comment ""
+          :afterComment ""))
+
+        (insert "\n")
+
+        (org-dblock-write:blee:bxPanel:runResult
+         (list
+          :outLevel (+ <outLevel 1)
+          :command (s-lex-format "${$sshpassStr}ssh ${$sshDest} virsh --connect qemu:///system list --all")
+          :results "all"
+          :comment ""
+          :afterComment ""))
+
         (unless <noExtrasSection
           (setq $sectionStr (blee:panel:foldingSection
                        (+ <outLevel 1)
@@ -371,12 +465,20 @@ TODO: has not been tested.
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
          (<label (or (plist-get <params :label) nil))
-         (<user (or (plist-get <params :user) "bystar"))
+         (<user (plistGetOrDef <params :user "bystar"))
+         (<passwd (plistGetOrDef <params :passwd nil))
          (<loc (or (plist-get <params :loc) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
          (<noExtrasSection (or (plist-get <params :noExtrasSection) nil))
+         (<results (plistGetOrDef <params :results "all"))
+         (<osVer (plistGetOrDef <params :osVer "Deb11"))
+         (<bisosVer (plistGetOrDef <params :bisosVer "3.0"))
+         ;;
+         ($sshDest <ipAddr)
+         ($outLevelStars (s-repeat (1+ <outLevel) "*"))
+         ($sshpassStr (b:bisos|sshpassStr <passwd))
          )
 
     (bxPanel:params$effective)
@@ -429,6 +531,19 @@ TODO: has not been tested.
           (b:bisos:sys|prepHeading <outLevel)
           (insert (s-lex-format "BPO: ${<bpo}")))
 
+        (b:bisos:sys|prepHeading <outLevel)
+        (insert (s-lex-format "Assumed: osVer=${<osVer}  bisosVer=${<bisosVer}"))
+
+        (insert "\n")
+
+        (org-dblock-write:blee:bxPanel:runResult
+         (list
+          :outLevel (+ <outLevel 1)
+          :command (s-lex-format "${$sshpassStr}ssh ${$sshDest} facter -y | yaml-to-org | sed -e 's/^/${$outLevelStars}/'")
+          :results <results
+          :comment ""
+          :afterComment ""))
+        
         (unless <noExtrasSection
           (setq $sectionStr (blee:panel:foldingSection
                        (+ <outLevel 1)
@@ -474,12 +589,18 @@ TODO: has not been tested.
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
          (<label (or (plist-get <params :label) nil))
-         (<user (or (plist-get <params :user) "bystar"))
+         (<user (plistGetOrDef <params :user "bystar"))
          (<loc (or (plist-get <params :loc) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
          (<noExtrasSection (or (plist-get <params :noExtrasSection) nil))
+         (<results (plistGetOrDef <params :results "all"))
+         (<osVer (plistGetOrDef <params :osVer "Deb11"))
+         (<bisosVer (plistGetOrDef <params :bisosVer "3.0"))
+         ;;
+         ($sshDest <ipAddr)
+         ($outLevelStars (s-repeat (1+ <outLevel) "*"))
          )
 
     (bxPanel:params$effective)
@@ -532,6 +653,9 @@ TODO: has not been tested.
           (b:bisos:sys|prepHeading <outLevel)
           (insert (s-lex-format "BPO: ${<bpo}")))
 
+        (b:bisos:sys|prepHeading <outLevel)
+        (insert (s-lex-format "Assumed: osVer=${<osVer}  bisosVer=${<bisosVer}"))
+
         (unless <noExtrasSection
           (setq $sectionStr (blee:panel:foldingSection
                        (+ <outLevel 1)
@@ -577,12 +701,18 @@ TODO: has not been tested.
          (<ipAddr (or (plist-get <params :ipAddr) nil))
          (<phoneNu (or (plist-get <params :phoneNu) nil))
          (<label (or (plist-get <params :label) nil))
-         (<user (or (plist-get <params :user) "bystar"))
+         (<user (plistGetOrDef <params :user "bystar"))
          (<loc (or (plist-get <params :loc) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
          (<noExtrasSection (or (plist-get <params :noExtrasSection) nil))
+         (<results (plistGetOrDef <params :results "all"))
+         (<osVer (plistGetOrDef <params :osVer "Deb11"))
+         (<bisosVer (plistGetOrDef <params :bisosVer "3.0"))
+         ;;
+         ($sshDest <ipAddr)
+         ($outLevelStars (s-repeat (1+ <outLevel) "*"))
          )
 
     (bxPanel:params$effective)
@@ -635,6 +765,9 @@ TODO: has not been tested.
           (b:bisos:sys|prepHeading <outLevel)
           (insert (s-lex-format "BPO: ${<bpo}")))
 
+        (b:bisos:sys|prepHeading <outLevel)
+        (insert (s-lex-format "Assumed: osVer=${<osVer}  bisosVer=${<bisosVer}"))
+
         (unless <noExtrasSection
           (setq $sectionStr (blee:panel:foldingSection
                        (+ <outLevel 1)
@@ -680,7 +813,6 @@ TODO: has not been tested.
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
          (<label (or (plist-get <params :label) nil))
-         (<user (or (plist-get <params :user) "bystar"))
          (<loc (or (plist-get <params :loc) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<sysStage (or (plist-get <params :sysStage) nil))  ;; One of SYS, BP, BSP
@@ -784,7 +916,6 @@ TODO: has not been tested.
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
          (<host (or (plist-get <params :host) nil))
-         (<user (or (plist-get <params :user) "bystar"))
          (<abode (or (plist-get <params :abode) nil))
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
          (<noExtrasSection (or (plist-get <params :noExtrasSection) nil))
@@ -871,7 +1002,6 @@ TODO: has not been tested.
          (<bpo (or (plist-get <params :bpo) nil))
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
-         (<user (or (plist-get <params :user) "bystar"))
          (<host (or (plist-get <params :host) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
@@ -971,7 +1101,6 @@ TODO: has not been tested.
          (<bpo (or (plist-get <params :bpo) nil))
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
-         (<user (or (plist-get <params :user) "bystar"))
          (<loc (or (plist-get <params :loc) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
@@ -1062,7 +1191,6 @@ TODO: has not been tested.
          (<bpo (or (plist-get <params :bpo) nil))
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
-         (<user (or (plist-get <params :user) "bystar"))
          (<loc (or (plist-get <params :loc) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc
@@ -1153,7 +1281,6 @@ TODO: has not been tested.
          (<bpo (or (plist-get <params :bpo) nil))
          (<sysName (or (plist-get <params :sysName) nil))
          (<ipAddr (or (plist-get <params :ipAddr) nil))
-         (<user (or (plist-get <params :user) "bystar"))
          (<loc (or (plist-get <params :loc) nil))
          (<abode (or (plist-get <params :abode) nil))
          (<status (or (plist-get <params :status) nil)) ;; dev, sealed, etc

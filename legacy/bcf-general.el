@@ -64,6 +64,9 @@ See also: get-arg (<namedArgs <argName <default)
     $result
     ))
 
+;;Additionaly we defalias plist-get-or-default to a shorter name
+(defalias 'plistGetOrDef 'plist-get-or-default)
+
 
 (defun call-stack ()
   "Return the current call stack frames.
