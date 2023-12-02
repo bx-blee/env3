@@ -91,7 +91,7 @@
   (require 'dblock-comeega-latex)
   (require 'dblock-comeega-latex-pres)
   (require 'dblock-comeega-latex-image)
-  (require 'dblock-bisos)
+  (require 'dblock-bisos-site)
   (message "bx:dblock:defaults-set -- Done." )
   )
 
