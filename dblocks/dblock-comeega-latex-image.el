@@ -369,7 +369,8 @@ and side-effects are documented here
          )
 
     (setq $fileName (f-no-ext (f-filename <imageFile)))
-    (setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo ${$fileName} | latexencode")))
+    ;;(setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo ${$fileName} | latexencode")))
+    (setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo ${$fileName} | /bisos/venv/py3/adopted/bin/latexencode")))
     (setq $fileNameParts (s-split "-" $fileName))
     (setq $dateday (nth 0 $fileNameParts))
     (setq $dateTime (s-left 4 (nth 1 $fileNameParts)))
