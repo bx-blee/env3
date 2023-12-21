@@ -143,6 +143,7 @@ and side-effects are documented here
   (let* (
          (<imageFile (or (plist-get <params :imageFile) ""))
          (<comment (or (plist-get <params :comment) ""))
+         (<fileNameEncoded (or (plist-get <params :fileNameEncoded) ""))
          )
 
     (insert (s-lex-format "\n
@@ -164,6 +165,7 @@ and side-effects are documented here
   \\begin{rawhtml}")
 
     (insert (s-lex-format "
+${<comment}
 <div class=\"center\">
 <img src=\"${<imageFile}\" height=\"450\">
 </div>"))
@@ -299,8 +301,11 @@ and side-effects are documented here
     (setq <params (plist-put <params ':audio "labeled"))
     (setq <params (plist-put <params ':fragile "true"))
     (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Image -- ${$fileNameEncoded}")))
+    (setq <params (plist-put <params ':fileNameEncoded (s-lex-format "${$fileNameEncoded}")))
+    (setq <params (plist-put <params ':label (s-lex-format "${$fileNameEncoded}")))
+    ;;(setq <params (plist-put <params ':title (s-lex-format "${$fileNameEncoded}")))
 
-     (org-dblock-write:bx:dblock:lcnt:latex-section <params)
+     (org-dblock-write:bx:dblock:lcnt:latex-section <params)  ;; A macro, that uses :seg-title etc
 
      (b:lcnt:pres:commonDblock:outComment/begin <params)
 
@@ -370,7 +375,7 @@ and side-effects are documented here
 
     (setq $fileName (f-no-ext (f-filename <imageFile)))
     ;;(setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo ${$fileName} | latexencode")))
-    (setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo ${$fileName} | /bisos/venv/py3/adopted/bin/latexencode")))
+    (setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo -n ${$fileName} | /bisos/venv/py3/adopted/bin/latexencode")))
     (setq $fileNameParts (s-split "-" $fileName))
     (setq $dateday (nth 0 $fileNameParts))
     (setq $dateTime (s-left 4 (nth 1 $fileNameParts)))
@@ -382,6 +387,8 @@ and side-effects are documented here
     (setq <params (plist-put <params ':audio "labeled"))
     (setq <params (plist-put <params ':fragile "true"))
     (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Photo -- ${$fileNameEncoded}")))
+    (setq <params (plist-put <params ':label (s-lex-format "${$fileNameEncoded}")))
+    ;; (setq <params (plist-put <params ':title (s-lex-format "${$fileNameEncoded}")))
 
     (org-dblock-write:bx:dblock:lcnt:latex-section <params)
 
