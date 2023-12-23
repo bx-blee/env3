@@ -144,7 +144,22 @@ and side-effects are documented here
          (<imageFile (or (plist-get <params :imageFile) ""))
          (<comment (or (plist-get <params :comment) ""))
          (<fileNameEncoded (or (plist-get <params :fileNameEncoded) ""))
+         ($resolutionImageFile nil)
          )
+
+    (defun resolutionImageFile (<imageFile)
+      (let* (
+             ($result <imageFile)
+             ($mediumImageFile (s-concat (f-no-ext <imageFile) "-medium." (f-ext <imageFile)))
+             ; ($mediumImageFile (s-concat (f-no-ext <imageFile) "-small." (f-ext <imageFile)))
+             )
+        (when (file-exists-p $mediumImageFile)
+          (setq $result $mediumImageFile))
+        $result))
+
+    ;; (resolutionImageFile "/lcnt/lgcc/mohsen/permanent/photos/shabeYaldaPhotos/image/2023/20231221-191811.jpg")
+
+    (setq $resolutionImageFile (resolutionImageFile <imageFile))
 
     (insert (s-lex-format "\n
 \\begin{presentationMode}
@@ -154,7 +169,7 @@ and side-effects are documented here
     \\begin{center}"))
 
     (insert (s-lex-format "
-       \\includegraphics[width=108mm,height=76mm,keepaspectratio]{${<imageFile}}"))
+       \\includegraphics[width=108mm,height=76mm,keepaspectratio]{${$resolutionImageFile}}"))
 
     (insert "
     \\end{center}
@@ -296,16 +311,18 @@ and side-effects are documented here
     (setq $fileName (f-no-ext (f-filename <imageFile)))
     (setq $fileNameEncoded (shell-command-to-string (concat "uri@Encode.sh " $fileName)))
 
+    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Image -- ${$fileNameEncoded}")))
+    (setq <params (plist-put <params ':label (s-lex-format "")))
+
+    (org-dblock-write:bx:dblock:lcnt:latex-section <params)  ;; A macro, that uses :seg-title etc
+
     (setq <params (plist-put <params ':type "Frame:begin-plain"))
     (setq <params (plist-put <params ':options "plain"))
     (setq <params (plist-put <params ':audio "labeled"))
     (setq <params (plist-put <params ':fragile "true"))
-    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Image -- ${$fileNameEncoded}")))
     (setq <params (plist-put <params ':fileNameEncoded (s-lex-format "${$fileNameEncoded}")))
     (setq <params (plist-put <params ':label (s-lex-format "${$fileNameEncoded}")))
     ;;(setq <params (plist-put <params ':title (s-lex-format "${$fileNameEncoded}")))
-
-     (org-dblock-write:bx:dblock:lcnt:latex-section <params)  ;; A macro, that uses :seg-title etc
 
      (b:lcnt:pres:commonDblock:outComment/begin <params)
 
@@ -382,15 +399,18 @@ and side-effects are documented here
 
     ;;(insert (s-lex-format "time = ${$dateTime}"))
 
+    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Image -- ${$fileNameEncoded}")))
+    (setq <params (plist-put <params ':label (s-lex-format "")))
+
+    (org-dblock-write:bx:dblock:lcnt:latex-section <params)  ;; A macro, that uses :seg-title etc
+
     (setq <params (plist-put <params ':type "Frame:begin-plain"))
     (setq <params (plist-put <params ':options "plain"))
     (setq <params (plist-put <params ':audio "labeled"))
     (setq <params (plist-put <params ':fragile "true"))
-    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Photo -- ${$fileNameEncoded}")))
     (setq <params (plist-put <params ':label (s-lex-format "${$fileNameEncoded}")))
     ;; (setq <params (plist-put <params ':title (s-lex-format "${$fileNameEncoded}")))
 
-    (org-dblock-write:bx:dblock:lcnt:latex-section <params)
 
     (b:lcnt:pres:commonDblock:outComment/begin <params)
 
@@ -523,8 +543,10 @@ and side-effects are documented here
   (let* (
          (<albumFile (or (plist-get <params :albumFile) ""))
          (<comment (or (plist-get <params :comment) ""))
+         (<resolution (plistGetOrDef <params :resolution "default"))
          ($sexps)
          )
+    (setq b:lcnt:photo:resolution <resolution)
     (setq $sexps (b:file:read/asSexp <albumFile))
     (loop-for-each $eachSexp $sexps
       (insert (s-lex-format "\n%%% Processing:  ${$eachSexp}"))
