@@ -311,10 +311,10 @@ and side-effects are documented here
     (setq $fileName (f-no-ext (f-filename <imageFile)))
     (setq $fileNameEncoded (shell-command-to-string (concat "uri@Encode.sh " $fileName)))
 
-    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Image -- ${$fileNameEncoded}")))
+    (setq <params (plist-put <params ':seg-title (s-lex-format "${$fileNameEncoded}")))
     (setq <params (plist-put <params ':label (s-lex-format "")))
 
-    (org-dblock-write:bx:dblock:lcnt:latex-section <params)  ;; A macro, that uses :seg-title etc
+    (org-dblock-write:bx:dblock:lcnt:latex-subsection <params)  ;; A macro, that uses :seg-title etc
 
     (setq <params (plist-put <params ':type "Frame:begin-plain"))
     (setq <params (plist-put <params ':options "plain"))
@@ -399,10 +399,10 @@ and side-effects are documented here
 
     ;;(insert (s-lex-format "time = ${$dateTime}"))
 
-    (setq <params (plist-put <params ':seg-title (s-lex-format "Auto Gened Image -- ${$fileNameEncoded}")))
+    (setq <params (plist-put <params ':seg-title (s-lex-format "${$fileNameEncoded}")))
     (setq <params (plist-put <params ':label (s-lex-format "")))
 
-    (org-dblock-write:bx:dblock:lcnt:latex-section <params)  ;; A macro, that uses :seg-title etc
+    (org-dblock-write:bx:dblock:lcnt:latex-subsection <params)  ;; A macro, that uses :seg-title etc
 
     (setq <params (plist-put <params ':type "Frame:begin-plain"))
     (setq <params (plist-put <params ':options "plain"))
