@@ -310,7 +310,7 @@ because of inserts, you can not eval this in org-mode
           (setq $sectionStr (blee:panel:foldingSection
                        (+ <outLevel 1)
                        (s-lex-format "Extra Information") ;;  title
-                       (s-lex-format "") ;; anchor
+                       (s-lex-format "C@${<sysName}") ;; anchor
                        (s-lex-format "")
                        :inDblock t
                        :rawTitle nil
@@ -385,7 +385,7 @@ because of inserts, you can not eval this in org-mode
         (setq $sectionStr (blee:panel:foldingSection
                        <outLevel
                        (s-lex-format "*(${<ipAddr})* /${<abode} -- HOST-${<sysStage}/") ;;  title
-                       (s-lex-format "${<sysName}${<sysName}${<sysName}") ;; anchor
+                       (s-lex-format "${<sysName}") ;; anchor
                        (s-lex-format " [[${<label}]] [[elisp:(lsip-local-run-command \"ssh -X ${$sshDest}\")][ssh]] - ~${<status}~ loc:${<loc}")
                        :inDblock t
                        :rawTitle t
@@ -528,9 +528,9 @@ TODO: has not been tested.
              )
         (setq $sectionStr (blee:panel:foldingSection
                        <outLevel
-                       (s-lex-format " ~PURE-${<sysStage} ${<abode} -- ${<label}~ *(${<ipAddr})*") ;;  title
+                       (s-lex-format " ~PURE-${<sysStage} ${<abode}~ *(${<ipAddr})*") ;;  title
                        (s-lex-format "${<sysName}") ;; anchor
-                       (s-lex-format " [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr}\")][ssh]] - ~${<status}~ loc:${<loc}")
+                       (s-lex-format " [[${<label}]] [[elisp:(lsip-local-run-command \"ssh -X ${<ipAddr}\")][ssh]] - ~${<status}~ loc:${<loc}")
                        :inDblock t
                        :rawTitle t
                        :sep <sep
@@ -579,7 +579,7 @@ TODO: has not been tested.
           (setq $sectionStr (blee:panel:foldingSection
                        (+ <outLevel 1)
                        (s-lex-format "Extra Information") ;;  title
-                       (s-lex-format "") ;; anchor
+                       (s-lex-format "C@${<sysName}") ;; anchor
                        (s-lex-format "")
                        :inDblock t
                        :rawTitle nil
