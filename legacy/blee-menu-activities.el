@@ -64,16 +64,16 @@
 
       "---"
       ["Blee Core" (blee:bnsm:panel-goto "/bisos/panels/blee-core/_nodeBase_") t]
-      ["Blee Model" (blee:bnsm:panel-goto "/bisos/panels/blee-model/_nodeBase_") t]
-      ["Blee Development" (blee:bnsm:panel-goto "/bisos/panels/blee-dev/_nodeBase_") t]
+      ;; ["Blee Model" (blee:bnsm:panel-goto "/bisos/panels/blee-model/_nodeBase_") t]
+      ;; ["Blee Development" (blee:bnsm:panel-goto "/bisos/panels/blee-dev/_nodeBase_") t]
       "---"
       ["BISOS Core" (blee:bnsm:panel-goto "/bisos/panels/bisos-core/_nodeBase_") t]
-      ["BISOS Model" (blee:bnsm:panel-goto "/bisos/panels/bisos-model/_nodeBase_/") t]
-      ["BISOS Development" (blee:bnsm:panel-goto "/bisos/panels/bisos-dev/_nodeBase_") t]
+      ;; ["BISOS Model" (blee:bnsm:panel-goto "/bisos/panels/bisos-model/_nodeBase_/") t]
+      ;; ["BISOS Development" (blee:bnsm:panel-goto "/bisos/panels/bisos-dev/_nodeBase_") t]
       "---"
       ["BxDE Core" (blee:bnsm:panel-goto "/bisos/panels/bxde-core/_nodeBase_") t]
-      ["BxDE Model" (blee:bnsm:panel-goto "/bisos/panels/bxde-model/_nodeBase_/") t]
-      ["BxDE Development" (blee:bnsm:panel-goto "/bisos/panels/bxde-dev/_nodeBase_") t]
+      ;; ["BxDE Model" (blee:bnsm:panel-goto "/bisos/panels/bxde-model/_nodeBase_/") t]
+      ["BISOS, Blee & BxDE  Development" (blee:bnsm:panel-goto "/bisos/panels/development/_nodeBase_") t]
       "---"
       ["BISOS Periphery (Printers, Scanners, Android, Windows, etc) " (blee:bnsm:panel-goto "/bisos/panels/bisos-periphery/_nodeBase_") t]
       ["BISOS User Environment Apps" (blee:bnsm:panel-goto "/bisos/panels/bisos-apps/_nodeBase_") t]
