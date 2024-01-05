@@ -1121,12 +1121,19 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
     (defun bodyContentPlus ()
       )
 
-    (defun generalPanels ()
+    (defun generalPanelsFullOld ()
       (insert
        (format
         "%s  General Panels ::   [[img-link:file:/bisos/blee/env/images/bystarInside.jpg][http://www.by-star.net]] *|*  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/listOfDocs/fullUsagePanel-en.org\")][BxDE Top Panel]] *|* [[elisp:(blee:bnsm:panel-goto \"/libre/ByStar/InitialTemplates/activeDocs/planning/Main\")][ByStar Planning]]\n"
         (blee:panel:frontControl @outLevel :inDblock "yes")
         @panelsList
+        )))
+
+    (defun generalPanels ()
+      (insert
+       (format
+        "%s +"
+        (blee:panel:outLevelStr @outLevel)
         )))
 
     (defun topLineDeliminator ()
