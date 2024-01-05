@@ -1141,6 +1141,19 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
         ))
       )
 
+    (defun decedentsDeliminator ()
+      (insert
+       (format
+        "%s%s*%s*%s"
+        (blee:panel:outLevelStr @outLevel)
+        (make-string 40 ? )
+        ;;(make-string 30 ?=)
+        (make-string 24 cfw:fchar-horizontal-line)
+        (make-string 28 ? )
+        ))
+      )
+
+
     (defun bodyContent ()
       "Descendents, Siblings and Ancestors of This Node."
       (let* (
@@ -1189,6 +1202,9 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
               (when (eq count countLimit)
                 (setq count 0))
               )
+
+            (insert "\n")
+            (decedentsDeliminator)
 
             (setq count 0)          
             (dolist ($eachSubDir (fto:node|atBaseGetSiblingsBases
@@ -1247,6 +1263,9 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
               (when (eq count countLimit)
                 (setq count 0))
               )
+
+            (insert "\n")
+            (decedentsDeliminator)
 
             (setq count 0)
             (dolist ($eachSubDir (fto:node|atBaseGetSiblingsBases
