@@ -71,6 +71,8 @@
       ;; ["BISOS Model" (blee:bnsm:panel-goto "/bisos/panels/bisos-model/_nodeBase_/") t]
       ;; ["BISOS Development" (blee:bnsm:panel-goto "/bisos/panels/bisos-dev/_nodeBase_") t]
       "---"
+      ["Connectivity (LANs, WANs, WiFi, BlueTooth, USBs) " (blee:bnsm:panel-goto "/bisos/panels/connectivity/_nodeBase_") t]
+      "---"
       ["BxDE Core" (blee:bnsm:panel-goto "/bisos/panels/bxde-core/_nodeBase_") t]
       ;; ["BxDE Model" (blee:bnsm:panel-goto "/bisos/panels/bxde-model/_nodeBase_/") t]
       ["BISOS, Blee & BxDE  Development" (blee:bnsm:panel-goto "/bisos/panels/development/_nodeBase_") t]
@@ -80,7 +82,7 @@
       ["Espoused Languages, Frameworks, Tools" (blee:bnsm:panel-goto "/bisos/panels/espoused/_nodeBase_") t]
       ["Non Libre-Halaal Adopted Tools" (blee:bnsm:panel-goto "/bisos/panels/non-libre-halaal/_nodeBase_") t]
       ["Blee Panels Root" (blee:bnsm:panel-goto "/bisos/panels/panelsRoot") t]            
-      ;; "---"
+      ;;
       ;; ("Blee and By* Documents and Information"
       ;;  ["Blee:  Model, Usage Procedures, Policies" (blee:bnsm:doc-goto  "/libre/ByStar/InitialTemplates/activeDocs/blee") t]
       ;;  ["Blee Stable Developement" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bleeDev") t]
