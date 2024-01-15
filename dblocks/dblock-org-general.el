@@ -1643,15 +1643,15 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
       (setq org-agenda-files
             (append org-agenda-files (list
                                       (concat (file-name-as-directory @dest)
-                                              "fullUsagePanel-en.org"))))
+                                              "fullUsagePanel-en.org")))))
       ;;; go to @dest, and run these dblocks there
-      (with-temp-buffer
-        (insert-file-contents (concat (file-name-as-directory @dest)
-                                      "fullUsagePanel-en.org"))
-        (setq default-directory (file-name-as-directory @dest))
-        (blee:org-update-named-dblocks "blee:bxPanel:linkWithTreeElem")
-        )
-      )
+      ;; (with-temp-buffer
+      ;;   (insert-file-contents (concat (file-name-as-directory @dest)
+      ;;                                 "fullUsagePanel-en.org"))
+      ;;   (setq default-directory (file-name-as-directory @dest))
+      ;;   (blee:org-update-named-dblocks "blee:bxPanel:linkWithTreeElem")
+      ;;   )
+      ;; )
 
     ))
 
