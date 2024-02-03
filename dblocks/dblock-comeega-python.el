@@ -938,6 +938,50 @@ When <ro==py  is same as cli+py plus <ro=noCli
       )))
 
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun  :defName "org-dblock-write:b:py3:cs:cmnd/alias" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:cmnd/alias>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:cmnd/alias :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:cmnd/alias (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Insert a CS Cmnd Class Header
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<cmndName (or (plist-get <params :cmndName) ""))
+         (<existingName (or (plist-get <params :existingName) ""))
+         )
+
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "Alias")))
+             ($backStr (b:dblock:comeega|eolControls))
+             )
+             (insert (s-lex-format "${$frontStr} <<${<cmndName}>> "))
+
+             (insert (s-lex-format "${<cmndName} is alias for [[${<existingName}]]"))
+
+             (insert (s-lex-format " ${$backStr}"))
+             ))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "\n${<cmndName} = ${<existingName}")))
+
+   (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:method/typing" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:method/typing>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
