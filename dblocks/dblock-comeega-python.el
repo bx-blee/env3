@@ -963,12 +963,12 @@ When <ro==py  is same as cli+py plus <ro=noCli
     (defun bodyContentPlus ())
     (defun bodyContent ()
       (let* (
-             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "Alias")))
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "CmndAlias")))
              ($backStr (b:dblock:comeega|eolControls))
              )
              (insert (s-lex-format "${$frontStr} <<${<cmndName}>> "))
 
-             (insert (s-lex-format "${<cmndName} is alias for [[${<existingName}]]"))
+             (insert (s-lex-format "is /alias/ for [[${<existingName}]]"))
 
              (insert (s-lex-format " ${$backStr}"))
              ))
