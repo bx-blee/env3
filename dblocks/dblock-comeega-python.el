@@ -897,6 +897,9 @@ When <ro==py  is same as cli+py plus <ro=noCli
           (insert (s-lex-format "\
         \"\"\"${<comment}\"\"\"")))
 
+     (insert (s-lex-format "
+        failed = b_io.eh.badOutcome"))
+
      (when (or (string= <extent "verify") (string= <extent "default"))
        (insert "
         callParamsDict = {")
@@ -910,7 +913,7 @@ When <ro==py  is same as cli+py plus <ro=noCli
            (setq $argsListOrNone "None"))
          (insert (s-lex-format "\
         if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, ${$argsListOrNone}).isProblematic():
-            return b_io.eh.badOutcome(cmndOutcome)")))
+            return failed(cmndOutcome)")))
        (unless (equal <argsMax 0)
          (insert (s-lex-format "
         cmndArgsSpecDict = self.cmndArgsSpec()"))))
