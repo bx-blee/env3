@@ -462,7 +462,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                )
           (insert (s-lex-format "${$last} = ${<each} # exec/eval-ed as __main__.ClassName\n"))))
 
-      (when <classes
+      (when (> (length <classes) 0)
         (insert "\n\n")
         (loop-for-each $each <classes
           (exposedSymbolsEach $each))
