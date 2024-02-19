@@ -2605,6 +2605,7 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
         (@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
         (@style (or (plist-get @params :style) (list "openBlank" "closeTerse"))) ;; souroundings style
         (@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+        (@sep (or (plist-get @params :sep) nil))    ;; seperator line
         ;;
         (@command (or (plist-get @params :command) ""))
         (@comment (or (plist-get @params :comment) nil))
@@ -2643,6 +2644,7 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
         (setq $stdErrStr " 2> /dev/null")
         (setq $stdOutOnlyIndicator "stdout "))     
 
+      (bx:str:insert (bx:panel:sep|whenRequired @sep @outLevel))
 
       (insert
        (format
