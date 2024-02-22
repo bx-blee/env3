@@ -73,7 +73,7 @@ and side-effects are documented here
    ;; (if b:doom:enabled?
    ;;     (b:base:main|doomBlee-init)
    ;;   (b:base:main|pureBlee-init)
-   ;;    )
+   ;;    ))
 
    (b:base:main|pureBlee-init)
 
@@ -106,10 +106,6 @@ and side-effects are documented here
 ** DocStr: Actions based on =parameters= and *returnValues*
 and side-effects are documented here
 #+end_org "
-
-   ;;; avoid straight to check modification on startup
-   ;; (setq straight-check-for-modifications 'live)
-
    (require 'libs-init)
    (b:base:libs|init)
 
@@ -137,36 +133,11 @@ and side-effects are documented here
    (require 'display-init)
    (b:base:display|init)
 
-   (when b:g:dev:mode?
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:eval-file.el")
-     ;;(load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-if.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:mailings.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:derive.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:email.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:distr.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:recipients.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:names.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:bbdb3.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:send.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/dblock-mtdt.el")
-     ;;(load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-menu.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:menu.el")
-     )
-
-   
    (require 'legacy-init)
    (b:base:legacy|init)
 
    (require 'realms-user-init)
    (b:base:realms-user|init)
-
-   ;; (require 'bnpa:mtdt)
-   ;; (b:npa:mtdt|fullUpdate)
-
-   ;;
-   ;; mtdt to happen late, as it requiress org-msg
-   ;;
-   
 
    (when nil ;; b:doom:enabled?
      (load-file "/bisos/blee/env3/themes/blee-dark-1-theme.el")
@@ -199,29 +170,6 @@ and side-effects are documented here
    (require 'libs-init)
    (b:base:libs|init)
 
-   ;;
-   ;; mtdt to happen late, as it requiress org-msg
-   ;;
-
-   (setq b:g:dev:mode? t)
-
-   (when b:g:dev:mode?
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:eval-file.el")
-     ;;(load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-if.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:mailings.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:derive.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:email.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:distr.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:recipients.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:names.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:bbdb3.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:send.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/dblock-mtdt.el")
-     ;;(load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-menu.el")
-     (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:menu.el")
-     )
-
-
    (require 'legacy-init)
    (b:base:legacy|init)
    )
@@ -229,7 +177,7 @@ and side-effects are documented here
 (orgCmntBegin "
 ** Basic Usage:
 #+BEGIN_SRC emacs-lisp
-(b:base:main|doomBlee-init)
+(b:base:main|init)
 #+END_SRC
 
 #+RESULTS:
