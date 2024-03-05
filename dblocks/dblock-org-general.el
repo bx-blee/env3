@@ -2661,7 +2661,7 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
       
       (when @results
 
-        (insert (format "[[elisp:(org-cycle)][| /%sResults:/ |]] " $stdOutOnlyIndicator))
+        (insert (format "[[elisp:(org-cycle)][| /%s:/ |]] " $stdOutOnlyIndicator))
         
         (insert " [[elisp:(blee:org-update-named-dblocks-above)][D-Run]]")
 
