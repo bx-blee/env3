@@ -53,7 +53,7 @@
 
 ;;;#+BEGIN:  b:elisp:defs/defun :defName "b:base:display|init"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<b:base:display|init>> [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:base:display|init>>  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
 (defun b:base:display|init (
 ;;;#+END:

@@ -70,12 +70,10 @@
 and side-effects are documented here
 #+end_org "
 
-   ;; (if b:doom:enabled?
-   ;;     (b:base:main|doomBlee-init)
-   ;;   (b:base:main|pureBlee-init)
-   ;;    ))
-
-   (b:base:main|pureBlee-init)
+   (if b:doom:enabled?
+       (b:base:main|doomBlee-init)
+     (b:base:main|pureBlee-init)
+      )
 
    ;; NOTYET, where is the right place to put this?
    (setq find-file-visit-truename nil)
@@ -170,8 +168,39 @@ and side-effects are documented here
    (require 'libs-init)
    (b:base:libs|init)
 
+   (require 'plus-init)
+   (b:base:plus|init)
+
+   (require 'inputs-init)
+   (b:base:inputs|init)
+
+   (require 'completion-init)
+   (b:base:completion|init)
+   
+   (require 'syntax-init)
+   (b:base:syntax|init)
+
+   (require 'auto-complete-init)
+   (b:base:auto-complete|init)
+
+   (require 'm17n-init)
+   (b:base:m17n|init)
+
+   (require 'ui-init)
+   (b:base:ui|init)
+
+   (require 'display-init)
+   (b:base:display|init)
+
    (require 'legacy-init)
    (b:base:legacy|init)
+
+   (require 'realms-user-init)
+   (b:base:realms-user|init)
+
+   (when nil ;; b:doom:enabled?
+     (load-file "/bisos/blee/env3/themes/blee-dark-1-theme.el")
+     (enable-theme 'blee-dark-1))
    )
 
 (orgCmntBegin "

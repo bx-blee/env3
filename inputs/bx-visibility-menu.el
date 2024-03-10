@@ -196,6 +196,9 @@
   (define-key global-map [(f8) (\2)] 'split-window-vertically)
   (define-key global-map [(f8) (\3)] 'split-window-horizontally)
 
+  (define-key global-map [(f8) (i)] nil)
+  (define-key global-map [(f8) (i) (i)] 'speedbar)
+
   (define-key global-map [(f8) (s)] nil)
   (define-key global-map [(f8) (s) (s)] 'bxi:otherw:shell)
   (define-key global-map [(f8) (s) (\0)] 'bxi:otherw:shell)
