@@ -80,6 +80,9 @@ and side-effects are documented here
   (require 'bcpg:tabbar)
   (bcpg:tabbar|fullUpdate)
 
+  (require 'bcpg:speedbar)
+  (bcpg:speedbar|fullUpdate)
+
   (require 'bcg-core)
   (bcg:core:full/update)
 

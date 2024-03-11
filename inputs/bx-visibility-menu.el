@@ -197,7 +197,13 @@
   (define-key global-map [(f8) (\3)] 'split-window-horizontally)
 
   (define-key global-map [(f8) (i)] nil)
-  (define-key global-map [(f8) (i) (i)] 'speedbar)
+  (define-key global-map [(f8) (i) (i)] 'sr-speedbar-toggle)
+  (define-key global-map [(f8) (i) (o)] 'sr-speedbar-open)
+  (define-key global-map [(f8) (i) (c)] 'sr-speedbar-close)
+  (define-key global-map [(f8) (i) (w)] 'sr-speedbar-select-window)
+  (define-key global-map [(f8) (i) (r)] 'sr-speedbar-refresh-toggle)
+  (define-key global-map [(f8) (i) (u)] 'sr-speedbar-refresh-turn-on)
+  (define-key global-map [(f8) (i) (d)] 'sr-speedbar-refresh-turn-off)
 
   (define-key global-map [(f8) (s)] nil)
   (define-key global-map [(f8) (s) (s)] 'bxi:otherw:shell)
