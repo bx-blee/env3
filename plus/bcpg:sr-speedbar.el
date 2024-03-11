@@ -94,13 +94,6 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  (b:log|entry (b:func$entry))
 ;;;#+END:
 
-;;;#+BEGIN:  b:elisp:pkg/install :outLevel 2 :pkgsType "component" :pkgName "sr-speedbar" :pkgDesc "pkgDesc"
-(orgCmntBegin "
-  =component= ~sr-speedbar~ *pkgDesc*
-" orgCmntEnd)
- (b:pkg:straight|install 'sr-speedbar)
-;;;#+END:
-
 ;;;#+BEGINNOT:  b:elisp:pkg/install :outLevel 2 :pkgsType "native" :pkgName "sr-speedbar" :pkgDesc "pkgDesc"
 (orgCmntBegin "
 ** [[elisp:(show-all)][(>]]  =component= ~sr-speedbar~ *pkgDesc* [[elisp:(org-shifttab)][<)]] E|
