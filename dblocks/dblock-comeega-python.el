@@ -1376,13 +1376,82 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
             effectiveArgs = cliArgs + pyStdinArgs.split()
 
             if len(effectiveArgs) == 0:
-                b_io.eh.critical_usageError(\"Missing Input: One of cliArgs, stdin or pyArgs; should have an input.\")
+                b_io.eh.critical_usageError(
+                   \"Missing Input: One of cliArgs, stdin or pyArgs; should have an input.\"
+                )
 
             for each in effectiveArgs:
                 processEach(each)
 
-        processArgsAndStdin()
-"
+        processArgsAndStdin()"
+      )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:func/processStdinAsBpoIdParams" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:func/processStdinAsBpoIdParams>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:func/processStdinAsBpoIdParams :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:func/processStdinAsBpoIdParams (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement
+                         (s-lex-format "processStdinAsBpoIdParams") :orgDepth <outLevel))
+             ($eolStr (b:dblock:comeega|eolControls))
+             )
+     (insert
+      (s-lex-format "${$frontStr} "))
+
+      (if (not (string= <comment ""))
+          (insert (s-lex-format " =${<comment}=")))
+
+      (insert (s-lex-format " ${$eolStr}"))
+      ))
+
+    (defun outCommentPostContent ()
+      ""
+      (insert
+       (s-lex-format "
+        if not pyStdinParams:
+            pyStdinParams = b_io.stdin.read()
+
+        def processStdinAsBpoIdParams():
+
+            if bpoId:
+                effectiveParams = [ bpoId ] + pyStdinParams.split()
+            else:
+                effectiveParams = pyStdinParams.split()
+
+            if len(effectiveParams) == 0:
+                b_io.eh.critical_usageError(
+                    \"Missing Input Params: One of bpoId, stdin or pyStdinParams; should have a param.\"
+                )
+
+            for each in effectiveParams:
+                processEach(each)
+
+        processStdinAsBpoIdParams()"
       )))
 
     (progn  ;; Actual Invocations
