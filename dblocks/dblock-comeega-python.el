@@ -1448,8 +1448,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                     \"Missing Input Params: One of bpoId, stdin or pyStdinParams; should have a param.\"
                 )
 
-            for each in effectiveParams:
-                processEach(each)
+            for eachBpoId in effectiveParams:
+                processEach(eachBpoId)
 
         processStdinAsBpoIdParams()"
       )))
