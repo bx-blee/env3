@@ -72,6 +72,9 @@ and side-effects are documented here
    (require 'bcpg:shellPlus)
    (bcpg:shellPlus|fullUpdate)
 
+   (require 'bcpg:sr-speedbar)
+   (bcpg:sr-speedbar|fullUpdate)
+
    (require 'bcpg:calcPlus)
    (bcpg:calcPlus|fullUpdate)
 

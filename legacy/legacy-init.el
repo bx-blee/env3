@@ -462,6 +462,17 @@ and side-effects are documented here
 
   (require 'bystar-init-screen)
   (bystar:init:startup-message)
+
+  ;;;
+  ;;; There is a bug in org-mode 2.7 That ends up with a (wrong-type-argument integer-or-marker-p nil)
+  ;;; in  org-display-inline-images()
+  ;;;
+  ;;; For now, we just delete the the (bystar-scratch-welcome-buffer)
+  ;;; The advice-remove is an attempt for debugging it as the culptrit could have been org-yt
+  ;;;
+
+  ;; (advice-remove 'org-display-inline-images 'org-display-user-inline-images)
+  ;; (advice-remove 'org-display-inline-images '+org--fix-inline-images-for-imagemagick-users-a)
   (bystar-scratch-welcome-buffer)
   
   (cd "~")
