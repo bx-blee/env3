@@ -637,6 +637,11 @@ excludecomment{whenOrg}
 \\usepackage{ragged2e}
 \\usepackage{fontawesome5}
 \\usepackage{changepage}
+
+
+\\usepackage{morewrites}   %% scrwfile from KOMA-Script  is another option
+\\usepackage{tcolorbox}
+
 ")
        ;; Moved to its own package\\usepackage{tikz}
        )
