@@ -1433,7 +1433,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       ""
       (insert
        (s-lex-format "
-        if not pyStdinParams:
+        if pyStdinParams is None:
             pyStdinParams = b_io.stdin.read()
 
         def processStdinAsBpoIdParams():
