@@ -637,6 +637,10 @@ excludecomment{whenOrg}
 \\usepackage{ragged2e}
 \\usepackage{fontawesome5}
 \\usepackage{changepage}
+
+\\usepackage{morewrites}   %% scrwfile from KOMA-Script  is another option
+\\usepackage{tcolorbox}
+
 ")
        ;; Moved to its own package\\usepackage{tikz}
        )
@@ -1628,7 +1632,8 @@ Subject:   & This Matter\\\\
         (setq $atLeastOnceWhen t)
         (insert
          (format "
-\\geometry{paperwidth=6in,paperheight=9in,bindingoffset=0.15in,left=0.75in,right=0.75in,top=0.75in,bottom=0.75in,footskip=.25in}
+%% Usually \\geometry{paperwidth=6in,paperheight=9in,bindingoffset=0.15in,left=0.75in,right=0.75in,top=0.75in,bottom=0.75in,footskip=.25in}
+\\geometry{paperwidth=6in,paperheight=9in,left=0.75in,right=0.625in,top=0.75in,bottom=0.75in,footskip=.25in,twoside}
 "
                  )
          )

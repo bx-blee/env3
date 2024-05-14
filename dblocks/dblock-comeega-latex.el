@@ -777,7 +777,10 @@ excludecomment{whenOrg}
          (insert (s-lex-format "\\documentclass{article}")))
 
         ((s-equals? <bxClass "book")
-         (insert (s-lex-format "\\documentclass[twoside]{book}")))
+         (insert (s-lex-format "\\documentclass[twoside]{book}"))
+         (insert "\n")
+         (insert (s-lex-format "\\emergencystretch 3em"))
+         )
 
         ((or (s-equals? <bxClass "art")
              (s-equals? <bxClass "art+pres"))
@@ -2903,7 +2906,7 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
        (insert "
 
 \\begin{whenPaper6x9}
-\\begin{adjustwidth}{-0.25in}{-0.25in}
+\\begin{adjustwidth}{-0.1in}{-0.1in}   % Used to be 0.25
 \\end{whenPaper6x9}
 
 \\begin{latexonly}
@@ -3091,7 +3094,16 @@ Expects certain file-local variables to have been set
 We have not identified sources when the facts involved are not in
 dispute and when the relevant information can easily be found.
 
+\\begin{whenPaper6x9}
+    \\begin{adjustwidth}{+0.1in}{+0.1in}
+\\end{whenPaper6x9}
+
 \\printendnotes
+
+\\begin{whenPaper6x9}
+    \\end{adjustwidth}
+\\end{whenPaper6x9}
+
 \\endgroup
 
 \\end{whenNotIncludeOnly}"))
