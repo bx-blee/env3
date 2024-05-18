@@ -270,6 +270,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<pyImports (or (plist-get <params :pyImports) nil))
          (<csuImports (or (plist-get <params :csuImports) nil))
          (<csuParams (or (plist-get <params :csuParams) nil))
+         (<csmuParams (or (plist-get <params :csmuParams) nil))
          ($csuListLength)
          )
     (bxPanel:params$effective)
@@ -322,7 +323,11 @@ g_importedCmndsModules = cs.csuList_importedModules(csuList)
       (when <csuParams
         (insert (s-lex-format "
 def g_extraParams():
-    csParams = cs.param.CmndParamDict()
+    csParams = cs.param.CmndParamDict()"))
+        (when <csmuParams
+          (insert (s-lex-format "
+    commonParamsSpecify(csParams)")))
+        (insert (s-lex-format "
     cs.csuList_commonParamsSpecify(csuList, csParams)
     cs.argsparseBasedOnCsParams(csParams)
 "
@@ -1568,11 +1573,13 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
     (defun outCommentPostContent ()
       ""
-      (insert (s-lex-format "\n__version__ = "))
-      (insert (shell-command-to-string (s-lex-format
-               "pypiProc.sh -i nextVersion 0.01"
-               )))
-      )
+      (let* (
+             ($nextVersion (string-trim (shell-command-to-string (s-lex-format
+                "pypiProc.sh -i nextVersion 0.01"
+                ))))
+             )
+        (insert (s-lex-format "\ndef pkgVersion(): return \'${$nextVersion}\'"))
+        ))
 
     (progn  ;; Actual Invocations
       ;; (outCommentPreContent)

@@ -2356,6 +2356,7 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
               (s-lines
                (format "\
 Local Variables:
+eval: (setq-local toc-org-max-depth 4)
 eval: (setq-local ~selectedSubject \"noSubject\")
 eval: (setq-local ~primaryMajorMode '%s)
 eval: (setq-local ~blee:panelUpdater nil)
