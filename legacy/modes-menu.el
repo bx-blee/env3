@@ -16,7 +16,11 @@
 (require 'browsers-menu)
 
 ;;(require 'mcdt-menu)
-(require 'b:mtdt:menu)
+;; (require 'b:mtdt:menu)
+(require 'b:mtdt:menu:mailing)
+(require 'b:mtdt:menu:dist)
+(require 'b:mtdt:menu:bbdb2)
+(require 'b:mtdt:menu:share)
 
 (require 'nafm-menu)
 
@@ -95,7 +99,19 @@ For use in delimiters in easy-menu-define"
 
     (b:chatGpt:menu:plugin|install modes:menu:global (s-- 3))
 
-    (b:mtdt:menu:plugin|install
+    ;; (b:mtdt:menu:plugin|install
+    ;;  modes:menu:global (s-- 4))
+
+    (b:mtdt:menu:mailing:plugin|install
+     modes:menu:global (s-- 4))
+
+    (b:mtdt:menu:dist:plugin|install
+     modes:menu:global (s-- 4))
+
+    (b:mtdt:menu:bbdb2:plugin|install
+     modes:menu:global (s-- 4))
+
+    (b:mtdt:menu:share:plugin|install
      modes:menu:global (s-- 4))
 
     (web:search:modes:menu:plugin/install

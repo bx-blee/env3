@@ -72,6 +72,10 @@ and side-effects are documented here
   (require 'bap-keycast)
   (bap:keycast:full/update)
 
+  (require 'bap-lsp)
+  (bap:lsp:full/update)
+
+
   (require 'bap-gif-screencast)  ;;; solo
   (bap:gif-screencast:full/update)
 

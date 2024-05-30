@@ -256,22 +256,41 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
          (<defName (or (plist-get <params :defName) nil))
-         (<advice (or (plist-get <params :advice) ()))         
+         (<advice (or (plist-get <params :advice) ()))
+         ($docStr)
          )
     (bxPanel:params$effective)
 
     (defun helpLine () "NOTYET" )
     (defun bodyContentPlus ())
     (defun bodyContent ()
-      (insert (b:dblock:defun|prep <defName <advice)))
+      (setq $docStr (b:el:docStr/obtain))
+      (insert (b:dblock:defun|prep <defName <advice $docStr))
+      )
 
     (defun outCommentPostContent ()
+
       (b:func:advice|insert <defName <advice)
       (insert (s-lex-format "\n(defun ${<defName} (")))
-    
+
     (bx:invoke:withStdArgs$bx:dblock:governor:process)
     (outCommentPostContent)    
     ))
+
+(defun b:el:docStr/obtain ()
+  ""
+  (interactive)
+  (let* (
+        ($inHere (b:log|entry (b:func$entry)))
+        ($result)
+	)
+    (save-excursion
+      (move-beginning-of-line 1)
+      (search-forward "** DocStr: " nil t)
+      (save-excursion
+        (buffer-substring-no-properties (point) (point-at-eol))
+        ))))
+
 
 (advice-add 'org-dblock-write:b:elisp:defs/advice-add :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:b:elisp:defs/advice-add (<params)
@@ -317,13 +336,15 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          (<style (letGet$style "openBlank" "closeBlank"))
          (<defName (or (plist-get <params :defName) nil))
          (<advice (or (plist-get <params :advice) ()))
+         ($docStr)
          )
     (bxPanel:params$effective)
 
     (defun helpLine () "NOTYET" )
     (defun bodyContentPlus ())
     (defun bodyContent ()
-      (insert (b:dblock:defmacro|prep <defName <advice)))
+      (setq $docStr (b:el:docStr/obtain))
+      (insert (b:dblock:defmacro|prep <defName <advice $docStr)))
 
     (defun outCommentPostContent ()
       (b:func:advice|insert <defName <advice)
@@ -480,7 +501,8 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
    (format "  [[elisp:(org-cycle)][| ]]\n#+end_org \"\"\"\n")))
 
 
-(defun b:dblock:body:elisp|prep (<sectionType <funcName <advice &optional <comment)
+(defun b:dblock:body:elisp|prep (<sectionType <funcName <advice &optional <docStr <comment)
+  (or <docStr (setq <docStr ""))
   (or <comment (setq <comment ""))
   (let* (
 	 ($adviceStr "")
@@ -514,11 +536,13 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
     (setq $result (concat $openStr $middleStr $closeStr))))
 
 
-(defun b:dblock:defmacro|prep (<funcName <advice)
-  (b:dblock:body:elisp|prep "defmacro" <funcName <advice))
+(defun b:dblock:defmacro|prep (<funcName <advice &optional <docStr)
+  (or <docStr (setq <docStr ""))
+  (b:dblock:body:elisp|prep "defmacro" <funcName <advice <docStr))
 
-(defun b:dblock:defun|prep (<funcName <advice)
-  (b:dblock:body:elisp|prep "defun" <funcName <advice))
+(defun b:dblock:defun|prep (<funcName <advice &optional <docStr)
+  (or <docStr (setq <docStr ""))
+  (b:dblock:body:elisp|prep "defun" <funcName <advice <docStr))
 
 
 (defun b:dblock:cl-defun|prep (<funcName <advice)
