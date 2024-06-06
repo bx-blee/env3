@@ -86,6 +86,12 @@ and side-effects are documented here
    ;; (b:pkg:straight|install 's)
 
    (require 'blee-libs)
+   (when b:g:dev:mode?
+     (load-file "/bisos/git/bxRepos/blee/blee-libs/b:var:custom.el")
+     (load-file "/bisos/git/bxRepos/blee/blee-libs/b:tlm:menu.el")
+     (load-file "/bisos/git/bxRepos/blee/blee-libs/b:tlm.el")
+     )
+
    (b:npa:blee-libs|fullUpdate)
 
    (require 'bcpa:polymode)
@@ -121,6 +127,12 @@ and side-effects are documented here
    ;; (b:npa:mtdt|fullUpdate)
 
    (when b:g:dev:mode?
+     ;; (load-file "/bisos/git/bxRepos/blee/blee-libs/b:var:custom.el")
+     ;; (load-file "/bisos/git/bxRepos/blee/blee-libs/b:tlm:menu.el")
+     ;;
+     ;;
+     (load-file "/bisos/git/bxRepos/blee/blee-menus/bidi-menu.el")
+     (load-file "/bisos/git/bxRepos/blee/blee-menus/b:var:custom:menu.el")
      ;; (load-file "/bisos/git/bxRepos/blee/mtdt-mailing/b:eval-file.el")
      ;;(load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-if.el")
      ;; (load-file "/bisos/git/bxRepos/blee/mtdt-mailing/old-b:mtdt:mailings.el")

@@ -215,6 +215,42 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
     (b:dblock:inserts|fromFile "./inserts/endOfFile.el")
     ))
 
+
+
+(advice-add 'org-dblock-write:b:elisp:defs/defalias :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:elisp:defs/defalias (<params)
+  "
+** When ~:modName~ is nil determine modName based on filName. Otherwise  use ~:modName~.
+Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
+"
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<defName (or (plist-get <params :defName) nil))
+         (<aliasName (or (plist-get <params :aliasName) nil))
+         (<advice (or (plist-get <params :advice) ()))
+         (<comment (or (plist-get <params :comment) ()))
+         ($docStr)
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "NOTYET" )
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      ; (setq $docStr (b:el:docStr/obtain))
+      (setq $docStr "Defined Alias")
+      (insert (b:dblock:defalias|prep <defName <aliasName $docStr <comment)))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "\n(defalias ${<aliasName} ${<defName})")))
+
+    (bx:invoke:withStdArgs$bx:dblock:governor:process)
+    (outCommentPostContent)
+    ))
+
+
+
 ;;; Blee defxxx dblocks
 
 (advice-add 'org-dblock-write:b:elisp:defs/cl-defun :around #'bx:dblock:control|wrapper)
@@ -228,14 +264,17 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
          (<defName (or (plist-get <params :defName) nil))
-         (<advice (or (plist-get <params :advice) ()))                  
+         (<advice (or (plist-get <params :advice) ()))
+         (<comment (or (plist-get <params :comment) ()))
+         ($docStr)
          )
     (bxPanel:params$effective)
 
     (defun helpLine () "NOTYET" )
     (defun bodyContentPlus ())
     (defun bodyContent ()
-      (insert (b:dblock:cl-defun|prep <defName <advice)))      
+      (setq $docStr (b:el:docStr/obtain))
+      (insert (b:dblock:cl-defun|prep <defName <advice $docStr <comment)))
 
     (defun outCommentPostContent ()
       (b:func:advice|insert <defName <advice)
@@ -257,6 +296,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
          (<style (letGet$style "openBlank" "closeBlank"))
          (<defName (or (plist-get <params :defName) nil))
          (<advice (or (plist-get <params :advice) ()))
+         (<comment (or (plist-get <params :comment) ()))
          ($docStr)
          )
     (bxPanel:params$effective)
@@ -265,7 +305,7 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
     (defun bodyContentPlus ())
     (defun bodyContent ()
       (setq $docStr (b:el:docStr/obtain))
-      (insert (b:dblock:defun|prep <defName <advice $docStr))
+      (insert (b:dblock:defun|prep <defName <advice $docStr <comment))
       )
 
     (defun outCommentPostContent ()
@@ -354,6 +394,38 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
     (outCommentPostContent)
     ))
 
+
+(advice-add 'org-dblock-write:b:elisp:defs/cl-defmacro :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:elisp:defs/cl-defmacro (<params)
+  "
+** When ~:modName~ is nil determine modName based on filName. Otherwise  use ~:modName~.
+Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
+"
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<defName (or (plist-get <params :defName) nil))
+         (<advice (or (plist-get <params :advice) ()))
+         ($docStr)
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "NOTYET" )
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (setq $docStr (b:el:docStr/obtain))
+      (insert (b:dblock:cl-defmacro|prep <defName <advice $docStr)))
+
+    (defun outCommentPostContent ()
+      (b:func:advice|insert <defName <advice)
+      (insert (s-lex-format "\n(cl-defmacro ${<defName} (")))
+
+    (bx:invoke:withStdArgs$bx:dblock:governor:process)
+    (outCommentPostContent)
+    ))
+
+
 (advice-add 'org-dblock-write:b:elisp:defs/defmacro%% :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:b:elisp:defs/defmacro%% (<params)
   "
@@ -381,6 +453,109 @@ Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
        (s-lex-format
         "\n(defmacro ${<defName} ("))
     ))
+
+
+
+(advice-add 'org-dblock-write:b:elisp:defs/defun :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:elisp:defs/defcustom (<params)
+  "
+** When ~:modName~ is nil determine modName based on filName. Otherwise  use ~:modName~.
+Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
+"
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<defName (or (plist-get <params :defName) nil))
+         (<defValue (or (plist-get <params :defValue) nil))
+         (<advice (or (plist-get <params :advice) ()))
+         (<comment (or (plist-get <params :comment) ()))
+         ($docStr)
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "NOTYET" )
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (setq $docStr (b:el:docStr/obtain))
+      (insert (b:dblock:defcustom|prep <defName <defValue $docStr <comment))
+      )
+
+    (defun outCommentPostContent ()
+
+      (b:func:advice|insert <defName <advice)
+      (insert (s-lex-format "\n(defcustom ${<defName} ${<defValue}")))
+
+    (bx:invoke:withStdArgs$bx:dblock:governor:process)
+    (outCommentPostContent)
+    ))
+
+(defun org-dblock-write:b:elisp:defs/defgroup (<params)
+  "
+** When ~:modName~ is nil determine modName based on filName. Otherwise  use ~:modName~.
+Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
+"
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<defName (or (plist-get <params :defName) nil))
+         (<defValue (or (plist-get <params :defValue) nil))
+         (<advice (or (plist-get <params :advice) ()))
+         (<comment (or (plist-get <params :comment) ()))
+         ($docStr)
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "NOTYET" )
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (setq $docStr (b:el:docStr/obtain))
+      (insert (b:dblock:defgroup|prep <defName <defValue $docStr <comment))
+      )
+
+    (defun outCommentPostContent ()
+
+      (b:func:advice|insert <defName <advice)
+      (insert (s-lex-format "\n(defgroup ${<defName} ${<defValue}")))
+
+    (bx:invoke:withStdArgs$bx:dblock:governor:process)
+    (outCommentPostContent)
+    ))
+
+(defun org-dblock-write:b:elisp:defs/defvar (<params)
+  "
+** When ~:modName~ is nil determine modName based on filName. Otherwise  use ~:modName~.
+Combination of ~<outLevl~ = -1 and openBlank closeBlank results in pure code.
+"
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<defName (or (plist-get <params :defName) nil))
+         (<defValue (or (plist-get <params :defValue) nil))
+         (<advice (or (plist-get <params :advice) ()))
+         (<comment (or (plist-get <params :comment) ()))
+         ($docStr)
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "NOTYET" )
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (setq $docStr (b:el:docStr/obtain))
+      (insert (b:dblock:defvar|prep <defName <defValue $docStr <comment))
+      )
+
+    (defun outCommentPostContent ()
+
+      (b:func:advice|insert <defName <advice)
+      (insert (s-lex-format "\n(defvar ${<defName} ${<defValue}")))
+
+    (bx:invoke:withStdArgs$bx:dblock:governor:process)
+    (outCommentPostContent)
+    ))
+
 
 
 (advice-add 'org-dblock-write:b:elisp:pkg/usgEnabled?defvar :around #'bx:dblock:control|wrapper)
@@ -527,26 +702,57 @@ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
       "  [[elisp:(org-cycle)][| ]]"))
 
     (when <advice
-      (setq $adviceStr (s-lex-format "~advice=${<advice}~")))
+      (when (or (string= <sectionType "defun") (string= <sectionType "defmacro") (string= <sectionType "cl-defun"))
+        (setq $adviceStr (s-lex-format "~advice=${<advice}~")))
+      (unless (or (string= <sectionType "defun") (string= <sectionType "defmacro") (string= <sectionType "cl-defun"))
+        (setq $adviceStr (s-lex-format "~${<advice}~")))
+      )
+
     (setq
      $middleStr
      (s-lex-format
-      "  <<${<funcName}>> ${$adviceStr} -- ${<comment}"))
+      "  <<${<funcName}>> ${$adviceStr} -- ${<comment} -- ${<docStr}"))
 
     (setq $result (concat $openStr $middleStr $closeStr))))
 
+(defun b:dblock:cl-defmacro|prep (<funcName <advice &optional <docStr)
+  (or <docStr (setq <docStr ""))
+  (b:dblock:body:elisp|prep "cldefmacro" <funcName <advice <docStr))
 
 (defun b:dblock:defmacro|prep (<funcName <advice &optional <docStr)
   (or <docStr (setq <docStr ""))
   (b:dblock:body:elisp|prep "defmacro" <funcName <advice <docStr))
 
-(defun b:dblock:defun|prep (<funcName <advice &optional <docStr)
+(defun b:dblock:defun|prep (<funcName <advice &optional <docStr <comment)
   (or <docStr (setq <docStr ""))
-  (b:dblock:body:elisp|prep "defun" <funcName <advice <docStr))
+  (or <comment (setq <comment ""))
+  (b:dblock:body:elisp|prep "defun" <funcName <advice <docStr <comment))
+
+(defun b:dblock:defcustom|prep (<funcName <defValue &optional <docStr <comment)
+  (or <docStr (setq <docStr ""))
+  (or <comment (setq <comment ""))
+  (b:dblock:body:elisp|prep "defcustom" <funcName <defValue <docStr <comment))
+
+(defun b:dblock:defgroup|prep (<funcName <defValue &optional <docStr <comment)
+  (or <docStr (setq <docStr ""))
+  (or <comment (setq <comment ""))
+  (b:dblock:body:elisp|prep "defgroup" <funcName <defValue <docStr <comment))
+
+(defun b:dblock:defvar|prep (<funcName <defValue &optional <docStr <comment)
+  (or <docStr (setq <docStr ""))
+  (or <comment (setq <comment ""))
+  (b:dblock:body:elisp|prep "defvar" <funcName <defValue <docStr <comment))
+
+(defun b:dblock:defalias|prep (<funcName <defValue &optional <docStr <comment)
+  (or <docStr (setq <docStr ""))
+  (or <comment (setq <comment ""))
+  (b:dblock:body:elisp|prep "defalias" <funcName <defValue <docStr <comment))
 
 
-(defun b:dblock:cl-defun|prep (<funcName <advice)
-    (b:dblock:body:elisp|prep "cl-defun" <funcName <advice))
+(defun b:dblock:cl-defun|prep (<funcName <advice &optional <docStr <comment)
+  (or <docStr (setq <docStr ""))
+  (or <comment (setq <comment ""))
+  (b:dblock:body:elisp|prep "cl-defun" <funcName <advice <docStr <comment))
 
 
 (defun b:dblock:funcEntry|record (<pkgsStage)

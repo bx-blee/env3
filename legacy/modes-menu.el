@@ -22,6 +22,8 @@
 (require 'b:mtdt:menu:bbdb2)
 (require 'b:mtdt:menu:share)
 
+(require 'b:tlm:menu)
+
 (require 'nafm-menu)
 
 (require 'org-roam-menu)
@@ -101,6 +103,9 @@ For use in delimiters in easy-menu-define"
 
     ;; (b:mtdt:menu:plugin|install
     ;;  modes:menu:global (s-- 4))
+
+    (b:tlm:menu:plugin|install
+     modes:menu:global (s-- 4))
 
     (b:mtdt:menu:mailing:plugin|install
      modes:menu:global (s-- 4))
