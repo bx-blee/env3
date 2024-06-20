@@ -107,6 +107,10 @@ For use in delimiters in easy-menu-define"
     (b:tlm:menu:plugin|install
      modes:menu:global (s-- 4))
 
+   ;; (b:mtdt:assemble:menu:plugin|install
+   ;;   modes:menu:global (s-- 4))
+
+
     (b:mtdt:menu:mailing:plugin|install
      modes:menu:global (s-- 4))
 
