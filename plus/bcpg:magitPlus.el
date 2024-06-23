@@ -346,6 +346,19 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
   (magit-list-repositories)
   )
 
+;;; This function is needed as of blee 202406
+(unless (fboundp 'magit-repolist-column-dirty)
+  (defun magit-repolist-column-dirty (_id)
+  "Insert a letter if there are uncommitted changes.
+Show N if there is at least one untracked file.
+Show U if there is at least one unstaged file.
+Show S if there is at least one staged file.
+Only one letter is shown, the first that applies."
+  (cond ((magit-untracked-files) "N")
+        ((magit-unstaged-files)  "U")
+        ((magit-staged-files     "S")))))
+
+
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
