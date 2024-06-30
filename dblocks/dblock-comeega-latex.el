@@ -1216,8 +1216,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 (defun org-dblock-write:b:lcnt:latex:preamble/whenTypesPlus (<params)
 ;;;#+END:
    " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
-works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex.
 #+end_org "
    (let* (
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
@@ -1263,6 +1262,9 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 \\includecomment{whenIsBook}         % With Chapters
 \\excludecomment{whenIsArticle}      % Without Chapters
 
+\\includecomment{whenFormatIsArticle}         % Replacement for beamer mode article
+\\excludecomment{whenFormatIsPresentation}    % Replacement for beamer mode presentation
+
 \\includecomment{whenDocIsComplete}
 \\excludecomment{whenMailing}
 \\excludecomment{whenDocIsPartial}
@@ -1303,6 +1305,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (bx:invoke:withStdArgs$bx:dblock:governor:process)
        (outCommentPostContent)
        )))
+
 
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenGeometry" :advice ("bx:dblock:control|wrapper")
@@ -2990,7 +2993,7 @@ Expects certain file-local variables to have been set
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
-                      "${$frontStr} ~mainmatter~ Parts/Chapters/Appendices -- ${<comment} ${$eolStr}\n"))
+                      "${$frontStr} ${$frontStr} ~mainmatter~ Parts/Chapters/Appendices -- ${<comment} ${$eolStr}\n"))
              ))
 
      (defun outCommentPostContent ()
@@ -3001,6 +3004,143 @@ Expects certain file-local variables to have been set
        (bx:invoke:withStdArgs$bx:dblock:governor:process)
        (outCommentPostContent)
        )))
+
+
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 1 :title "MaTeX MainMatter -- Figures" :extraInfo "b:lcnt:latex:fig/artpres"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*       [[elisp:(outline-show-subtree+toggle)][| *MaTeX MainMatter -- Figures:* |]]  b:lcnt:latex:fig/artpres  [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+;;;#+END:
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:fig/artpres" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:fig/artpres>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:fig/artpres :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:fig/artpres (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Modernized version of org-dblock-write:bx:dblock:lcnt:body:fig-artpres
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<figFile (or (plist-get <params :figFile) ""))
+          (<sec (or (plist-get <params :sec) "")) ;; Can be used to determine outlevel
+          ($figTitle (shell-command-to-string
+                     (format "echo -n $( cat %s )"
+                             (concat (file-name-sans-extension <figFile) ".title"))))
+          ($figCaption (shell-command-to-string
+                     (format "echo -n $( cat %s )"
+                             (concat (file-name-sans-extension <figFile) ".caption"))))
+          ($figFileSansExt (file-name-sans-extension <figFile))
+          ($figFileBaseName (fig-base-name <figFile))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "/-Figure-/  "))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr}   ~Figure::~ ${$figFileBaseName} ~title::~ ${$figTitle} -- ${<comment} ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+
+      (when (equal <sec "none")
+        (message (format "Skipped: section{%s}\n" $figTitle)))
+
+
+      (when (equal <sec "sec")
+        (insert (format "\\section{%s}\n\n" figTitle)))
+
+
+      (when (equal <sec "subsec")
+        (insert (format "\\subsection{%s}\n\n" figTitle)))
+
+      (when (equal <sec "subsubsec")
+        (insert (format "\\subsubsection{%s}\n\n" figTitle)))
+
+      (insert "
+
+\\begin{latexonly}
+\\begin{whenFormatIsPresentation}\n")
+
+      (b:ins$fmt$ "\\begin{frame}[plain]{${$figTitle}}\n")
+
+      (insert "\\begin{figure}
+\\begin{center}
+")
+
+      (b:ins$fmt$ "\\includegraphics[width=108mm,height=76mm,keepaspectratio]{${$figFileSansExt}}\n")
+
+      (insert "\\end{center}
+\\end{figure}
+")
+
+      (insert "\\end{frame}
+\\end{whenFormatIsPresentation}\n")
+
+      (insert "
+\\begin{whenFormatIsArticle}\n")
+
+      (insert "\\begin{figure}
+\\begin{center}
+")
+
+      (b:ins$fmt$ "\\includegraphics[width=\\textwidth]{${$figFileSansExt}}\n")
+
+    ;;; BUG: insert-file-contents did not work
+
+      (b:ins$fmt$ "\\caption{${$figTitle}}\n")
+
+      (b:ins$fmt$ "\\caption{${$figTitle}}\n")
+
+      (b:ins$fmt$ "\\label{fig:${$figFileBaseName}\n")
+
+      (insert "\\end{center}
+\\end{figure}
+\\begin{whenFormatIsArticle}
+\\end{latexonly}
+
+\\begin{htmlonly}
+\\begin{center}
+%BEGIN IMAGE
+\\begin{center}
+")
+
+      (b:ins$fmt$ "\\includegraphics[width=\\textwidth]{${$figFileSansExt}}\n")
+
+      (insert "\\end{center}
+%END IMAGE
+%HEVEA\\imageflush
+\\end{center}
+
+\\begin{figure}
+")
+      (b:ins$fmt$ "\\caption{${$figTitle}}\n")
+
+      (b:ins$fmt$ "\\label{fig:${$figFileBaseName}}\n")
+
+      (insert "\\end{figure}
+\\end{htmlonly}
+")
+      )
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
 
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "MaTeX BackMatter" :extraInfo "b:lcnt:"
 (orgCmntBegin "
