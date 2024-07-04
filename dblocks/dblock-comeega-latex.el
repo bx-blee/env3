@@ -3288,7 +3288,7 @@ Expects certain file-local variables to have been set
        (insert "\n
 \\begin{whenNotIncludeOnly}
   %%% \\glossarystyle{listgroup}   Before Debian 12
-  \\glossarystyle{listgroup}       %% After Debian 12
+  \\setglossarystyle{listgroup}       %% After Debian 12
   \\printglossaries%
 \\end{whenNotIncludeOnly}"))
 
