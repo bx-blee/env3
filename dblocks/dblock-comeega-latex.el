@@ -1503,7 +1503,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
-                      "${$frontStr} whencurBuild ~curBuild=${$curBuild:buildName}~"))
+                      "${$frontStr} From build.tex - whencurBuild ~curBuild=${$curBuild:buildName}~"))
              (insert (s-lex-format " ${$eolStr}\n"))))
 
      (defun outCommentPostContent ()
@@ -2524,7 +2524,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 \\newenvironment{bidiSepAfterHevea}{}{}
 
 \\usepackage{bystarpersian}   % Defines: \\newfontfamily{\\persian}, \\newcommand{\\farsi}, \\newenvironment{faPar},{fa}
-\\usepackage{bystararticle}   % Defines: \\excludecomment{presentationMode} \\newcommand{\\pnote}
+%%% \\usepackage{bystararticle}   % Defines: Assumes beamer \\excludecomment{presentationMode} \\newcommand{\\pnote}
 ")))
 
      (progn  ;; Actual Invocations
@@ -3102,13 +3102,11 @@ Expects certain file-local variables to have been set
 
       (b:ins$fmt$ "\\caption{${$figTitle}}\n")
 
-      (b:ins$fmt$ "\\caption{${$figTitle}}\n")
-
-      (b:ins$fmt$ "\\label{fig:${$figFileBaseName}\n")
+      (b:ins$fmt$ "\\label{fig:${$figFileBaseName}}\n")
 
       (insert "\\end{center}
 \\end{figure}
-\\begin{whenFormatIsArticle}
+\\end{whenFormatIsArticle}
 \\end{latexonly}
 
 \\begin{htmlonly}
@@ -3289,7 +3287,8 @@ Expects certain file-local variables to have been set
      (defun outCommentPostContent ()
        (insert "\n
 \\begin{whenNotIncludeOnly}
-  \\glossarystyle{listgroup}
+  %%% \\glossarystyle{listgroup}   Before Debian 12
+  \\glossarystyle{listgroup}       %% After Debian 12
   \\printglossaries%
 \\end{whenNotIncludeOnly}"))
 

@@ -626,7 +626,7 @@ excludecomment{whenOrg}
        (insert "
 
 
-\\usepackage{beamerarticle}
+%%% \\usepackage{beamerarticle}  As of Deb 12 -- Should not be used when only article
 
 \\usepackage{paracol}
 
