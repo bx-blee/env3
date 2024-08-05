@@ -64,10 +64,10 @@
       )
 
     ;;; BxUserEnv Scope
-    (setq full-dir-name (expand-file-name "~/BUE/elisp/snippets"))
-    (when (file-directory-p full-dir-name)
-      (add-to-list 'yas-snippet-dirs full-dir-name)
-      )
+    ;; (setq full-dir-name (expand-file-name "~/BUE/elisp/snippets"))
+    ;; (when (file-directory-p full-dir-name)
+    ;;   (add-to-list 'yas-snippet-dirs full-dir-name)
+    ;;   )
     )
 
 

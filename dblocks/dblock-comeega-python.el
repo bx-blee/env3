@@ -518,7 +518,7 @@ pyLibPure
              )
       (insert
          (s-lex-format
-          "** Imports Based On Classification=${$classification}"))))
+          "${$frontStr} *Imports* =Based on Classification=${$classification}="))))
 
     (defun outCommentPostContent ()
       (when (string= <basedOn "classification")
@@ -1562,6 +1562,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
          (<increment (or (plist-get <params :increment) 0.01))
+         (<installed (or (plist-get <params :installed) nil))
          (<comment (or (plist-get <params :comment) ""))
          )
     (bxPanel:params$effective)
@@ -1577,8 +1578,19 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              ($nextVersion (string-trim (shell-command-to-string (s-lex-format
                 "pypiProc.sh -i nextVersion 0.01"
                 ))))
+             ($installedVersion (string-trim (shell-command-to-string (s-lex-format
+                "pypiProc.sh -i installedVersion"
+                ))))
              )
-        (insert (s-lex-format "\ndef pkgVersion(): return \'${$nextVersion}\'"))
+        (insert (s-lex-format "
+def pkgVersion():
+    pypiUploadVerFile = pathlib.Path('./pypiUploadVer')
+    if pypiUploadVerFile.is_file() :
+        return '${$nextVersion}'
+    else:
+        return '${$installedVersion}'
+"
+                              ))
         ))
 
     (progn  ;; Actual Invocations
