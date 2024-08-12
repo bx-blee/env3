@@ -2368,7 +2368,7 @@ eval: (img-link-overlays)"
                        ))
               )
       
-      (when (string= @primMode "latex-mode")
+      (when (or (string-equal "latex-mode" @primMode) (string-equal "LaTeX-mode" @primMode))
         (mapcar (lambda (x)
                   (insert
                    (format "%s%s\n"

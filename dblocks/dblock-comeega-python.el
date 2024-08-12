@@ -1521,6 +1521,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<style (letGet$style "openBlank" "closeBlank"))
          (<comment (or (plist-get <params :comment) ""))
          (<extras (or (plist-get <params :extras) '()))
+         (<requirements (or (plist-get <params :requirements) nil))
          )
     (bxPanel:params$effective)
 
@@ -1531,13 +1532,28 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
     (defun outCommentPostContent ()
       ""
-      (insert (s-lex-format "\nrequires = [ \n"))
-      (insert (shell-command-to-string
-               "pypiProc.sh -i namespaceRequires"))
-      (loop-for-each $each <extras
-        (insert (s-lex-format "\"${$each}\",\n")))
-      (insert (s-lex-format "]"))
-      )
+      (if-unless <requirements
+        (insert (s-lex-format "\nrequires = [ \n"))
+        (insert (shell-command-to-string
+                 "pypiProc.sh -i namespaceRequires"))
+        (loop-for-each $each <extras
+          (insert (s-lex-format "\"${$each}\",\n")))
+        (insert (s-lex-format "]"))
+        )
+      (else-when <requirements
+        (let* (
+               ($linesList)
+               ($item)
+               )
+          ;; readin the file and process it.
+          (setq $linesList (s-split "\n" (f-read <requirements) t))
+          (insert (s-lex-format "\nrequires = [ \n"))
+          (dolist ($eachLine $linesList)
+            (setq $item (nth 0 (s-split "=" $eachLine)))
+            (insert (s-lex-format "'${$item}',\n"))
+            )
+          (insert (s-lex-format "]"))
+          )))
 
     (progn  ;; Actual Invocations
       ;; (outCommentPreContent)
@@ -1561,8 +1577,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
-         (<increment (or (plist-get <params :increment) 0.01))
-         (<installed (or (plist-get <params :installed) nil))
+         (<curDevVer (or (plist-get <params :curDevVer) nil))
+         (<pypiNextVer (or (plist-get <params :pypiNextVer) nil))
          (<comment (or (plist-get <params :comment) ""))
          )
     (bxPanel:params$effective)
@@ -1575,20 +1591,113 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
     (defun outCommentPostContent ()
       ""
       (let* (
-             ($nextVersion (string-trim (shell-command-to-string (s-lex-format
-                "pypiProc.sh -i nextVersion 0.01"
-                ))))
-             ($installedVersion (string-trim (shell-command-to-string (s-lex-format
-                "pypiProc.sh -i installedVersion"
-                ))))
+             ($nextVersion)
+             ($installedVersion)
              )
-        (insert (s-lex-format "
+
+        (if-when <pypiNextVer
+          (setq $nextVersion <pypiNextVer))
+        (else-unless <pypiNextVer
+          (setq $nextVersion (string-trim (shell-command-to-string (s-lex-format
+                "pypiProc.sh -i nextVersion 0.01")))))
+
+        (if-when <curDevVer
+          (setq $installedVersion <curDevVer))
+        (else-unless <curDevVer
+          (setq $installedVersion (string-trim (shell-command-to-string (s-lex-format
+                "pypiProc.sh -i installedVersion")))))
+
+        (if-when (f-exists? "./pypiUploadVer")
+          (insert (s-lex-format "
+# ./pypiUploadVer exists -- pypiNextVer=${$nextVersion} -- installedVersion=${$installedVersion}
 def pkgVersion():
-    pypiUploadVerFile = pathlib.Path('./pypiUploadVer')
-    if pypiUploadVerFile.is_file() :
-        return '${$nextVersion}'
-    else:
-        return '${$installedVersion}'
+        return '${$nextVersion}'   # Version Nu To Be Uploaded
+"
+                                )))
+
+        (else-unless (f-exists? "./pypiUploadVer")
+          (insert (s-lex-format "
+# ./pypiUploadVer does not exist -- pypiNextVer=${$nextVersion} -- installedVersion=${$installedVersion}
+def pkgVersion():
+        return '${$installedVersion}'  # Version Nu Of Installed Pkg
+"
+                              )))
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/setupFuncArgs" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/setupFuncArgs>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:pypi/setupFuncArgs :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi/setupFuncArgs (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pkgName (or (plist-get <params :pkgName) ""))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($pkgName (string-trim (shell-command-to-string (s-lex-format
+                "./setup.py --name 2> /dev/null"
+                ))))
+             ($pkgNameQuoted (s-lex-format "'${$pkgName}'"))
+             )
+      (if-when (string= <pkgName "--auto--")
+        (setq $pkgNameQuoted "pkgName()"))
+      (else-unless (string= <pkgName "--auto--")
+        (unless (string= <pkgName "")
+          (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))))
+      (insert (s-lex-format "
+setuptools.setup(
+    name=${$pkgNameQuoted},
+    version=pkgVersion(),
+    packages=setuptools.find_packages(),
+    scripts=scripts,
+    #data_files=data_files,
+    include_package_data=True,
+    zip_safe=False,
+    author='Mohsen Banan',
+    author_email='libre@mohsen.1.banan.byname.net',
+    maintainer='Mohsen Banan',
+    maintainer_email='libre@mohsen.1.banan.byname.net',
+    url='http://www.by-star.net/PLPC/180047',
+    license='AGPL',
+    description=description(),
+    long_description=longDescription(),
+    download_url='http://www.by-star.net/PLPC/180047',
+    install_requires=requires,
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: GNU Affero General Public License v3',
+        'Operating System :: POSIX',
+        'Programming Language :: Python',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        ]
+    )
 "
                               ))
         ))
@@ -1598,7 +1707,6 @@ def pkgVersion():
       ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
-
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
