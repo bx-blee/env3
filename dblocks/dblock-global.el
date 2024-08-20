@@ -408,7 +408,7 @@ surround is for panel decoration."
               ""
               )
              (
-              (string-equal "latex-mode" mode)
+              (or (string-equal "latex-mode" mode) (string-equal "LaTeX-mode" mode))
               "[[elisp:(reftex-toc)][(RefTOC)]]"
               )
              (t
@@ -459,7 +459,7 @@ surround is for panel decoration."
               ""
               )
              (
-              (string-equal "latex-mode" mode)
+              (or (string-equal "latex-mode" mode) (string-equal "LaTeX-mode" mode))
               "[[elisp:(reftex-toc)][(RefTOC)]]"
               )
              (t
