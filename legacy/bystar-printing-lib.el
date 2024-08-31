@@ -5,7 +5,10 @@
 
 (require 'printing)
 
-(setq bx:printing:default-printer (intern (getenv "LPDEST")))
+(progn
+  (setq bx:printing:default-printer "UNSPECIFIED")
+  (when (getenv "LPDEST")
+    (setq bx:printing:default-printer (intern (getenv "LPDEST")))))
 
 
 ;; (bystar:printing:all-defaults-set)
