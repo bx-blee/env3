@@ -242,9 +242,9 @@
       (unless (string-match "/$" dir)
         (setq dir (concat dir "/")))
       (while (<= counter lines)
-        (let ((track (cdr (third (emms-playlist-current-selected-track))))
+        (let ((track (cdr (cl-third (emms-playlist-current-selected-track))))
               (symlinkname (replace-in-string
-                            (cdr (third
+                            (cdr (cl-third
                                   (emms-playlist-current-selected-track)))
                             "/home/user/media/music/.*/[0-9][0-9]-"
                             (concat (if (< counter 10) "0")

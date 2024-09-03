@@ -30,8 +30,8 @@
   "Get the name of calling function at expansion time."
   (symbol-name
    (cadadr
-    (third
-     (find-if (lambda (frame) (ignore-errors (equal (car (third frame)) 'defalias)))
+    (cl-third
+     (cl-find-if (lambda (frame) (ignore-errors (equal (car (cl-third frame)) 'defalias)))
               (reverse (call-stack)))))))
 
 
