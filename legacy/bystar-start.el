@@ -2,10 +2,13 @@
 ;; bystar-start.el
 ;; 
 
-(if (file-directory-p (expand-file-name "~/BUE/elisp"))
+;; (if (file-directory-p (expand-file-name "~/BUE/elisp"))
+;;     (require 'bystar-all)
+;;   (require 'bystar-all-nobody))
+
+(if (file-directory-p (expand-file-name "~/bpos/usageEnvs/fullUse/blee/elisp"))
     (require 'bystar-all)
   (require 'bystar-all-nobody))
-
 
 (bystar-all)
 

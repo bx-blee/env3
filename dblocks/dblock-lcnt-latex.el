@@ -1523,7 +1523,8 @@ Subject:   & This Matter\\\\
               (equal bx:class "pres"))
       (insert "
 \\begin{document}\n")      
-      %%%(insert "% dblock for pres is empty\n"))
+      ;;;
+      (insert "% dblock for pres is empty\n"))
 
     ;;;(insert "%}}} DBLOCK-main-begin")
     ))
@@ -2690,7 +2691,7 @@ atLeastOnceWhen=ANY  %s\n"
      :label (format "DBLOCK:")
      :name (format
             "Copyright Settings --- bx-years=%s"
-            @bx-years)
+            bx:years)
      :level 2
      :comment (format "")
      )

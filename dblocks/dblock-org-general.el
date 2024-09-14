@@ -35,6 +35,10 @@
                           <icmName)))
     (setq $result
           (concat $result
+                  (format "  [[elisp:(lsip-local-run-command \"which -a %s\")][which -a]]"
+                          <icmName)))
+    (setq $result
+          (concat $result
                   (format "  [[elisp:(lsip-local-run-command \"%s -i describe\")][describe]]"
                           <icmName)))
     $result
