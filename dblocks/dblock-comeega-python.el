@@ -455,7 +455,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              )
       (insert
          (s-lex-format
-          "${$frontStr} ~Exposed Symbols List Specification~ with /${$classesLength}/ in Classes List"))))
+          "${$frontStr} ~CS Controls and Exposed Symbols List Specification~ with /${$classesLength}/ in Classes List"))))
 
     (defun outCommentPostContent ()
       (defun exposedSymbolsEach (<each)
@@ -938,6 +938,106 @@ When <ro==py  is same as cli+py plus <ro=noCli
               $parsOptList
               )
      ))
+
+   (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun  :defName "org-dblock-write:b:py3:cs/seed" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs/seed>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs/seed :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs/seed (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]]
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<derived (or (plist-get <params :derived) ""))
+         (<origin (or (plist-get <params :origin) ""))
+         )
+
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "seed")))
+             ($backStr (b:dblock:comeega|eolControls))
+             )
+             (insert (s-lex-format "${$frontStr} <<${<derived}>> <<${<origin}>> "))
+
+             (insert (s-lex-format " ${$backStr}"))
+             ))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+
+__file__ = '/bisos/git/bxRepos/bisos-pip/binsprep/py3/bin/seedBinsPrep.cs'
+with open(__file__) as f:
+    exec(compile(f.read(), __file__, 'exec'))
+")))
+
+   (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun  :defName "org-dblock-write:b:py3:cs/reRunAsRoot" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs/reRunAsRoot>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs/reRunAsRoot :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs/reRunAsRoot (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]]
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<verbosity (or (plist-get <params :verbosity) ""))
+         )
+
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+     (let* (
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "reRunAsRoot") :orgDepth 2))
+             ($backStr (b:dblock:comeega|eolControls))
+             )
+             (insert (s-lex-format "${$frontStr} <<${<verbosity}>> "))
+
+             (insert (s-lex-format " ${$backStr}"))
+             ))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+        import os
+        if os.getuid() != 0:
+            import shutil
+            import sys
+            thisPython = shutil.which('python')
+            print(f'As {os.getuid()} -- Re Running As Root')
+            if b.subProc.WOpW(invedBy=self, log=1).bash(
+                 f'''sudo {thisPython} {' '.join(sys.argv)}''',
+            ).isProblematic():  return(b_io.eh.badOutcome(cmndOutcome))
+            return cmndOutcome
+")))
 
    (progn  ;; Actual Invocations
       (outCommentPreContent)
