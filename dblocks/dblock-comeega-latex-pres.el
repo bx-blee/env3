@@ -676,6 +676,8 @@ and side-effects are documented here
 
     (when (equal <beamer "plain")
       (setq <params (plist-put <params ':options <beamer)))
+    (when (equal <beamer "blank")
+      (setq <params (plist-put <params ':options "plain")))
     (b:lcnt:pres:commonDblock:outComment/begin <params)
     ))
 
