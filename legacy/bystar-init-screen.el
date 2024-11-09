@@ -23,12 +23,14 @@
       ;; this is what you customize
       ;;(insert-file (expand-file-name "~/lisp/splashScreen/ByStarUserEnv.org")))
       (load-file (expand-file-name
-		    (concat
-		     (file-name-as-directory (blee:env:splashScreen:base-obtain))
-		     "ByStarUserEnv.el")))
-      (insert-welcome-buffer (blee:env:images:base-obtain))
+        	    (concat
+        	     (file-name-as-directory (blee:env:splashScreen:base-obtain))
+        	     "ByStarUserEnv.el")))
+       (insert-welcome-buffer (blee:env:images:base-obtain))
       )
     (org-mode)
+    (set-fill-column 100)
+    (blee:fill-column-indicator/enable)
     (switch-to-buffer my-buffer)
     (delete-other-windows)
     ))
