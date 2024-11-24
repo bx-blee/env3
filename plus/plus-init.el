@@ -83,6 +83,10 @@ and side-effects are documented here
 
    (require 'bcpg:gpgPlus)
    (bcpg:gpgPlus|fullUpdate)
+
+   ;; (require 'bcpg:subedPlus)
+   ;; (bcpg:subedPlus|fullUpdate)
+
    )
 
 (orgCmntBegin "
