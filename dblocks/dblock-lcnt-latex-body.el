@@ -145,6 +145,7 @@
 (defun org-dblock-write:bx:dblock:lcnt:body:odg-artpres (params)
   (let (
         (bx:fig-file (or (plist-get params :fig-file) ""))
+        (<beamerSize (or (plist-get params :beamerSize) ""))
         )
 
     (let ((fig-title (shell-command-to-string 
@@ -172,9 +173,19 @@
   \\begin{figure}
     \\begin{center}")
 
-      (insert (format "
-       \\includegraphics[width=108mm,height=76mm,keepaspectratio]{%s}" 
+      (cond ((string-equal "" <beamerSize)
+             (insert (format "
+       \\includegraphics[width=108mm,keepaspectratio]{%s}"
                       (file-name-sans-extension bx:fig-file)))
+             )
+          ((string-equal "max" <beamerSize)
+             (insert (format "
+       \\includegraphics[width=145mm,keepaspectratio]{%s}"
+                      (file-name-sans-extension bx:fig-file)))
+             )
+           (t
+           (message (s-lex-format "beamerSize: ${<beamerSize} - unknown -- skipped"))
+           ))
 
       (insert "
     \\end{center}

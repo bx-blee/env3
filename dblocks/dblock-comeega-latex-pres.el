@@ -676,6 +676,8 @@ and side-effects are documented here
 
     (when (equal <beamer "plain")
       (setq <params (plist-put <params ':options <beamer)))
+    (when (equal <beamer "blank")
+      (setq <params (plist-put <params ':options "plain")))
     (b:lcnt:pres:commonDblock:outComment/begin <params)
     ))
 
@@ -764,12 +766,13 @@ and side-effects are documented here
     \\transitionout{${<frameOnLeave}}\n")))
 
     (when (not (equal <frameAudio "UnSpecified"))
+      (when (equal <frameType "insertDerivedImage")
       (when (not (equal <frameAudio "labeled"))
         (insert (s-lex-format "\
     \\frameaudio{\"audio/${<frameAudio}.mp3\"}\n")))
       (when (equal <frameAudio "labeled")
         (insert (s-lex-format "\
-    \\frameaudio{\"audio/${$frameLabelEncoded}.mp3\"}\n")))
+    \\frameaudio{\"audio/${$frameLabelEncoded}.mp3\"}\n"))))
         )
 
 
