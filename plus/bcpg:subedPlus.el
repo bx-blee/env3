@@ -103,21 +103,17 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 " orgCmntEnd)
      (cond ((b:pkg:forked|is?  'subed)
             (b:pkg:straight|profiledInstall
-             b:pkgsProfile:native
+             b:pkgsProfile:blee3:adopted
              '(subed :local-repo b:pkg:forked|basedir)))
-
-
-
-   (when nil
-     (if b:g:dev:mode?
-         (b:pkg:straight|profiledInstall
-          b:pkgsProfile:native
-          '(fshell :local-repo "/bisos/git/bxRepos/MB-Ephemera/subed"))))
-   (when t
-     (b:pkg:straight|profiledInstall
-      b:pkgsProfile:native
-      '(subed :type git :host github :repo "sachac/subed")))
-   )
+           ((b:pkg:devel|is?  'subed)
+            (b:pkg:straight|profiledInstall
+             b:pkgsProfile:blee3:adopted
+             '(subed :local-repo b:pkg:devel|basedir)))
+           (t
+            (b:pkg:straight|profiledInstall
+            b:pkgsProfile:adopted
+            '(subed :type git :host github :repo "sachac/subed")))
+            ))
 
 ;;;#+BEGIN: b:elisp:pkg:config/main :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "subedPlus"
 (orgCmntBegin "

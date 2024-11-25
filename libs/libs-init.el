@@ -77,6 +77,7 @@ and side-effects are documented here
 
      (setq b:pkgsProfile:collection:default b:pkgsProfile:collection:blee3)
      (setq b:pkgsProfile:orphan 'b:pkgsProfile:blee3:orphan)
+     (setq b:pkgsProfile:adopted 'b:pkgsProfile:blee3:adopted)
      (setq b:pkgsProfile:native 'b:pkgsProfile:blee3:native)
      (b:pkgsProfile:collection|prepare)
      (b:pkgsProfile:collection:straight--lockfile-read-all|advice-add)
