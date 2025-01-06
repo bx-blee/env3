@@ -993,6 +993,63 @@ with open(__file__) as f:
       (outCommentPostContent)
       )))
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun  :defName "org-dblock-write:b:py3:cs:seed/withWhich" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:seed/withWhich>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:seed/withWhich :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:seed/withWhich (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]]
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<derived (or (plist-get <params :derived) ""))
+         (<seedName (or (plist-get <params :seedName) ""))
+         )
+
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "seed")))
+             ($backStr (b:dblock:comeega|eolControls))
+             )
+             (insert (s-lex-format "${$frontStr} <<${<seedName}>> "))
+
+             (insert (s-lex-format " ${$backStr}"))
+             ))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+import shutil
+import os
+import sys
+
+seedName = '${<seedName}'
+seedPath = shutil.which(seedName)
+if seedPath is None:
+    print(f'sys.exit() --- which found nothing for {seedName} --- Aborting')
+    sys.exit()
+
+__file__ = os.path.abspath(seedPath)
+with open(__file__) as f:
+    exec(compile(f.read(), __file__, 'exec'))
+")))
+
+   (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun  :defName "org-dblock-write:b:py3:cs/reRunAsRoot" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs/reRunAsRoot>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
@@ -1807,6 +1864,136 @@ setuptools.setup(
       ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:org:pypi:readme/pkgDocumentation" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:org:pypi:readme/pkgDocumentation>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:org:pypi:readme/pkgDocumentation :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:org:pypi:readme/pkgDocumentation (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pkgName (or (plist-get <params :pkgName) ""))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($pkgName (string-trim (shell-command-to-string (s-lex-format
+                "./setup.py --name 2> /dev/null"
+                ))))
+             ($pkgNameQuoted (s-lex-format "'${$pkgName}'"))
+             )
+      (if-when (string= <pkgName "--auto--")
+        (setq $pkgNameQuoted "pkgName()"))
+      (else-unless (string= <pkgName "--auto--")
+        (unless (string= <pkgName "")
+          (setq $pkgName <pkgName)
+          (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))
+          )
+        )
+      (if-when (string= (file-name-nondirectory (buffer-file-name)) "README.org")
+        (insert (s-lex-format "
+# PYPI Documentation Comes Here in _description.org")))
+
+      (if-unless (string= (file-name-nondirectory (buffer-file-name)) "README.org")
+        (insert (s-lex-format "
+* Package Documentation At Github
+
+The information below is a subset of the full of documentation for this bisos-pip package.
+More complete documentation is available at: https://github.com/bisos-pip/${$pkgName}
+"
+                              )))
+
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:org:pypi:readme/topControls" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:org:pypi:readme/topControls>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:org:pypi:readme/topControls :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:org:pypi:readme/topControls (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pkgName (or (plist-get <params :pkgName) ""))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($pkgName (string-trim (shell-command-to-string (s-lex-format
+                "./setup.py --name 2> /dev/null"
+                ))))
+             ($pkgNameQuoted (s-lex-format "'${$pkgName}'"))
+             )
+      (if-when (string= <pkgName "--auto--")
+        (setq $pkgNameQuoted "pkgName()"))
+      (else-unless (string= <pkgName "--auto--")
+        (unless (string= <pkgName "")
+          (setq $pkgName <pkgName)
+          (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))
+          )
+        )
+      (if-when (string= (file-name-nondirectory (buffer-file-name)) "README.org")
+        (insert (s-lex-format "
+|----------------------+------------------------------------------------------------------|
+| ~Blee Panel Controls~: | [[elisp:(show-all)][Show-All]] : [[elisp:(org-shifttab)][Overview]] : [[elisp:(progn (org-shifttab) (org-content))][Content]] : [[elisp:(delete-other-windows)][(1)]] : [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]] : [[elisp:(save-buffer)][Save]]  : [[elisp:(kill-buffer)][Quit]]  : [[elisp:(bury-buffer)][Bury]] |
+| ~Panel Links~:         | [[file:./py3/panels/bisos.${$pkgName}/_nodeBase_/fullUsagePanel-en.org][Repo Blee Panel]]                                                  |
+| ~See Also~:            | [[https://pypi.org/project/bisos.${$pkgName}][At PYPI]] : [[https://github.com/bisos-pip/pycs][bisos.PyCS]]                                             |
+|----------------------+------------------------------------------------------------------|
+"
+                              )))
+
+      (if-unless (string= (file-name-nondirectory (buffer-file-name)) "README.org")
+        (insert (s-lex-format "
+# TopControls don't apply to pypi.org documentation.
+"
+                              )))
+
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil

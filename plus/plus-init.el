@@ -81,12 +81,14 @@ and side-effects are documented here
    (require 'bcpg:calendarPlus)
    (bcpg:calendarPlus|fullUpdate)
 
+   (require 'bcpg:lspPlus)
+   (bcpg:lspPlus|fullUpdate)
+
    (require 'bcpg:gpgPlus)
    (bcpg:gpgPlus|fullUpdate)
 
-   ;; (require 'bcpg:subedPlus)
-   ;; (bcpg:subedPlus|fullUpdate)
-
+   (require 'bcpg:subedPlus)
+   (bcpg:subedPlus|fullUpdate)
    )
 
 (orgCmntBegin "

@@ -86,15 +86,15 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
   )
 ;;;#+END:
 
-;;;#+BEGIN: b:elisp:pkg:install/update :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "subedPlus"
+;;;#+BEGIN: b:elisp:pkg:install/update :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "subedPlus%%"
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:subedPlus:install|update>>  --  --   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:subedPlus%%:install|update>>  --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(defun bcpg:subedPlus:install|update ()
+(defun bcpg:subedPlus%%:install|update ()
    " #+begin_org
-** DocStr: subedPlus Component Package Adoption install or update template.
+** DocStr: subedPlus%% Component Package Adoption install or update template.
 #+end_org "
-   (b:log|entry (b:func$entry))
+ (b:log|entry (b:func$entry))
 ;;;#+END:
 
    (orgCmntBegin "
@@ -115,6 +115,35 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
             '(subed :type git :host github :repo "sachac/subed")))
             ))
 
+;;;#+BEGIN: b:elisp:pkg:install/update :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "subedPlusNOT"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:subedPlusNOT:install|update>>  --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun bcpg:subedPlusNOT:install|update ()
+   " #+begin_org
+** DocStr: subedPlusNOT Component Package Adoption install or update template.
+#+end_org "
+ (b:log|entry (b:func$entry))
+;;;#+END:
+
+ (b:pkg:straight|profiledInstallForkedOrDevOrActual
+  'b:pkgsProfile:blee3:adopted
+  '(subed/subed :type git :host github :repo "sachac/subed" :files ("subed/*.el"))))
+
+
+;;;#+BEGIN: b:elisp:pkg:install/update :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "subedPlus"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:subedPlus:install|update>>  --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun bcpg:subedPlus:install|update ()
+   " #+begin_org
+** DocStr: subedPlus Component Package Adoption install or update template.
+#+end_org "
+ (b:log|entry (b:func$entry))
+;;;#+END:
+
+ (straight-use-package '(subed :type git  :local-repo "/bisos/git/bxRepos/forked/subed/subed")))
+
 ;;;#+BEGIN: b:elisp:pkg:config/main :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "subedPlus"
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:subedPlus:config|main>>  --  --   [[elisp:(org-cycle)][| ]]
@@ -124,7 +153,7 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 ** DocStr: *subedPlus* package adoption config template.
 #+end_org "
  (b:log|entry (b:func$entry))
-;;;#+END:
+;;;#+END:y
 
 ;; (require 'subed-autoloads)
 

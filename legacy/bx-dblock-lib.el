@@ -572,8 +572,8 @@ Relevant defvar-local definitions are made in blee-org-panel.el
 	 (message (format "Set to: %s -  ####+BEGIN..." major-mode))
 	 )
 	(t
-	 (setq org-dblock-start-re "^.*####\\+BEGIN:[ 	]+\\(\\S-+\\)\\([ 	]+\\(.*\\)\\)?")
-	 (setq org-dblock-end-re "^.*####\\+END\\([: 	
+	 (setq org-dblock-start-re "^.*#\\+BEGIN:[ 	]+\\(\\S-+\\)\\([ 	]+\\(.*\\)\\)?")
+	 (setq org-dblock-end-re "^.*#\\+END\\([:
 \n]\\|$\\)")
 	 (message (format "major-mode: %s - dblock re unchanged" major-mode))
 	 ))
@@ -674,11 +674,11 @@ Relevant defvar-local definitions are made in blee-org-panel.el
   (add-hook 'org-mode-hook
 	    '(lambda ()
 	       (setq org-dblock-start-re 
-		     "^.*####\\+BEGIN:[ 	]+\\(\\S-+\\)\\([ 	]+\\(.*\\)\\)?")
+		     "^.*#\\+BEGIN:[ 	]+\\(\\S-+\\)\\([ 	]+\\(.*\\)\\)?")
 	       (setq org-dblock-end-re 
-		     "^.*####\\+END\\([: 	
+		     "^.*#\\+END\\([:
 \n]\\|$\\)")
-	       (message (format "Set to: %s -  ####+BEGIN..." major-mode))
+	       (message (format "Set to: %s - NOT4  ####+BEGIN -- %s" major-mode org-dblock-start-re))
 	       ))
   (add-hook 'org-msg-edit-mode-hook
 	    '(lambda ()

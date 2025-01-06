@@ -392,7 +392,8 @@ and side-effects are documented here
 
     (setq $fileName (f-no-ext (f-filename <imageFile)))
     ;;(setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo ${$fileName} | latexencode")))
-    (setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo -n ${$fileName} | /bisos/venv/py3/adopted/bin/latexencode")))
+    ;;(setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo -n ${$fileName} | /bisos/venv/py3/adopted/bin/latexencode")))
+    (setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo -n ${$fileName} | latexencode")))
     (setq $fileNameParts (s-split "-" $fileName))
     (setq $dateday (nth 0 $fileNameParts))
     (setq $dateTime (s-left 4 (nth 1 $fileNameParts)))
@@ -505,6 +506,7 @@ Content of a frame based
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
           (<albumFile (or (plist-get <params :albumFile) ""))
+          ;; (<resolution (or (plist-get <params :resolution) "default"))
           (<comment (or (plist-get <params :comment) ""))
           )
      (bxPanel:params$effective)
