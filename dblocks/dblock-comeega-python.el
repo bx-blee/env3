@@ -1719,12 +1719,184 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       )))
 
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/nextVersion" :advice ("bx:dblock:control|wrapper")
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/pkgName" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/nextVersion>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/pkgName>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:py3:pypi/nextVersion :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:py3:pypi/nextVersion (<params)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/pkgName :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/pkgName (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pkgName (or (plist-get <params :pkgName) nil))
+         (<pkgNameSpace (or (plist-get <params :pkgNameSpace) nil))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($pkgNameSpace "bisos")
+             )
+
+       (insert (s-lex-format "
+import setuptools
+import re
+import inspect
+import pathlib
+"
+                             ))
+
+       (when <pkgNameSpace
+         (setq $pkgNameSpace <pkgNameSpace))
+
+       (if-when <pkgName
+         (insert (s-lex-format "
+def pkgName():
+        return ${$pkgNameSpace}.${<pkgName}
+"
+                               ))
+         )
+       (if-unless <pkgName
+         (insert (s-lex-format "
+def pkgName():
+    ''' From this eg., filepath=.../bisos-pip/PkgName/py3/setup.py, extract PkgName. '''
+    filename = inspect.getframeinfo(inspect.currentframe()).filename
+    grandMother = pathlib.Path(filename).resolve().parent.parent.name
+    return f'bisos.{grandMother}'
+"
+                               ))
+         )
+
+       (insert (s-lex-format "
+def description():
+    ''' Extract title from ./_description.org which is expected to have a title: line. '''
+    try:
+        with open('./_description.org') as file:
+            while line := file.readline():
+                if match := re.search(r'^#\+title: (.*)',  line.rstrip()):
+                    return match.group(1)
+                return 'MISSING TITLE in ./_description.org'
+    except IOError:
+        return  'ERROR: Could not read ./_description.org file.'
+
+def longDescription():
+    ''' Convert _description.org to .rst. '''
+    try:
+        import pypandoc
+    except ImportError:
+        result = 'WARNING: pypandoc module not found, could not convert to RST'
+        return result
+    if (result := pypandoc.convert_file('_description.org', 'rst')) is None:
+        result = '''ERROR: pypandoc.convert_file('_description.org', 'rst') Failed.'''
+    return result
+"
+                             ))
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/version" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/version>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/version :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/version (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<forSys (or (plist-get <params :forSys) nil))
+         (<forPypi (or (plist-get <params :forPypi) nil))
+         (<constant (or (plist-get <params :constant) nil))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($resultVersion)
+             ($forSysVersion)
+             ($forPypiVersion)
+             ($existedComment)
+             ($constant "NA")
+             )
+
+        (setq $forSysVersion (string-trim (shell-command-to-string (s-lex-format
+              "pypiProc.sh -i verForSetup forSys"))))
+
+        (setq $forPypiVersion (string-trim (shell-command-to-string (s-lex-format
+              "pypiProc.sh -i verForSetup forPypi"))))
+
+        (cond
+         (<constant
+          (setq $resultVersion <constant)
+          (setq $constant <constant))
+
+         (<forSys
+          (setq $resultVersion $forSysVersion))
+
+         (<forPypi
+          (setq $resultVersion $forPypiVersion))
+
+         (t
+          (setq $resultVersion (string-trim (shell-command-to-string (s-lex-format
+              "pypiProc.sh -i verForSetup")))))
+         )
+
+        (if (f-exists? "./pypiUploadVer")
+            (setq $existedComment "./pypiUploadVer EXISTED")
+          (setq $existedComment "./pypiUploadVer DID NOT exist")
+          )
+
+        (insert (s-lex-format "
+# ${$existedComment} -- forPypiVersion=${$forPypiVersion} -- forSysVersion=${$forSysVersion} -- constant=${$constant}
+def pkgVersion():
+        return '${$resultVersion}'
+"
+                                ))
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/nextVersionObsoleted" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/nextVersionObsoleted>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:pypi/nextVersionObsoleted :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi/nextVersionObsoleted (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
@@ -1786,6 +1958,7 @@ def pkgVersion():
       ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
 
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/setupFuncArgs" :advice ("bx:dblock:control|wrapper")

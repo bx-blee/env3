@@ -2244,7 +2244,7 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
   (let (
         (@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
         (@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-        (@style (or (plist-get @params :style) "closeBlank")) ;; souroundings style
+        (@style (or (plist-get @params :style) "openCloseBlank")) ;; souroundings style
         (@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
         ;;
         (@panelsList (or (plist-get @params :panelType) "bxPanel"))
@@ -2263,11 +2263,12 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
       )
 
     (defun bodyContent ()
+      (when (string= @panelsList "bxPanel")
       (insert
        (format
         "%s    [[elisp:(org-cycle)][| *= Org-Mode Local Params: =* | ]]\n"
         (blee:panel:frontControl @outLevel :inDblock "yes")
-        ))
+        )))
 
       (insert
        (format "\
@@ -2320,11 +2321,13 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
   (let (
         (@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
         (@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-        (@style (or (plist-get @params :style) "closeBlank")) ;; souroundings style
+        (@style (or (plist-get @params :style) "openCloseBlank")) ;; souroundings style
         (@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
         ;;
         (@primMode (or (plist-get @params :primMode) (symbol-name major-mode)))
-        (@latexMasters (or (plist-get @params :latexMasters) nil))      
+        (@latexMasters (or (plist-get @params :latexMasters) nil))
+        ;;
+        (@panelsList (or (plist-get @params :panelType) "bxPanel"))
         ;;
         ($commentStartStr)
         ($primModeSymb)
@@ -2340,11 +2343,12 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
       )
 
     (defun bodyContent ()
+      (when (string= @panelsList "bxPanel")
       (insert
        (format
         "%s    [[elisp:(org-cycle)][| *= Emacs Local Params: =* | ]]\n"
         (blee:panel:frontControl @outLevel :inDblock "yes")
-        ))
+        )))
 
       (setq $primModeSymb (intern @primMode))
 
