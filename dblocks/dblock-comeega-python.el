@@ -1622,12 +1622,14 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (outCommentPostContent)
       )))
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/scripts" :advice ("bx:dblock:control|wrapper")
+(defalias 'org-dblock-write:b:py3:pypi/scripts 'org-dblock-write:b:py3:pypi:setup/scripts)
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/scripts" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/scripts>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/scripts>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:py3:pypi/scripts :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:py3:pypi/scripts (<params)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/scripts :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/scripts (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
@@ -1661,12 +1663,14 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       )))
 
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/requires" :advice ("bx:dblock:control|wrapper")
+(defalias 'org-dblock-write:b:py3:pypi/requires 'org-dblock-write:b:py3:pypi:setup/requires)
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/requires" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/requires>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/requires>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:py3:pypi/requires :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:py3:pypi/requires (<params)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/requires :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/requires (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
@@ -1959,14 +1963,14 @@ def pkgVersion():
       (outCommentPostContent)
       )))
 
+(defalias 'org-dblock-write:b:py3:pypi/setupFuncArgs 'org-dblock-write:b:py3:pypi:setup/funcArgs)
 
-
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/setupFuncArgs" :advice ("bx:dblock:control|wrapper")
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/funcArgs" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/setupFuncArgs>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/funcArgs>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:py3:pypi/setupFuncArgs :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:py3:pypi/setupFuncArgs (<params)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/funcArgs :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/funcArgs (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
