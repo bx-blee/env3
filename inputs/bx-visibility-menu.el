@@ -116,7 +116,7 @@
 
   ;;;  Dynamic Block
   (define-key global-map [(f7) (d)] nil)
-  (define-key global-map [(f7) (d) (d)] 'org-dblock-update)
+  (define-key global-map [(f7) (d) (d)] 'org-dblock-update-re-major-mode)
   (define-key global-map [(f7) (d) (b)] 'org-dblock-update-buffer-bx)
   (define-key global-map [(f7) (d) (u)] 'org-dblock-bx-blank-this)     ;;; u= undo this dblock
   (define-key global-map [(f7) (d) (c)] 'org-dblock-bx-blank-buffer)   ;;; c= clean dblock buffer

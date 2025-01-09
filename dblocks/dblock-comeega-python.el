@@ -1622,6 +1622,44 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (outCommentPostContent)
       )))
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/dataFiles" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/dataFiles>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/dataFiles :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/dataFiles (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (insert (s-lex-format "\ndata_files = [ \n"))
+      (insert (s-lex-format "(' ',  ['lh-agpl3-LICENSE.txt', '_description.org', 'README.rst']),\n"))
+      (insert (s-lex-format "]"))
+      )
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
 (defalias 'org-dblock-write:b:py3:pypi/scripts 'org-dblock-write:b:py3:pypi:setup/scripts)
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/scripts" :advice ("bx:dblock:control|wrapper")
@@ -1755,26 +1793,27 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              ($pkgNameSpace "bisos")
              )
 
-       (insert (s-lex-format "
-import setuptools
-import re
-import inspect
-import pathlib
-"
-                             ))
-
        (when <pkgNameSpace
          (setq $pkgNameSpace <pkgNameSpace))
 
        (if-when <pkgName
          (insert (s-lex-format "
+import setuptools
+import re
+
 def pkgName():
-        return ${$pkgNameSpace}.${<pkgName}
+        return '${$pkgNameSpace}.${<pkgName}'
 "
                                ))
          )
+
        (if-unless <pkgName
          (insert (s-lex-format "
+import setuptools
+import re
+import inspect
+import pathlib
+
 def pkgName():
     ''' From this eg., filepath=.../bisos-pip/PkgName/py3/setup.py, extract PkgName. '''
     filename = inspect.getframeinfo(inspect.currentframe()).filename
@@ -1786,26 +1825,25 @@ def pkgName():
 
        (insert (s-lex-format "
 def description():
-    ''' Extract title from ./_description.org which is expected to have a title: line. '''
+    ''' Extract title from ./_description.org which is expected to have a #+title: line. '''
     try:
         with open('./_description.org') as file:
             while line := file.readline():
-                if match := re.search(r'^#\+title: (.*)',  line.rstrip()):
+                if match := re.search(r'^#\\+title: (.*)',  line.rstrip()):
                     return match.group(1)
-                return 'MISSING TITLE in ./_description.org'
+            return 'MISSING TITLE in ./_description.org'
     except IOError:
         return  'ERROR: Could not read ./_description.org file.'
 
 def longDescription():
-    ''' Convert _description.org to .rst. '''
+    ''' Read README.rst as a string. '''
+    fileName = './README.rst'
     try:
-        import pypandoc
-    except ImportError:
-        result = 'WARNING: pypandoc module not found, could not convert to RST'
+        with open(fileName) as file:
+           result = file.read()
         return result
-    if (result := pypandoc.convert_file('_description.org', 'rst')) is None:
-        result = '''ERROR: pypandoc.convert_file('_description.org', 'rst') Failed.'''
-    return result
+    except IOError:
+        return  f'ERROR: Could not read {fileName} file.'
 "
                              ))
         ))
@@ -1980,7 +2018,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
-         (<pkgName (or (plist-get <params :pkgName) ""))
+         (<pkgName (or (plist-get <params :pkgName) "--auto--"))
          (<comment (or (plist-get <params :comment) ""))
          )
     (bxPanel:params$effective)
@@ -2005,11 +2043,11 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
           (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))))
       (insert (s-lex-format "
 setuptools.setup(
-    name=${$pkgNameQuoted},
+    name=${$pkgNameQuoted},  # ${$pkgName}
     version=pkgVersion(),
     packages=setuptools.find_packages(),
     scripts=scripts,
-    #data_files=data_files,
+    data_files=data_files,
     include_package_data=True,
     zip_safe=False,
     author='Mohsen Banan',

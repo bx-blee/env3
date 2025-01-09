@@ -421,6 +421,15 @@ closeBlank -- Nothing at all
     )
   )
 
+(defun org-dblock-update-re-major-mode ()
+  ""
+  (interactive)
+  (org-dblock-mode-comment-regexp-bx)
+  (org-dblock-update)
+  (show-all)
+  )
+
+
 (defun blee:buf:re-major-mode ()
   "Previously was done with switching to org-mode"
   (interactive)
