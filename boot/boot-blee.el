@@ -47,6 +47,9 @@ s.el and loop.el are used in blee-libs. We consider those external local librari
 
   (add-to-list 'load-path (expand-file-name "../libs" ($:b|hereDirectory)))
 
+  (message "NOTYET workaround to be sorted out - advice-remove because of autoload-compute-prefixes")
+  (advice-remove #'doom-straight--no-compute-prefixes-a #'straight--build-autoloads)
+
   (require 'bnpa-comment-block)
   (bnpa:comment-block:full|update)
 
