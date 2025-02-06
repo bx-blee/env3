@@ -1734,7 +1734,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (if-unless <requirements
         (insert (s-lex-format "\nrequires = [ \n"))
         (insert (shell-command-to-string
-                 "pypiProc.sh -i namespaceRequires"))
+                 "pypiProc.sh -i namespaceRequires 2> /dev/null"))
         (loop-for-each $each <extras
           (insert (s-lex-format "\"${$each}\",\n")))
         (insert (s-lex-format "]"))
@@ -1746,7 +1746,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                )
           ;; readin the file and process it.
           (setq $linesList (s-split "\n" (f-read <requirements) t))
-          (insert (s-lex-format "\nrequires = [ \n"))
+          (insert (s-lex-format "\nrequires = [\n"))
           (dolist ($eachLine $linesList)
             (setq $item (nth 0 (s-split "=" $eachLine)))
             (insert (s-lex-format "'${$item}',\n"))
@@ -1854,6 +1854,56 @@ def longDescription():
       (outCommentPostContent)
       )))
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/projectToml" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/projectToml>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/projectToml :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/projectToml (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<setuptoolsVer (or (plist-get <params :setuptoolsVer) nil))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($setuptoolsVer "NA")
+             )
+
+        (if-when <setuptoolsVer
+          (setq $setuptoolsVer <setuptoolsVer))
+        (else-unless <setuptoolsVer
+          (setq $setuptoolsVer "75.8.0"))
+
+        (insert (s-lex-format "
+[build-system]
+requires = [\"setuptools==${$setuptoolsVer}\"]
+build-backend = \"setuptools.build_meta\"
+"
+                                ))
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/version" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -1893,10 +1943,10 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              )
 
         (setq $forSysVersion (string-trim (shell-command-to-string (s-lex-format
-              "pypiProc.sh -i verForSetup forSys"))))
+              "pypiProc.sh -i verForSetup forSys 2> /dev/null"))))
 
         (setq $forPypiVersion (string-trim (shell-command-to-string (s-lex-format
-              "pypiProc.sh -i verForSetup forPypi"))))
+              "pypiProc.sh -i verForSetup forPypi 2> /dev/null"))))
 
         (cond
          (<constant
@@ -1911,7 +1961,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
          (t
           (setq $resultVersion (string-trim (shell-command-to-string (s-lex-format
-              "pypiProc.sh -i verForSetup")))))
+              "pypiProc.sh -i verForSetup 2> /dev/null")))))
          )
 
         (if (f-exists? "./pypiUploadVer")
@@ -2034,16 +2084,22 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              ($pkgName (string-trim (shell-command-to-string (s-lex-format
                 "./setup.py --name 2> /dev/null"
                 ))))
-             ($pkgNameQuoted (s-lex-format "'${$pkgName}'"))
+             ($pkgNameString (s-lex-format "'${$pkgName}'"))
              )
       (if-when (string= <pkgName "--auto--")
-        (setq $pkgNameQuoted "pkgName()"))
+        (if-when (f-exists? "./pypiUploadVer")
+          (setq $pkgNameQuoted (s-lex-format "'${$pkgName}'"))          
+          )
+        (else-unless (f-exists? "./pypiUploadVer")
+          (setq $pkgNameQuoted (s-lex-format "pkgName()"))          
+          )
+        )   
       (else-unless (string= <pkgName "--auto--")
         (unless (string= <pkgName "")
           (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))))
       (insert (s-lex-format "
 setuptools.setup(
-    name=${$pkgNameQuoted},  # ${$pkgName}
+    name=${$pkgNameQuoted},  # ${$pkgNameString}
     version=pkgVersion(),
     packages=setuptools.find_packages(),
     scripts=scripts,
@@ -2054,11 +2110,9 @@ setuptools.setup(
     author_email='libre@mohsen.1.banan.byname.net',
     maintainer='Mohsen Banan',
     maintainer_email='libre@mohsen.1.banan.byname.net',
-    url='http://www.by-star.net/PLPC/180047',
     license='AGPL',
     description=description(),
     long_description=longDescription(),
-    download_url='http://www.by-star.net/PLPC/180047',
     install_requires=requires,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -2071,6 +2125,8 @@ setuptools.setup(
         ]
     )
 "
+        ;;;   url='http://www.by-star.net/PLPC/180047',
+        ;;;   download_url='http://www.by-star.net/PLPC/180047',
                               ))
         ))
 
