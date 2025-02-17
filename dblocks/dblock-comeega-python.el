@@ -1920,7 +1920,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
-         (<forSys (or (plist-get <params :forSys) nil))
+         (<forLocal (or (plist-get <params :forLocal) nil))
          (<forPypi (or (plist-get <params :forPypi) nil))
          (<constant (or (plist-get <params :constant) nil))
          (<comment (or (plist-get <params :comment) ""))
@@ -1936,14 +1936,14 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       ""
       (let* (
              ($resultVersion)
-             ($forSysVersion)
+             ($forLocalVersion)
              ($forPypiVersion)
              ($existedComment)
              ($constant "NA")
              )
 
-        (setq $forSysVersion (string-trim (shell-command-to-string (s-lex-format
-              "pypiProc.sh -i verForSetup forSys 2> /dev/null"))))
+        (setq $forLocalVersion (string-trim (shell-command-to-string (s-lex-format
+              "pypiProc.sh -i verForSetup forLocal 2> /dev/null"))))
 
         (setq $forPypiVersion (string-trim (shell-command-to-string (s-lex-format
               "pypiProc.sh -i verForSetup forPypi 2> /dev/null"))))
@@ -1953,8 +1953,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
           (setq $resultVersion <constant)
           (setq $constant <constant))
 
-         (<forSys
-          (setq $resultVersion $forSysVersion))
+         (<forLocal
+          (setq $resultVersion $forLocalVersion))
 
          (<forPypi
           (setq $resultVersion $forPypiVersion))
@@ -1970,7 +1970,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
           )
 
         (insert (s-lex-format "
-# ${$existedComment} -- forPypiVersion=${$forPypiVersion} -- forSysVersion=${$forSysVersion} -- constant=${$constant}
+# ${$existedComment} -- forPypiVersion=${$forPypiVersion} -- forLocalVersion=${$forLocalVersion} -- constant=${$constant}
 def pkgVersion():
         return '${$resultVersion}'
 "
