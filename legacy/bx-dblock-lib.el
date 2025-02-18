@@ -413,6 +413,7 @@ closeBlank -- Nothing at all
     (show-all)
     )
   (unless (equal major-mode 'org-mode)
+    (lsp-mode -1)  ;; 2025 Needs Testing
     ;;(call-interactively 'blee:buf:re-major-mode)
     (blee:buf:re-major-mode)  
     ;;(org-mode)
