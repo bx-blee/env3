@@ -118,6 +118,9 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
    ;;;
    ;;; Ignored Files
    (add-to-list 'lsp-file-watch-ignored-files "[/\\\\]pypiProc.sh\\'")
+   ;;;
+   ;;; Setting it to nil, results in being prompted.
+   (setq lsp-auto-guess-root ".")
    )
 
 
