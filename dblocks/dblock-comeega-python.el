@@ -176,6 +176,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<noCmndEntry (or (plist-get <params :noCmndEntry) "examples"))
          (<extraParamsHook (or (plist-get <params :extraParamsHook) "g_paramsExtraSpecify"))
          (<importedCmndsModules (or (plist-get <params :importedCmndsModules)  "g_importedCmndsModules"))
+         (<isSeed (or (plist-get <params :isSeed)  nil))
          )
     (bxPanel:params$effective)
 
@@ -190,6 +191,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (s-lex-format "${$frontStr} =g_csMain= (${<csInfo}, _${<noCmndEntry}_, ${<extraParamsHook}, ${<importedCmndsModules})"))))
 
     (defun outCommentPostContent ()
+      (if-unless <isSeed
         (insert
          (s-lex-format "
 
@@ -202,6 +204,19 @@ if __name__ == '__main__':
     )
 "
                        )))
+      (else-when <isSeed
+        (insert
+         (s-lex-format "
+
+cs.main.g_csMain(
+        csInfo=${<csInfo},
+        noCmndEntry=${<noCmndEntry},  # specify a Cmnd name
+        extraParamsHook=${<extraParamsHook},
+        importedCmndsModules=${<importedCmndsModules},
+)
+"
+                       )))
+      )
 
     (progn  ;; Actual Invocations
       (outCommentPreContent)
@@ -1001,7 +1016,7 @@ with open(__file__) as f:
 (defun org-dblock-write:b:py3:cs:seed/withWhich (<params)
 ;;;#+END:
    " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]]
+** [[elisp:(org-cycle)][| DocStr |]] :plantingModel \"internal\" :outLevel 1
 #+end_org "
   (let* (
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
@@ -1009,7 +1024,11 @@ with open(__file__) as f:
          (<style (letGet$style "openBlank" "closeBlank"))
          (<derived (or (plist-get <params :derived) ""))
          (<seedName (or (plist-get <params :seedName) ""))
+         (<plantingModel (or (plist-get <params :plantingModel) "external"))
          )
+
+    (when (s-equals? <plantingModel "external")
+      (setq <outLevel 2))
 
     (bxPanel:params$effective)
 
@@ -1018,7 +1037,7 @@ with open(__file__) as f:
     (defun bodyContentPlus ())
     (defun bodyContent ()
       (let* (
-             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "seed")))
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "seedName = ~${<seedName}~")))
              ($backStr (b:dblock:comeega|eolControls))
              )
              (insert (s-lex-format "${$frontStr} <<${<seedName}>> "))
@@ -1027,7 +1046,9 @@ with open(__file__) as f:
              ))
 
     (defun outCommentPostContent ()
-      (insert (s-lex-format "
+      (cond
+       ((s-equals? <plantingModel "internal")
+        (insert (s-lex-format "
 import shutil
 import os
 import sys
@@ -1041,7 +1062,31 @@ if seedPath is None:
 __file__ = os.path.abspath(seedPath)
 with open(__file__) as f:
     exec(compile(f.read(), __file__, 'exec'))
-")))
+"
+                              )))
+       ((s-equals? <plantingModel "external")
+        (insert (s-lex-format "
+    import shutil
+    import os
+    import sys
+
+    seedName = 'seedSbom.cs'
+    seedPath = shutil.which(seedName)
+    if seedPath is None:
+        print(f'sys.exit() --- which found nothing for {seedName} --- Aborting')
+        sys.exit()
+
+    __file__ = os.path.abspath(seedPath)
+    # __name__ = '__main__'
+    with open(__file__) as f:
+        code = compile(f.read(), __file__, 'exec')
+        exec(code, globals())
+"
+                              )))
+       (t
+        (error (s-lex-format "Bad Usage -- plantingModel=${<plantingModel}")))
+       ))
+
 
    (progn  ;; Actual Invocations
       (outCommentPreContent)
@@ -2232,6 +2277,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                 "./setup.py --name 2> /dev/null"
                 ))))
              ($pkgNameQuoted (s-lex-format "'${$pkgName}'"))
+             ($thisDir (file-name-directory (buffer-file-name)))
+             ($fullPath)
              )
       (if-when (string= <pkgName "--auto--")
         (setq $pkgNameQuoted "pkgName()"))
@@ -2241,11 +2288,12 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
           (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))
           )
         )
+      (setq $fullPath (s-lex-format "${$thisDir}py3/panels/bisos.${$pkgName}/_nodeBase_/fullUsagePanel-en.org"))
       (if-when (string= (file-name-nondirectory (buffer-file-name)) "README.org")
         (insert (s-lex-format "
 |----------------------+------------------------------------------------------------------|
 | ~Blee Panel Controls~: | [[elisp:(show-all)][Show-All]] : [[elisp:(org-shifttab)][Overview]] : [[elisp:(progn (org-shifttab) (org-content))][Content]] : [[elisp:(delete-other-windows)][(1)]] : [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]] : [[elisp:(save-buffer)][Save]]  : [[elisp:(kill-buffer)][Quit]]  : [[elisp:(bury-buffer)][Bury]] |
-| ~Panel Links~:         | [[file:./py3/panels/bisos.${$pkgName}/_nodeBase_/fullUsagePanel-en.org][Repo Blee Panel]]                                                  |
+| ~Panel Links~:         | [[file:./py3/panels/bisos.${$pkgName}/_nodeBase_/fullUsagePanel-en.org][Repo Blee Panel]] --  [[file:${$fullPath}][Blee Panel]]                                                |
 | ~See Also~:            | [[https://pypi.org/project/bisos.${$pkgName}][At PYPI]] : [[https://github.com/bisos-pip/pycs][bisos.PyCS]]                                             |
 |----------------------+------------------------------------------------------------------|
 "

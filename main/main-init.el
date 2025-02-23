@@ -102,6 +102,9 @@ and side-effects are documented here
 ** DocStr: This is a place holder for what needs to be absorbed.
 #+end_org "
 
+   ;; (setq safe-local-variable-values nil)
+   ;; (setq enable-local-variables t)
+
    (add-to-list 'safe-local-variable-values '(eval setq-local toc-org-max-depth 4))
    (add-to-list 'safe-local-variable-values '(major-mode . sh-mode))
    (add-to-list 'safe-local-variable-values '(eval bx:load-file:ifOneExists "./panelActions.el"))
