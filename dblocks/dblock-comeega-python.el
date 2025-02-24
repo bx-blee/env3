@@ -1070,14 +1070,13 @@ with open(__file__) as f:
     import os
     import sys
 
-    seedName = 'seedSbom.cs'
+    seedName = '${<seedName}'
     seedPath = shutil.which(seedName)
     if seedPath is None:
         print(f'sys.exit() --- which found nothing for {seedName} --- Aborting')
         sys.exit()
 
     __file__ = os.path.abspath(seedPath)
-    # __name__ = '__main__'
     with open(__file__) as f:
         code = compile(f.read(), __file__, 'exec')
         exec(code, globals())
