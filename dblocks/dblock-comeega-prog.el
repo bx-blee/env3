@@ -130,6 +130,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
          (<authors (or (plist-get <params :authors) nil))
+         ($f-canonical (f-canonical buffer-file-name))
          )
     (bxPanel:params$effective)
 
@@ -139,6 +140,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
     (defun bodyContent ()
       (insert (s-lex-format "* *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version\n"))
       (insert (s-lex-format "** This File: ${buffer-file-name}\n"))
+      (insert (s-lex-format "** File True Name: ${$f-canonical}\n"))
       (loop-for-each $each <authors
         (b:dblock:inserts|fromFile $each)))
 

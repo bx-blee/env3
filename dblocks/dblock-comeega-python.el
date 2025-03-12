@@ -317,7 +317,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                ($butlast (butlast $csuAsStrList))
                ($joinedButlast (s-join "." $butlast))
                )
-          (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n"))))
+          (unless (s-equals? <each "plantedCsu")
+            (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n")))))
 
       (when <pyImports
         (insert "\n\n")
@@ -328,7 +329,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (when <csuImports
         (insert "\ncsuList = [")
         (loop-for-each $each b:py:cs:csuList
-          (insert (s-lex-format " \'${$each}\',")))
+          (insert (s-lex-format " \'${$each}\',"))
+          )
         (insert " ]\n")
         (insert (s-lex-format "
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
