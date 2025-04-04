@@ -1634,7 +1634,12 @@ Subject:   & This Matter\\\\
         (insert
          (format "
 %% Usually \\geometry{paperwidth=6in,paperheight=9in,bindingoffset=0.15in,left=0.75in,right=0.75in,top=0.75in,bottom=0.75in,footskip=.25in}
+\\begin{whenUsEdition}
 \\geometry{paperwidth=6in,paperheight=9in,left=0.75in,right=0.625in,top=0.75in,bottom=0.75in,footskip=.25in,twoside}
+\\end{whenUsEdition}
+\\begin{whenIntEdition}
+\\geometry{paperwidth=6in,paperheight=9in,left=0.78in,right=0.65in,top=0.75in,bottom=0.75in,footskip=.25in,twoside}
+\\end{whenIntEdition}
 "
                  )
          )

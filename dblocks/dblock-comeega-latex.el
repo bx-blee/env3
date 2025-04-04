@@ -2909,7 +2909,12 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
        (insert "
 
 \\begin{whenPaper6x9}
+\\begin{whenUsEdition}
 \\begin{adjustwidth}{-0.1in}{-0.1in}   % Used to be 0.25
+\\end{whenUsEdition}
+\\begin{whenIntEdition}
+\\begin{adjustwidth}{-0.005in}{-0.005in}   % Used to be 0.25
+\\end{whenIntEdition}
 \\end{whenPaper6x9}
 
 \\begin{latexonly}
@@ -3233,7 +3238,7 @@ We have not identified sources when the facts involved are not in
 dispute and when the relevant information can easily be found.
 
 \\begin{whenPaper6x9}
-    \\begin{adjustwidth}{+0.1in}{+0.1in}
+    \\begin{adjustwidth}{+0.15in}{+0.05in}
 \\end{whenPaper6x9}
 
 \\printendnotes
