@@ -256,80 +256,80 @@
 
 
 (defun bxi:other-frame-2 ()
-  "Shell1"
+  "other-frame"
   (interactive)
   (other-frame 2)
   )
 
 
 (defun bxi:otherw:shell ()
-  "Shell1"
+  "Shell-other"
   (interactive)
   (other-window 1)
   (shell)
   )
 
 
-(defun bxi:otherw:shell1 ()
-  "Shell1"
+(defun bxi:otherw:shxell1 ()
+  "Shell1-other"
   (interactive)
   (other-window 1)
-  (shell 1)
+  (shell "*shell*<1>")
   )
 
 
 (defun bxi:shell1 ()
   "Shell1"
   (interactive)
-  (shell 1)
+  (shell "*shell*<1>")
   )
 
 (defun bxi:shell2 ()
   "Shell2"
   (interactive)
-  (shell 2)
+  (shell "*shell*<2>")
   )
 
 (defun bxi:shell3 ()
   "Shell3"
   (interactive)
-  (shell 3)
+  (shell "*shell*<3>")
   )
 
 (defun bxi:shell4 ()
   "Shell4"
   (interactive)
-  (shell 4)
+  (shell "*shell*<4>")
   )
 
 (defun bxi:shell5 ()
   "Shell5"
   (interactive)
-  (shell 5)
+  (shell "*shell*<5>")
   )
 
 (defun bxi:shell6 ()
   "Shell6"
   (interactive)
-  (shell 6)
+  (shell "*shell*<6>")
   )
 
 (defun bxi:shell7 ()
   "Shell7"
   (interactive)
-  (shell 7)
+  (shell "*shell*<7>")
   )
 
 (defun bxi:shell8 ()
   "Shell8"
   (interactive)
-  (shell 8)
+  (shell "*shell*<8>")
   )
 
 (defun bxi:shell9 ()
   "Shell9"
   (interactive)
-  (shell 9)
+  (shell "*shell*<9>")
   )
 
 (defun pr-ps-buffer-preview-bx-1 ()
