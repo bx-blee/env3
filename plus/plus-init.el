@@ -89,6 +89,13 @@ and side-effects are documented here
 
    (require 'bcpg:subedPlus)
    (bcpg:subedPlus|fullUpdate)
+
+   (require 'bcpg:aidermacsPlus)
+   (bcpg:aidermacsPlus|fullUpdate)
+
+   (require 'bcpg:gptelPlus)
+   (bcpg:gptelPlus|fullUpdate)
+
    )
 
 (orgCmntBegin "

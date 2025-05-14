@@ -4369,6 +4369,8 @@ Each of these dblock-params match a buffer-local variables.
         (insert
          (format "
 
+\\usepackage{whenenv}
+
 \\includecomment{%s-%s}
 
 \\includecomment{whenDocIsComplete}
@@ -5097,7 +5099,10 @@ Each of these dblock-params match a buffer-local variables.
 
 (defun org-dblock-write:bx:dblock:lcnt:latex-input (params)
   (let ((bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
-        (bx:input-file (or (plist-get params :input-file) "missing")))
+        (bx:input-file (or (plist-get params :input-file) "missing"))
+        (<when (or (plist-get params :when) nil))
+        ($whenAsStr "Always")
+        )
     (message (format "disabledP = %s" bx:disabledP))
     (if (not
          (or (equal "TRUE" bx:disabledP)
@@ -5106,19 +5111,30 @@ Each of these dblock-params match a buffer-local variables.
         (progn
           ;;; Processing Body
           (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
+          (when <when (setq $whenAsStr <when))
           (if (file-exists-p bx:input-file)
               (progn
-                (insert (format "\
+                (when <when
+                  (insert (s-lex-format "\
+\\begin{${<when}}"
+                                        )))
+                (insert (format "
 \\begin{whenOrg}
-%s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] ::  [[elisp:(org-cycle)][| ]]
+%s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] When=%s::  [[elisp:(org-cycle)][| ]]
 \\end{whenOrg}
 
 \\input{%s}"
                                 "*"
                                 bx:input-file
                                 bx:input-file
+                                $whenAsStr
                                 bx:input-file
-                                )))
+                                ))
+                                (when <when
+                  (insert (s-lex-format "
+\\end{${<when}}"
+                                        )))
+                                )
             (message (format "Missing File: %s" bx:input-file))
             )
           )

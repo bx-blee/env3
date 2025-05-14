@@ -18,6 +18,8 @@
 
 (require 'easymenu)
 
+(require 'apps-gptel-menu)
+(require 'apps-aidermacs-menu)
 
 (require 'apps-calc-menu)
 (require 'apps-epa-menu)
@@ -65,6 +67,13 @@ As such what happens below is exactly what is necessary and no more."
 	,(s-- 7)
 	,(s-- 8)
 	))
+
+
+    (apps:gptel:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (apps:aidermacs:menu:plugin|install
+     apps:menu:global (s-- 3))
 
     (apps:calc:menu:plugin|install
      apps:menu:global (s-- 3))

@@ -879,6 +879,11 @@ Sections are specified as :outLevel 1,n
                                )))
         )
       (cond
+       ((s-contains? "/realmPanels/" (buffer-file-name))
+        (insert (s-lex-format "
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   ${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+"
+               )))
        ((s-starts-with? "/bisos/" (buffer-file-name))
         (insert (s-lex-format "
 ${$star}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _   ${@title}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
