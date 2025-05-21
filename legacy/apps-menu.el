@@ -18,8 +18,11 @@
 
 (require 'easymenu)
 
-(require 'apps-gptel-menu)
-(require 'apps-aidermacs-menu)
+(require 'compile-time-function-name)
+
+;; (require 'apps-gptel-menu)
+(require 'b:aiplus::aidermacs:menu)
+(require 'b:aiplus::gptel:menu)
 
 (require 'apps-calc-menu)
 (require 'apps-epa-menu)
@@ -69,10 +72,10 @@ As such what happens below is exactly what is necessary and no more."
 	))
 
 
-    (apps:gptel:menu:plugin|install
+    (b:aiplus:gptel:menu:plugin|install
      apps:menu:global (s-- 3))
 
-    (apps:aidermacs:menu:plugin|install
+    (b:aiplus:aidermacs:menu:plugin|install
      apps:menu:global (s-- 3))
 
     (apps:calc:menu:plugin|install

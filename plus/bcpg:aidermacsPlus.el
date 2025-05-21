@@ -128,7 +128,6 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
   "Minimal setup for aidermacs without project.el, with magit support and safe chat mode."
   (require 'aidermacs)
 
-  
   ;; Use Git root detection only (no project.el)
   (setq aider-project-root-function
         (lambda ()

@@ -132,7 +132,7 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  (b:log|entry (b:func$entry))
 ;;;#+END:
   "Configure gptel for use with OpenAI and gpt-4o."
-  ;;(require 'gptel)
+  (require 'gptel)
 
   ;; ;; Use the API key from env or set it here directly (not recommended for public configs)
   ;; (unless (getenv "OPENAI_API_KEY")

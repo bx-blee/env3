@@ -101,8 +101,12 @@ and side-effects are documented here
    (require 'bnpa:comeega)
    (bnpa:comeega|fullUpdate)
 
-   (require 'bnpa:bidi-menu)
-   (b:npa:bidi-menu|fullUpdate)
+   ;; (require 'bnpa:bidi-menu)
+   ;; (b:npa:bidi-menu|fullUpdate)
+
+   (require 'bnpa:blee-menus)
+   (b:npa:blee-menus|fullUpdate)
+
 
    (require 'bnpa:bisos)
    (bnpa:bisos|fullUpdate)
@@ -119,10 +123,10 @@ and side-effects are documented here
 
    ;; (require 'bnpa:chatGptInv)
    ;; (b:npa:chatGptInv|fullUpdate)
-   (when b:g:dev:mode?
-     (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatgpt.el")
-     (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatGptInv-menu.el")
-     )
+   ;; (when b:g:dev:mode?
+   ;;   (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatgpt.el")
+   ;;   (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatGptInv-menu.el")
+   ;;   )
 
    ;; (require 'bnpa:mtdt)
    ;; (b:npa:mtdt|fullUpdate)

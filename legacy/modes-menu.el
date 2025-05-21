@@ -99,7 +99,7 @@ For use in delimiters in easy-menu-define"
     (b:bidi:menu:plugin|install
      modes:menu:global (s-- 3))
 
-    (b:chatGpt:menu:plugin|install modes:menu:global (s-- 3))
+    ;; (b:chatGpt:menu:plugin|install modes:menu:global (s-- 3))
 
     ;; (b:mtdt:menu:plugin|install
     ;;  modes:menu:global (s-- 4))

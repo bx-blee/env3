@@ -96,6 +96,9 @@ and side-effects are documented here
    (require 'bcpg:gptelPlus)
    (bcpg:gptelPlus|fullUpdate)
 
+   (require 'bnpa:aiplus)
+   (b:npa:aiplus|fullUpdate)
+
    )
 
 (orgCmntBegin "
