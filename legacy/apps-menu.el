@@ -75,6 +75,12 @@ As such what happens below is exactly what is necessary and no more."
     (b:aiplus:gptel:menu:plugin|install
      apps:menu:global (s-- 3))
 
+    (b:aiplus:gptel:canned:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (b:aiplus:gptel:translate:menu:plugin|install
+     apps:menu:global (s-- 3))
+
     (b:aiplus:aidermacs:menu:plugin|install
      apps:menu:global (s-- 3))
 
