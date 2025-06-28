@@ -1783,6 +1783,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                  "pypiProc.sh -i namespaceRequires 2> /dev/null"))
         (loop-for-each $each <extras
           (insert (s-lex-format "\"${$each}\",\n")))
+        (insert (s-lex-format "\"setuptools==75.8.0\",\n"))
         (insert (s-lex-format "]"))
         )
       (else-when <requirements
@@ -1797,6 +1798,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
             (setq $item (nth 0 (s-split "=" $eachLine)))
             (insert (s-lex-format "'${$item}',\n"))
             )
+          (insert (s-lex-format "\"setuptools==75.8.0\",\n"))
           (insert (s-lex-format "]"))
           )))
 

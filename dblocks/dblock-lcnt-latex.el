@@ -5098,6 +5098,7 @@ Each of these dblock-params match a buffer-local variables.
 (defalias 'org-dblock-write:bx:lcnt:latex:input-file 'org-dblock-write:bx:dblock:lcnt:latex-input)
 
 (defun org-dblock-write:bx:dblock:lcnt:latex-input (params)
+  "IMPORTANT: whenOrg should come before begin <when"
   (let ((bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
         (bx:input-file (or (plist-get params :input-file) "missing"))
         (<when (or (plist-get params :when) nil))
@@ -5114,23 +5115,25 @@ Each of these dblock-params match a buffer-local variables.
           (when <when (setq $whenAsStr <when))
           (if (file-exists-p bx:input-file)
               (progn
-                (when <when
-                  (insert (s-lex-format "\
-\\begin{${<when}}"
-                                        )))
-                (insert (format "
+
+                (insert (format "\
 \\begin{whenOrg}
 %s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] When=%s::  [[elisp:(org-cycle)][| ]]
-\\end{whenOrg}
+\\end{whenOrg}"
 
-\\input{%s}"
                                 "*"
                                 bx:input-file
                                 bx:input-file
                                 $whenAsStr
-                                bx:input-file
                                 ))
-                                (when <when
+                (when <when
+                  (insert (s-lex-format "
+\\begin{${<when}}"
+                                        )))
+                (insert (s-lex-format "
+\\input{${bx:input-file}}"))
+
+                (when <when
                   (insert (s-lex-format "
 \\end{${<when}}"
                                         )))
@@ -5140,7 +5143,6 @@ Each of these dblock-params match a buffer-local variables.
           )
       (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
       )))
-
 
 
 
