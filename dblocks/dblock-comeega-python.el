@@ -327,15 +327,21 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
         (insert "\n"))
 
       (when <csuImports
-        (insert "\ncsuList = [")
+        (insert "csuList = [")
         (loop-for-each $each b:py:cs:csuList
           (insert (s-lex-format " \'${$each}\',"))
           )
         (insert " ]\n")
         (insert (s-lex-format "
+if b.cs.G.plantOfThisSeed is None:
+    csuList.remove('plantedCsu')
+"
+                              ))
+        (insert (s-lex-format "
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 "
-                              )))
+                              ))
+        )
 
       (when <csuParams
         (insert (s-lex-format "

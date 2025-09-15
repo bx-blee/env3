@@ -140,6 +140,11 @@ and side-effects are documented here
      (load-file "/bisos/git/bxRepos/blee/blee-menus/b:var:custom:menu.el")
      ;; (load-file "/bisos/git/bxRepos/blee/mtdt-mailing/b:eval-file.el")
      ;;
+     ;; MB 2025 org-msg is needed in mtdt-mailings
+     ;;
+     (b:pkg:straight|install 'org-msg)
+     ;;
+     ;;
      (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:assemble:menu.el")
      ;;(load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-if.el")
      (load-file "/bisos/git/bxRepos/blee/mtdt-mailing/b:email.el")
