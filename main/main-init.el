@@ -182,6 +182,9 @@ and side-effects are documented here
    (when nil ;; b:doom:enabled?
      (load-file "/bisos/blee/env3/themes/blee-dark-1-theme.el")
      (enable-theme 'blee-dark-1))
+
+   (unless (display-graphic-p)
+      (xterm-mouse-mode 1))
    )
 
 (orgCmntBegin "
@@ -243,6 +246,9 @@ and side-effects are documented here
    (when nil ;; b:doom:enabled?
      (load-file "/bisos/blee/env3/themes/blee-dark-1-theme.el")
      (enable-theme 'blee-dark-1))
+
+   (unless (display-graphic-p)
+      (xterm-mouse-mode 1))
    )
 
 (orgCmntBegin "
