@@ -176,6 +176,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<noCmndEntry (or (plist-get <params :noCmndEntry) "examples"))
          (<extraParamsHook (or (plist-get <params :extraParamsHook) "g_paramsExtraSpecify"))
          (<importedCmndsModules (or (plist-get <params :importedCmndsModules)  "g_importedCmndsModules"))
+         (<ignoreUnknownParams (or (plist-get <params :ignoreUnknownParams)  "False"))
          (<isSeed (or (plist-get <params :isSeed)  nil))
          )
     (bxPanel:params$effective)
@@ -200,6 +201,7 @@ if __name__ == '__main__':
         csInfo=${<csInfo},
         noCmndEntry=${<noCmndEntry},  # specify a Cmnd name
         extraParamsHook=${<extraParamsHook},
+        ignoreUnknownParams=${<ignoreUnknownParams},
         importedCmndsModules=${<importedCmndsModules},
     )
 "
@@ -212,6 +214,7 @@ cs.main.g_csMain(
         csInfo=${<csInfo},
         noCmndEntry=${<noCmndEntry},  # specify a Cmnd name
         extraParamsHook=${<extraParamsHook},
+        ignoreUnknownParams=${<ignoreUnknownParams},
         importedCmndsModules=${<importedCmndsModules},
 )
 "
@@ -266,6 +269,88 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/uploadLoader" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/uploadLoader>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/uploadLoader :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/uploadLoader (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} =Upload Loader= Setup Loader"))))
+
+    (defun outCommentPostContent ())
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csmuSeeded" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csmuSeeded>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csmuSeeded :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csmuSeeded (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} =Seeded CSMU= Import plantedCsu"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+from bisos.b import cmndsSeed
+if b.cs.G.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', b.cs.G.plantOfThisSeed, __file__, __name__)\
+"
+                            )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csuListProc" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -332,11 +417,12 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
           (insert (s-lex-format " \'${$each}\',"))
           )
         (insert " ]\n")
-        (insert (s-lex-format "
+        (when (member "plantedCsu" b:py:cs:csuList)
+          (insert (s-lex-format "
 if b.cs.G.plantOfThisSeed is None:
     csuList.remove('plantedCsu')
 "
-                              ))
+                              )))
         (insert (s-lex-format "
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 "
