@@ -879,24 +879,29 @@ Sections are specified as :outLevel 1,n
                                )))
         )
       (cond
+       ((string= @panelType "privPanel")
+        (insert (s-lex-format "
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _  ${@panelType}--${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+"
+               )))
        ((s-contains? "/realmPanels/" (buffer-file-name))
         (insert (s-lex-format "
-${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   ${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   realPanels--${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
 "
                )))
        ((s-starts-with? "/bisos/" (buffer-file-name))
         (insert (s-lex-format "
-${$star}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _   ${@title}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
+${$star}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _   bisos--${@title}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
 "
                )))
        ((s-starts-with? "/bxo/" (buffer-file-name))
         (insert (s-lex-format "
-${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   ${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   bxo--${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
 "
                )))
        (t
         (insert (s-lex-format "
-${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   Unknown${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   Unknown--${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
 "
                )))
         )
@@ -2543,7 +2548,7 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
              )
         (bx:dblock:global:moded:insert-begin major-mode :outLevel <outLevel)
         (insert (s-lex-format
-                 "${$frontStr} *Disabled Function: ${<name}* ${$eolStr}\n"))
+                 "${$frontStr} *${<name}* ${$eolStr}"))
         (bx:dblock:global:moded:insert-end major-mode :outLevel <outLevel)
         ))
 

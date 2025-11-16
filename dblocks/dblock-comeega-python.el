@@ -297,7 +297,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              )
       (insert
          (s-lex-format
-          "${$frontStr} =Upload Loader= Setup Loader"))))
+          "${$frontStr} ~Upload Loader~ Setup Loader"))))
 
     (defun outCommentPostContent ())
 
@@ -335,7 +335,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              )
       (insert
          (s-lex-format
-          "${$frontStr} =Seeded CSMU= Import plantedCsu"))))
+          "${$frontStr} ~Seeded CSMU~ Import plantedCsu"))))
 
     (defun outCommentPostContent ()
       (insert (s-lex-format "
@@ -392,7 +392,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              )
       (insert
          (s-lex-format
-          "${$frontStr} =Process CSU List= with /${$csuListLength}/ in csuList pyImports=${<pyImports} csuImports=${<csuImports} csuParams=${<csuParams}"))))
+          "${$frontStr} ~Process CSU List~ with /${$csuListLength}/ in csuList pyImports=${<pyImports} csuImports=${<csuImports} csuParams=${<csuParams}"))))
 
     (defun outCommentPostContent ()
       (defun pyImportsProcEach (<each)
@@ -530,8 +530,6 @@ def g_extraParams():
       (outCommentPostContent))))
 
 
-
-
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:main/exposedSymbols" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:main/exposedSymbols>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
@@ -589,6 +587,51 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (outCommentPostContent))))
 
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:main/outcomeReportControl" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:main/outcomeReportControl>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:main/outcomeReportControl :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:main/outcomeReportControl (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<cmnd (or (plist-get <params :cmnd) nil))
+         (<ro (or (plist-get <params :ro) nil))
+
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Invokation's Outcome Reporting Control~ with /cmnd=${<cmnd}/ /ro=${<ro}/ "))))
+
+    (defun outCommentPostContent ()
+      "Placeholder -- has not been implemented yet. <cmnd and <ro are ignored below."
+      (insert (s-lex-format "
+# cs.invOutcomeReportControl(cmnd=True, ro=True)\
+"
+                            )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/imports" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/imports>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
@@ -636,14 +679,14 @@ pyLibPure
           (insert "\nfrom bisos import b\n")
           (insert "from bisos.b import cs\n")
           (insert "from bisos.b import b_io\n")
-          (insert "from bisos.common import csParam\n")
+          ;; (insert "from bisos.common import csParam\n")
           (insert "\nimport collections")
           )
          ((string= $classification "cs-u")    ;; CS-Unit (Cmnds, Examples and Params)
           (insert "\nfrom bisos import b\n")
           (insert "from bisos.b import cs\n")
           (insert "from bisos.b import b_io\n")
-          (insert "from bisos.common import csParam\n")
+          ;; (insert "from bisos.common import csParam\n")
           (insert "\nimport collections")
           )
          ((string= $classification "cs-lib")    ;; CS-Lib (Cmnds or no Cmnds)
@@ -803,12 +846,18 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (insert (s-lex-format "]\n"))
 
       (insert (s-lex-format "\
-        if not (curParsDictValue := currentsConfig.curParsGetAsDictValue_wOp(_parNamesList, outcome=cmndOutcome).results): return(cmndOutcome)\n"))
+        if (curParsDictValue := currentsConfig.curParsGetAsDictValue_wOp(_parNamesList, outcome=cmndOutcome).results):\n"))
 
       (loop-for-each $each <curParsList
-          (insert (s-lex-format "        cur_${$each} = curParsDictValue['${$each}']\n")))
+          (insert (s-lex-format "            cur_${$each} = curParsDictValue['${$each}']\n")))
 
       (insert (s-lex-format "\
+        else:\n"))
+
+      (loop-for-each $each <curParsList
+          (insert (s-lex-format "            cur_${$each} = \"MISSING CURs\"\n")))
+
+      (insert (s-lex-format "
         def cur_examples():
             cs.examples.execInsert(execLine='bx-currents.cs')
             cs.examples.execInsert(execLine='bx-currents.cs -i usgCursParsGet')
@@ -1625,6 +1674,74 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (outCommentPostContent)
       )))
 
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:func/processArgsAndStdinResults" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:func/processArgsAndStdinResults>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:func/processArgsAndStdinResults :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:func/processArgsAndStdinResults (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement
+                         (s-lex-format "processArgsAndStdin") :orgDepth <outLevel))
+             ($eolStr (b:dblock:comeega|eolControls))
+             )
+     (insert
+      (s-lex-format "${$frontStr} "))
+
+      (if (not (string= <comment ""))
+          (insert (s-lex-format " =${<comment}=")))
+
+      (insert (s-lex-format " ${$eolStr}"))
+      ))
+
+    (defun outCommentPostContent ()
+      ""
+      (insert
+       (s-lex-format "
+        results = []
+
+        if not pyStdinArgs:
+            pyStdinArgs = b_io.stdin.readAsList()
+
+        def processArgsAndStdin():
+            cliArgs = self.cmndArgsGet(\"0&9999\", cmndArgsSpecDict, argsList)
+            effectiveArgs = cliArgs + pyStdinArgs
+            if len(effectiveArgs) == 0:
+                b_io.eh.critical_usageError(
+                   \"Missing Input: One of cliArgs, stdin or pyArgs; should be .\"
+                )
+            for each in effectiveArgs:
+                result = processEachArg(each)
+                results.append(result)
+
+        processArgsAndStdin()"
+      )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:func/processArgsAndStdin" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:func/processArgsAndStdin>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
@@ -1787,7 +1904,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
     (defun outCommentPostContent ()
       ""
       (insert (s-lex-format "\ndata_files = [ \n"))
-      (insert (s-lex-format "(' ',  ['lh-agpl3-LICENSE.txt', '_description.org', 'README.rst']),\n"))
+      ;;; Current module ' ' fails on Windows. We now use ''
+      (insert (s-lex-format "('',  ['lh-agpl3-LICENSE.txt', '_description.org', 'README.rst']),\n"))
       (insert (s-lex-format "]"))
       )
 

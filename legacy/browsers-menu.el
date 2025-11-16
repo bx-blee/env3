@@ -58,6 +58,11 @@ As such what happens below should be exactly what is necessary and no more."
   ;;(browsers:menu|define)
   )
 
+;;;
+;;; Blee's default Browser is chrome
+;;;
+(setq browse-url-browser-function 'browse-url-chrome)
+
 ;;
 ;; (browsers:menuItem:at-point-url:selected-if|define)
 (defun browsers:menuItem:at-point-url:with-selected|define ()
@@ -99,7 +104,7 @@ As such what happens below should be exactly what is necessary and no more."
       browsers:menu:browse-url:at-point
       nil
       "Menu For Configuration Of browse-url-browser-function"
-      `("Select At-Point Url Browser"
+      `(,(format "Select At-Point Url Browser -- %s" browse-url-browser-function)
 	:help "Show And Set Relevant Parameters"
 	:visible $:browsers:menu:browse-url:at-point:visible
 	:active ,<active

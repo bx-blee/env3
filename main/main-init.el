@@ -176,6 +176,11 @@ and side-effects are documented here
    (require 'legacy-init)
    (b:base:legacy|init)
 
+        ;;;
+        ;;; Blee's default Browser is chrome
+        ;;;
+   (setq browse-url-browser-function 'browse-url-chrome)
+
    (require 'realms-user-init)
    (b:base:realms-user|init)
 
@@ -240,8 +245,19 @@ and side-effects are documented here
    (require 'legacy-init)
    (b:base:legacy|init)
 
+`       ;;;
+        ;;; Blee's default Browser is chrome
+        ;;;
+   (setq browse-url-browser-function 'browse-url-chrome)
+
    (require 'realms-user-init)
    (b:base:realms-user|init)
+
+        ;;;
+        ;;; Blee's default Browser is chrome
+        ;;; NOTYET, this should have happened before b:base:realms-user|init
+        ;;;
+   (setq browse-url-browser-function 'browse-url-chrome)
 
    (when nil ;; b:doom:enabled?
      (load-file "/bisos/blee/env3/themes/blee-dark-1-theme.el")

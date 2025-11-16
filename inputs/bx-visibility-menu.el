@@ -2,7 +2,7 @@
 ;;;
 
 (require 'easymenu)
-
+(require 'b:open-in::kbd)
 ;;;
 ;;; Global Menu
 ;;;
@@ -212,6 +212,15 @@
 
   (define-key global-map [(f8) (k)] 'kill-buffer)
   ;;; (define-key global-map [(f8) (k)] 'delete-window) ;;; Sort out which one is better
+
+  ;;; BEGIN OPEN-IN
+  ;;; Go To Other Frames
+
+  ;;; (define-key global-map [(f8) (o)] nil)
+  (b:open-in|kbd)
+
+  ;;; END OPEN-IN
+
 
   ;;; BEGIN FRAME PROCESSORS
   ;;; Go To Other Frames
