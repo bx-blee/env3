@@ -1892,6 +1892,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
+         (<license (or (plist-get <params :license) "lh-agpl3-LICENSE.txt"))
          (<comment (or (plist-get <params :comment) ""))
          )
     (bxPanel:params$effective)
@@ -1905,7 +1906,10 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       ""
       (insert (s-lex-format "\ndata_files = [ \n"))
       ;;; Current module ' ' fails on Windows. We now use ''
-      (insert (s-lex-format "('',  ['lh-agpl3-LICENSE.txt', '_description.org', 'README.rst']),\n"))
+      (insert (s-lex-format "('',  ["))
+      (unless (string= <license "")
+        (insert (s-lex-format "'${<license}', ")))
+      (insert (s-lex-format "'_description.org', 'README.rst']),\n"))
       (insert (s-lex-format "]"))
       )
 
@@ -1994,6 +1998,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
         (loop-for-each $each <extras
           (insert (s-lex-format "\"${$each}\",\n")))
         (insert (s-lex-format "\"setuptools==75.8.0\",\n"))
+        (insert (s-lex-format "\"wheel==0.38.4\",\n"))
         (insert (s-lex-format "]"))
         )
       (else-when <requirements
@@ -2009,6 +2014,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
             (insert (s-lex-format "'${$item}',\n"))
             )
           (insert (s-lex-format "\"setuptools==75.8.0\",\n"))
+          (insert (s-lex-format "\"wheel==0.38.4\",\n"))
           (insert (s-lex-format "]"))
           )))
 
@@ -2076,7 +2082,7 @@ def pkgName():
     ''' From this eg., filepath=.../bisos-pip/PkgName/py3/setup.py, extract PkgName. '''
     filename = inspect.getframeinfo(inspect.currentframe()).filename
     grandMother = pathlib.Path(filename).resolve().parent.parent.name
-    return f'bisos.{grandMother}'
+    return f'${$pkgNameSpace}.{grandMother}'
 "
                                ))
          )
