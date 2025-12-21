@@ -100,6 +100,9 @@ and side-effects are documented here
    (require 'bnpa:aiplus)
    (b:npa:aiplus|fullUpdate)
 
+   (require 'bcpg:copilotPlus)
+   (bcpg:copilotPlus|fullUpdate)
+
    (require 'bnpa:open-in)
    (b:npa:open-in|fullUpdate)
 
