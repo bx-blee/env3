@@ -1013,6 +1013,7 @@ Expects certain file-local variables to have been set
           (<style (letGet$style "openBlank" "closeBlank"))
           (<comment (or (plist-get <params :comment) ""))
           (<whenIncludeOnly (or (plist-get <params :whenIncludeOnly) nil))
+          (<always (or (plist-get <params :always) nil))
           )
      (bxPanel:params$effective)
 
@@ -1029,6 +1030,10 @@ Expects certain file-local variables to have been set
              ))
 
      (defun outCommentPostContent ()
+       (when <always
+         (insert "\n\\begin{appendices}")
+         )
+       (unless <always
        (when <whenIncludeOnly
          (insert "\n\\begin{whenIncludeOnly}"))
        (unless <whenIncludeOnly
@@ -1038,6 +1043,7 @@ Expects certain file-local variables to have been set
          (insert "\n\\end{whenIncludeOnly}"))
        (unless <whenIncludeOnly
          (insert "\n\\end{whenNotIncludeOnly}"))
+       )
        )
 
      (progn  ;; Actual Invocations
@@ -1064,6 +1070,7 @@ Expects certain file-local variables to have been set
           (<style (letGet$style "openBlank" "closeBlank"))
           (<comment (or (plist-get <params :comment) ""))
           (<whenIncludeOnly (or (plist-get <params :whenIncludeOnly) nil))
+          (<always (or (plist-get <params :always) nil))
           )
      (bxPanel:params$effective)
 
@@ -1080,6 +1087,10 @@ Expects certain file-local variables to have been set
              ))
 
      (defun outCommentPostContent ()
+       (when <always
+         (insert "\n\\end{appendices}")
+         )
+       (unless <always
        (when <whenIncludeOnly
          (insert "\n\\begin{whenIncludeOnly}"))
        (unless <whenIncludeOnly
@@ -1089,6 +1100,7 @@ Expects certain file-local variables to have been set
          (insert "\n\\end{whenIncludeOnly}"))
        (unless <whenIncludeOnly
          (insert "\n\\end{whenNotIncludeOnly}"))
+       )
        )
 
      (progn  ;; Actual Invocations

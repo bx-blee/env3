@@ -78,7 +78,7 @@ Content of a frame based
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
-          (<videoFile (or (plist-get <params :videoFile) ""))
+          (<videoPath (or (plist-get <params :videoPath) ""))
           (<comment (or (plist-get <params :comment) ""))
           )
      (bxPanel:params$effective)
@@ -111,13 +111,13 @@ and side-effects are documented here
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 5)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
-         (<videoFile (or (plist-get <params :videoFile) ""))
+         (<videoPath (or (plist-get <params :videoPath) ""))
          (<comment (or (plist-get <params :comment) ""))
          ($frontStr (b:dblock:comeega|frontElement (s-lex-format "VIDEO") :orgDepth <outLevel))
          ($backStr (b:dblock:comeega|eolControls))
          )
 
-    (insert (s-lex-format "${$frontStr} ${<videoFile} --- ${<comment}\n"))))
+    (insert (s-lex-format "${$frontStr} ${<videoPath} --- ${<comment}\n"))))
 
 
 (orgCmntBegin "
@@ -141,17 +141,17 @@ and side-effects are documented here
 #+end_org "
 
   (let* (
-         (<videoFile (or (plist-get <params :videoFile) ""))
+         (<videoPath (or (plist-get <params :videoPath) ""))
          (<comment (or (plist-get <params :comment) ""))
          (<fileNameEncoded (or (plist-get <params :fileNameEncoded) ""))
          ($resolutionImageFile nil)
          )
 
-    (defun resolutionImageFile (<videoFile)
+    (defun resolutionImageFile (<videoPath)
       (let* (
-             ($result <videoFile)
-             ($mediumImageFile (s-concat (f-no-ext <videoFile) "-medium." (f-ext <videoFile)))
-             ; ($mediumImageFile (s-concat (f-no-ext <videoFile) "-small." (f-ext <videoFile)))
+             ($result <videoPath)
+             ($mediumImageFile (s-concat (f-no-ext <videoPath) "-medium." (f-ext <videoPath)))
+             ; ($mediumImageFile (s-concat (f-no-ext <videoPath) "-small." (f-ext <videoPath)))
              )
         (when (file-exists-p $mediumImageFile)
           (setq $result $mediumImageFile))
@@ -159,7 +159,7 @@ and side-effects are documented here
 
     ;; (resolutionImageFile "/lcnt/lgcc/mohsen/permanent/photos/shabeYaldaPhotos/image/2023/20231221-191811.jpg")
 
-    (setq $resolutionImageFile (resolutionImageFile <videoFile))
+    (setq $resolutionImageFile (resolutionImageFile <videoPath))
 
     (insert (s-lex-format "\n
 \\begin{presentationMode}
@@ -182,7 +182,7 @@ and side-effects are documented here
     (insert (s-lex-format "
 ${<comment}
 <div class=\"center\">
-<img src=\"${<videoFile}\" height=\"450\">
+<img src=\"${<videoPath}\" height=\"450\">
 </div>"))
 
     (insert "
@@ -199,7 +199,7 @@ ${<comment}
     \\begin{center}")
 
     (insert (s-lex-format "
-      \\includegraphics[width=\\textwidth]{${<videoFile}}"))
+      \\includegraphics[width=\\textwidth]{${<videoPath}}"))
 
     ;;; BUG: insert-file-contents did not work
 
@@ -209,7 +209,7 @@ ${<comment}
 
     (insert (format "
       \\label{fig:%s}"
-                      (fig-base-name <videoFile)))
+                      (fig-base-name <videoPath)))
 
     (insert "
     \\end{center}
@@ -221,7 +221,7 @@ ${<comment}
   \\begin{center}")
 
     (insert (s-lex-format "
-      \\includegraphics[width=\\textwidth]{${<videoFile}}"))
+      \\includegraphics[width=\\textwidth]{${<videoPath}}"))
 
     (insert "
   \\end{center}
@@ -238,7 +238,7 @@ ${<comment}
 
     (insert (format "
       \\label{fig:%s}"
-                      (fig-base-name <videoFile)))
+                      (fig-base-name <videoPath)))
 
     (insert "
   \\end{figure}
@@ -272,7 +272,7 @@ Content of a frame based
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
-          (<videoFile (or (plist-get <params :videoFile) ""))
+          (<videoPath (or (plist-get <params :videoPath) ""))
           (<comment (or (plist-get <params :comment) ""))
           )
      (bxPanel:params$effective)
@@ -281,7 +281,7 @@ Content of a frame based
      (defun outCommentPreContent ())
      (defun bodyContentPlus ())
      (defun bodyContent ())
-     (defun outCommentPostContent () (b:lcnt:image:full/filePath <params))
+     (defun outCommentPostContent () (b:lcnt:video:full/filePath <params))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -302,13 +302,13 @@ and side-effects are documented here
 #+end_org "
 
   (let* (
-         (<videoFile (or (plist-get <params :videoFile) ""))
+         (<videoPath (or (plist-get <params :videoPath) ""))
          (<comment (or (plist-get <params :comment) ""))
          ($fileName "")
          ($fileNameEncoded "")
          )
 
-    (setq $fileName (f-no-ext (f-filename <videoFile)))
+    (setq $fileName (f-no-ext (f-filename <videoPath)))
     (setq $fileNameEncoded (shell-command-to-string (concat "uri@Encode.sh " $fileName)))
 
     (setq <params (plist-put <params ':seg-title (s-lex-format "${$fileNameEncoded}")))
@@ -318,7 +318,7 @@ and side-effects are documented here
 
     (setq <params (plist-put <params ':type "Frame:begin-plain"))
     (setq <params (plist-put <params ':options "plain"))
-    (setq <params (plist-put <params ':audio "labeled"))
+    ;; NO Audio for Video (setq <params (plist-put <params ':audio "labeled"))
     (setq <params (plist-put <params ':fragile "true"))
     (setq <params (plist-put <params ':fileNameEncoded (s-lex-format "${$fileNameEncoded}")))
     (setq <params (plist-put <params ':label (s-lex-format "${$fileNameEncoded}")))
@@ -326,7 +326,9 @@ and side-effects are documented here
 
      (b:lcnt:pres:commonDblock:outComment/begin <params)
 
-     (b:lcnt:frame:content:video/filePath <params)
+     (b:lcnt:pres:commonDblock:outComment:mm/body <params)
+
+     ;;(b:lcnt:frame:content:video/filePath <params)
 
     (insert "
 \\end{frame}")
@@ -349,7 +351,7 @@ Content of a frame based
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
-          (<videoFile (or (plist-get <params :videoFile) ""))
+          (<videoPath (or (plist-get <params :videoPath) ""))
           (<comment (or (plist-get <params :comment) ""))
           )
      (bxPanel:params$effective)
@@ -381,7 +383,7 @@ and side-effects are documented here
 #+end_org "
 
   (let* (
-         (<videoFile (or (plist-get <params :videoFile) ""))
+         (<videoPath (or (plist-get <params :videoPath) ""))
          (<comment (or (plist-get <params :comment) ""))
          ($fileName "")
          ($fileNameEncoded "")
@@ -390,7 +392,7 @@ and side-effects are documented here
          ($dateTime "")
          )
 
-    (setq $fileName (f-no-ext (f-filename <videoFile)))
+    (setq $fileName (f-no-ext (f-filename <videoPath)))
     ;;(setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo ${$fileName} | latexencode")))
     ;;(setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo -n ${$fileName} | /bisos/venv/py3/adopted/bin/latexencode")))
     (setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo -n ${$fileName} | latexencode")))
@@ -487,7 +489,7 @@ and side-effects are documented here
     (loop-for-each $eachLine $fileLines
       (when (not (string= $eachLine ""))
         (insert (s-lex-format "\n%%% Processing:  ${$eachLine}"))
-        (b:lcnt:photo:full/filePath `(:videoFile ,$eachLine :comment "Photo From Camera List"))))))
+        (b:lcnt:photo:full/filePath `(:videoPath ,$eachLine :comment "Photo From Camera List"))))))
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
