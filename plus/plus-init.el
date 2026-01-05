@@ -103,6 +103,9 @@ and side-effects are documented here
    (require 'bcpg:copilotPlus)
    (bcpg:copilotPlus|fullUpdate)
 
+   (require 'bcpg:rgPlus)
+   (bcpg:rgPlus|fullUpdate)
+
    (require 'bnpa:open-in)
    (b:npa:open-in|fullUpdate)
 
