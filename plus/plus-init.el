@@ -106,6 +106,12 @@ and side-effects are documented here
    (require 'bcpg:rgPlus)
    (bcpg:rgPlus|fullUpdate)
 
+   (require 'bcpg:consultPlus)
+   (bcpg:consultPlus|fullUpdate)
+
+   (require 'bcpg:bashPlus)
+   (bcpg:bashPlus|fullUpdate)
+
    (require 'bnpa:open-in)
    (b:npa:open-in|fullUpdate)
 

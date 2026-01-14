@@ -351,6 +351,96 @@ if b.cs.G.plantOfThisSeed is not None:
       (outCommentPostContent))))
 
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csxuSeeded" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csxuSeeded>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csxuSeeded :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csxuSeeded (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Seeded CSXU~ Import plantedCsu"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+from bisos.b import cmndsSeed
+if b.cs.G.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', b.cs.G.plantOfThisSeed, __file__, __name__)\
+"
+                            )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csmuSeeded" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csmuSeeded>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csmuSeeded :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csmuSeeded (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Seeded CSMU~ Import plantedCsu"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+from bisos.b import cmndsSeed
+if b.cs.G.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', b.cs.G.plantOfThisSeed, __file__, __name__)\
+"
+                            )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csuListProc" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -371,6 +461,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<csuImports (or (plist-get <params :csuImports) nil))
          (<csuParams (or (plist-get <params :csuParams) nil))
          (<csmuParams (or (plist-get <params :csmuParams) nil))
+         (<csxuParams (or (plist-get <params :csxuParams) nil))
          ($csuListLength)
          )
     (bxPanel:params$effective)
@@ -434,6 +525,9 @@ g_importedCmndsModules = cs.csuList_importedModules(csuList)
 def g_extraParams():
     csParams = cs.param.CmndParamDict()"))
         (when <csmuParams
+          (insert (s-lex-format "
+    commonParamsSpecify(csParams)")))
+        (when <csxuParams
           (insert (s-lex-format "
     commonParamsSpecify(csParams)")))
         (insert (s-lex-format "
@@ -679,14 +773,14 @@ pyLibPure
           (insert "\nfrom bisos import b\n")
           (insert "from bisos.b import cs\n")
           (insert "from bisos.b import b_io\n")
-          ;; (insert "from bisos.common import csParam\n")
+          (insert "from bisos.common import csParam\n")
           (insert "\nimport collections")
           )
          ((string= $classification "cs-u")    ;; CS-Unit (Cmnds, Examples and Params)
           (insert "\nfrom bisos import b\n")
           (insert "from bisos.b import cs\n")
           (insert "from bisos.b import b_io\n")
-          ;; (insert "from bisos.common import csParam\n")
+          (insert "from bisos.common import csParam\n")
           (insert "\nimport collections")
           )
          ((string= $classification "cs-lib")    ;; CS-Lib (Cmnds or no Cmnds)
