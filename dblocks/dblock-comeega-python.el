@@ -1728,8 +1728,10 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<style (letGet$style "openBlank" "closeBlank"))
          (<className (or (plist-get <params :className) ""))
          (<classType (or (plist-get <params :classType) ""))
-         (<comment (or (plist-get <params :comment) ""))
          (<superClass (or (plist-get <params :superClass) ""))
+         (<decorate (or (plist-get <params :deco) ""))
+         (<comment (or (plist-get <params :comment) ""))
+
          )
     (bxPanel:params$effective)
 
@@ -1758,8 +1760,13 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
     (defun outCommentPostContent ()
       ""
-      (insert
-       (format "\nclass %s(%s):" <className <superClass))
+      (if-when (string= <decorate "")
+        (insert
+         (format "\nclass %s(%s):" <className <superClass)))
+      (if-unless (string= <decorate "")
+        (insert (s-lex-format
+                "\n${<decorate}\nclass ${<className}(${<superClass}):"
+                )))
       )
 
     (progn  ;; Actual Invocations
