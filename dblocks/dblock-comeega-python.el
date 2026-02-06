@@ -141,8 +141,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
             )
         (insert
          (s-lex-format "
-import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['${$moduleName}'], }
+if 'csInfo' not in globals(): import typing ; csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['loadAs'], }
 csInfo['version'] = '${$version}'
 csInfo['status']  = '${<status}'
 csInfo['panel'] = '${$moduleName}-Panel.org'
@@ -308,6 +307,49 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
 
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csxuSeeded" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csxuSeeded>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csxuSeeded :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csxuSeeded (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Seeded CSXU~ Import plantedCsu"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+from bisos.csSeed import seedsLib
+if seedsLib.seededCsxuInfo.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', seedsLib.seededCsxuInfo.plantOfThisSeed, __file__, __name__)
+"
+                            )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csmuSeeded" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csmuSeeded>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
@@ -382,9 +424,9 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
     (defun outCommentPostContent ()
       (insert (s-lex-format "
-from bisos.b import cmndsSeed
-if b.cs.G.plantOfThisSeed is not None:
-    b.importFileAs('plantedCsu', b.cs.G.plantOfThisSeed, __file__, __name__)\
+from bisos.csSeed import seedsLib
+if seedsLib.seededCsxuInfo.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', seedsLib.seededCsxuInfo.plantOfThisSeed, __file__, __name__)\
 "
                             )))
 
@@ -437,10 +479,6 @@ if b.cs.G.plantOfThisSeed is not None:
       (outCommentPreContent)
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent))))
-
-
-
-
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csuListProc" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -540,6 +578,102 @@ def g_extraParams():
       (outCommentPreContent)
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent))))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csuListImportPlus" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csuListImportPlus>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csuListImportPlus :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csuListImportPlus (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pyImports (or (plist-get <params :pyImports) nil))
+         (<csuImports (or (plist-get <params :csuImports) nil))
+         (<csuParams (or (plist-get <params :csuParams) nil))
+         (<csxuParams (or (plist-get <params :csxuParams) nil))
+         ($csuListLength)
+         )
+    (bxPanel:params$effective)
+
+    (progn ;; This results in sets b:py:cs:csuList
+      (blee:ppmm:mode-push major-mode)
+      (bap:org/switch-to-org-mode)
+      (blee:org:code-block/above-run)
+      (blee:ppmm:mode-pop))
+
+    (setq $csuListLength (length b:py:cs:csuList))
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Process CSU List~ with /${$csuListLength}/ in csuList pyImports=${<pyImports} csuImports=${<csuImports} csuParams=${<csuParams}"))))
+
+    (defun outCommentPostContent ()
+      (defun pyImportsProcEach (<each)
+        (let* (
+               ($csuAsStrList (s-split "\\." <each))
+               ($last (first (last $csuAsStrList)))
+               ($butlast (butlast $csuAsStrList))
+               ($joinedButlast (s-join "." $butlast))
+               )
+          (unless (s-equals? <each "plantedCsu")
+            (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n")))))
+
+      (when <pyImports
+        (insert "\n\n")
+        (loop-for-each $each b:py:cs:csuList
+          (pyImportsProcEach $each))
+        (insert "\n"))
+
+      (when <csuImports
+        (insert "csuList = [")
+        (loop-for-each $each b:py:cs:csuList
+          (insert (s-lex-format " \'${$each}\',"))
+          )
+        (insert " ]\n")
+        (when (member "plantedCsu" b:py:cs:csuList)
+          (insert (s-lex-format "
+if seedsLib.seededCsxuInfo.plantOfThisSeed is None:
+    csuList.remove('plantedCsu')
+"
+                              )))
+        (insert (s-lex-format "
+g_importedCmndsModules = cs.csuList_importedModules(csuList)
+"
+                              ))
+        )
+
+      (when <csuParams
+        (insert (s-lex-format "
+def g_extraParams():
+    csParams = cs.param.CmndParamDict()"))
+        (when <csxuParams
+          (insert (s-lex-format "
+    commonParamsSpecify(csParams)")))
+        (insert (s-lex-format "
+    cs.csuList_commonParamsSpecify(csuList, csParams)
+    cs.argsparseBasedOnCsParams(csParams)
+"
+                              ))))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
 
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:orgItem/basic" :advice ("bx:dblock:control|wrapper")
@@ -806,6 +940,55 @@ pyLibPure
       (outCommentPreContent)
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent))))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/exceptionImports" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/exceptionImports>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/exceptionImports :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/exceptionImports (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+pyLibPure
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<comment (or (plist-get <params :comment) nil))
+         ($classification)
+         )
+    (bxPanel:params$effective)
+
+    (when (not (bound-and-true-p b:dblockControls))
+      (blee:ppmm:mode-push major-mode)
+      (bap:org/switch-to-org-mode)
+      (blee:org:code-block/bufferParams)
+      (blee:ppmm:mode-pop))
+
+    (setq $classification (get 'b:dblockControls 'py3:cs:Classification))
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} *Imports* =BISOS Enhanced Exceptions="))))
+
+    (defun outCommentPostContent ()
+      (insert "\nfrom bisos.b import enhancedExceptions"))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:file/dblockControls" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
