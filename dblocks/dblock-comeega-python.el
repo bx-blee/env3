@@ -200,7 +200,7 @@ if __name__ == '__main__':
         csInfo=${<csInfo},
         noCmndEntry=${<noCmndEntry},  # specify a Cmnd name
         extraParamsHook=${<extraParamsHook},
-        ignoreUnknownParams=${<ignoreUnknownParams},
+        ignoreUnknownParams=${<ignoreUnknownParams},  # True is for Uploaded Modules
         importedCmndsModules=${<importedCmndsModules},
     )
 "
