@@ -792,7 +792,7 @@ excludecomment{whenOrg}
          (when (or (equal <bxLangs "en") (equal <bxLangs "en+fa"))
            (insert "\\documentclass[ignorenonframetext]{beamer}"))
          ;; FARSI
-         (when (equal bx:langs "fa+en")
+         (when (equal <bxLangs "fa+en")
            (insert "\\documentclass[ignorenonframetext]{bidibeamer}")))
 
         ((s-equals? <bxClass "bookcover")
@@ -1568,9 +1568,17 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 
      (defun outCommentPostContent ()
        (when (equal <when "main")
-         (when $curBuild:buildTex
-           (insert "\n")
-           (insert-file-contents $curBuild:buildTex))))
+         (if-when $curBuild:buildTex
+           (if-when (f-exists? $curBuild:buildTex)
+             (insert "\n")
+             (insert-file-contents $curBuild:buildTex))
+           (if-unless (f-exists? $curBuild:buildTex)
+             (insert (s-lex-format "\n%%% Missing ${$curBuild:buildTex}")))
+           )
+         (if-unless $curBuild:buildTex
+           (insert (s-lex-format "\n%%% Missing ${bx:lcnt:curBuild:base}/build.tex")))
+         )
+       )
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -2895,6 +2903,7 @@ Expects certain file-local variables to have been set
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
+          (<bxClass (or (plist-get <params :bxClass) "book"))
           (<comment (or (plist-get <params :comment) ""))
           )
      (bxPanel:params$effective)
@@ -2912,7 +2921,8 @@ Expects certain file-local variables to have been set
              ))
 
      (defun outCommentPostContent ()
-       (insert "\n\n\\frontmatter%\n"))
+       (when (s-equals? <bxClass "book")
+         (insert "\n\n\\frontmatter%\n")))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)

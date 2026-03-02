@@ -5461,15 +5461,16 @@ otherwise labelInfo is inserted as label"
 ;;; This explicit definition adds  toc
 ;;;
 
-(defun org-dblock-write:bx:dblock:lcnt:latex-part (params)
-  "With :toc NU, partNu is set and a toc is generated. With :part NU only partNu is set" 
+
+(defun org-dblock-write:bx:dblock:lcnt:latex-partOLD (params)
+  "With :toc NU, partNu is set and a toc is generated. With :part NU only partNu is set"
   (let ((bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
         (bx:seg-title (or (plist-get params :seg-title) "missing"))
-        (labelInfo (or (plist-get params :label) "UnSpecified"))        
+        (labelInfo (or (plist-get params :label) "UnSpecified"))
         (bx:toc (or (plist-get params :toc) ""))
-        ($@tocDepth (or (plist-get params :tocDepth) 3))        
+        ($@tocDepth (or (plist-get params :tocDepth) 3))
         (bx:part (or (plist-get params :part) ""))
-        ($partpage (or (plist-get params :partpage) nil))       
+        ($partpage (or (plist-get params :partpage) nil))
         ($partDesc)
         )
     (message (format "disabledP = %s" bx:disabledP))
@@ -5500,10 +5501,10 @@ otherwise labelInfo is inserted as label"
                           bx:seg-title
                           bx:seg-title
                           ))
-            
+
 
             )
-             
+
 
           (when (not (string-equal bx:part ""))
             (insert (format "\
@@ -5518,6 +5519,140 @@ otherwise labelInfo is inserted as label"
                           "*"
                           bx:part
                           bx:seg-title
+                          bx:seg-title
+                          ))
+            )
+
+          (when (string-equal labelInfo "auto")
+            (setq labelInfo (str:spacesElim bx:seg-title)))
+
+          (when (not (string-equal labelInfo "UnSpecified"))
+            (insert
+             (format "
+\\label{%s}"
+                     (concat "part:" labelInfo)
+                     )))
+
+          (if (or (equal bx:toc "0") (equal bx:toc 0))
+              (setq $partDesc "This Part")
+            (setq $partDesc (format "Part %s" bx:toc))
+            )
+
+          (when $partpage
+            (insert "
+
+\\begin{latexonly}
+\\begin{presentationMode}
+\\begin{frame}
+\\partpage
+\\end{frame}
+\\end{presentationMode}
+\\end{latexonly}"
+                    )
+            )
+
+          (when (not (equal bx:toc ""))
+            (insert (format "
+
+\\begin{latexonly}
+\\begin{presentationMode}
+\\begin{frame}[fragile,plain,label=Part%s]
+\\frametitle{Outline of %s -- %s}
+"
+                            bx:toc
+                            $partDesc
+                            bx:seg-title
+                            ))
+
+            (when (equal $@tocDepth 3)
+              (insert "\
+\\tableofcontents[sectionstyle=show,subsectionstyle=show]
+")
+              )
+            (when (equal $@tocDepth 2)
+              (insert "\
+\\tableofcontents[sectionstyle=show,subsectionstyle=show,subsubsectionstyle=hide]
+")
+              )
+            (when (equal $@tocDepth 1)
+              (insert "\
+\\tableofcontents[sectionstyle=show,subsectionstyle=hide,subsubsectionstyle=hide]
+")
+              )
+
+              (insert "\
+\\end{frame}
+\\end{presentationMode}
+\\end{latexonly}"
+                      )
+              )
+
+      (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
+      ))))
+
+
+
+(defun org-dblock-write:bx:dblock:lcnt:latex-part (params)
+  "With :toc NU, partNu is set and a toc is generated. With :part NU only partNu is set" 
+  (let ((bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
+        (bx:seg-title (or (plist-get params :seg-title) "missing"))
+        (labelInfo (or (plist-get params :label) "UnSpecified"))        
+        (bx:toc (or (plist-get params :toc) ""))
+        ($@tocDepth (or (plist-get params :tocDepth) 3))        
+        (bx:part (or (plist-get params :part) ""))
+        ($partpage (or (plist-get params :partpage) nil))       
+        ($partDesc)
+        )
+    (message (format "disabledP = %s" bx:disabledP))
+    (if (not
+         (or (equal "TRUE" bx:disabledP)
+             (equal "true" bx:disabledP)))
+        (progn
+          ;;; Processing Body
+          (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
+
+          (blee:dblock:params:desc
+           'latex-mode
+           ":toc \"NU\" :tocDepth 3 :part \"NU\" :label \"auto|spec\" :partpage t"
+           )
+
+          (when (string-equal bx:part "")
+            ;;(setq bx:part bx:toc)
+
+            (insert
+             (format "\
+\\begin{whenOrg}
+*      ================
+%s   _%s_ ::  [[elisp:(org-cycle)][| ]]
+\\end{whenOrg}"
+               (b:dblock:comeega|frontElement (str:capitalize-first-char "PART") :orgDepth 1)
+               bx:seg-title
+               ))
+
+            (insert (format "
+
+\\newpage
+\\part{%s}"
+                          bx:seg-title
+                          ))
+            )
+
+          (when (not (string-equal bx:part ""))
+
+            (insert
+             (format "\
+\\begin{whenOrg}
+*      ================
+%s   _%s_ ::  [[elisp:(org-cycle)][| ]]
+\\end{whenOrg}"
+               (b:dblock:comeega|frontElement (str:capitalize-first-char "PART") :orgDepth 1)
+               bx:seg-title
+               ))
+
+            (insert (format "
+
+\\newpage
+\\part{%s}"
                           bx:seg-title
                           ))
             )
