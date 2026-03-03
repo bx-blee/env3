@@ -5116,16 +5116,17 @@ Each of these dblock-params match a buffer-local variables.
           (if (file-exists-p bx:input-file)
               (progn
 
-                (insert (format "\
+                (insert
+                 (format "\
 \\begin{whenOrg}
-%s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] When=%s::  [[elisp:(org-cycle)][| ]]
+%s   [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] When=%s ::  [[elisp:(org-cycle)][| ]]
 \\end{whenOrg}"
+               (b:dblock:comeega|frontElement (str:capitalize-first-char "INPUT") :orgDepth 1)
+               bx:input-file
+               bx:input-file
+               $whenAsStr
+               ))
 
-                                "*"
-                                bx:input-file
-                                bx:input-file
-                                $whenAsStr
-                                ))
                 (when <when
                   (insert (s-lex-format "
 \\begin{${<when}}"
