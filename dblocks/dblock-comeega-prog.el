@@ -374,7 +374,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 ** DocStr: Returns a string with comeega front controls
 #+end_org "
   (let (($orgDepthStr (make-string orgDepth ?*)))
-   (format
+    (format
     "%s  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ \
 _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ \
 [[elisp:(outline-show-branches+toggle)][|=]] \

@@ -57,6 +57,13 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
 " orgCmntEnd)
 ;;;#+END:
 
+;;;#+BEGIN: b:prog:felem/genericMarker :frontMarker "Generic" :mainMarker "Generic Poly Marker DBlock" :comment "Can be used in LaTeX, Elisp, etc"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Generic    [[elisp:(outline-show-subtree+toggle)][||]]  /Marker:/ Generic Poly Marker DBlock -- Can be used in LaTeX, Elisp, etc  [[elisp:(org-cycle)][| ]]
+
+" orgCmntEnd)
+;;;#+END:
+
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "LaTeX Master File Elements" :extraInfo "b:lcnt:matex:felem:"
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _LaTeX Master File Elements_: |]]  b:lcnt:matex:felem:  [[elisp:(org-shifttab)][<)]] E|
@@ -1263,14 +1270,24 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (let* (
               ($docDirection (get 'bx:lcnt:info:base 'docDirection))
               ($docStage (get 'bx:lcnt:info:base 'docStage))
+              ($lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+              ($lcnt-type (get 'bx:lcnt:info:base 'type))
               )
 
          (message (s-lex-format "docDir and Stage ${$docDirection} ${$docStage}"))
 
+        (insert (s-lex-format
+                  "\n
+\\usepackage{whenenv}
+
+\\includecomment{${$lcnt-type}-${$lcnt-lcntNu}}
+"
+                  ))
+
          (when
           (string-equal <docWhenType "isComplete")
            (insert (s-lex-format
-                  "\n
+                  "
 \\includecomment{whenIsBook}         % With Chapters
 \\excludecomment{whenIsArticle}      % Without Chapters
 
@@ -2827,7 +2844,26 @@ Expects certain file-local variables to have been set
          (insert (s-lex-format "
 %%%%% Problem -- Unknwon bibProvider=${<bibProvider}"))))
          (insert (s-lex-format "\n
-%HEVEA\\bibliographystyle{plain}")))
+%HEVEA\\bibliographystyle{plain}"))
+
+       (cond
+        ((s-equals? <bibProvider "biblatex")
+         (insert (s-lex-format "
+\\excludecomment{whenBibProviderIsBibtex}
+\\includecomment{whenBibProviderIsBiblatex}
+"
+                               )))
+        ((s-equals? <bibProvider "bibtex")
+         (insert (s-lex-format "
+\\includecomment{whenBibProviderIsBibtex}
+\\excludecomment{whenBibProviderIsBiblatex}
+"
+                               )))
+        (t
+         (insert (s-lex-format "
+%%%%% Problem -- Unknwon bibProvider=${<bibProvider}"))))
+
+         )
 
 
      (progn  ;; Actual Invocations
