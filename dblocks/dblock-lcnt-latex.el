@@ -1634,7 +1634,12 @@ Subject:   & This Matter\\\\
         (insert
          (format "
 %% Usually \\geometry{paperwidth=6in,paperheight=9in,bindingoffset=0.15in,left=0.75in,right=0.75in,top=0.75in,bottom=0.75in,footskip=.25in}
+\\begin{whenUsEdition}
 \\geometry{paperwidth=6in,paperheight=9in,left=0.75in,right=0.625in,top=0.75in,bottom=0.75in,footskip=.25in,twoside}
+\\end{whenUsEdition}
+\\begin{whenIntEdition}
+\\geometry{paperwidth=6in,paperheight=9in,left=0.78in,right=0.65in,top=0.75in,bottom=0.75in,footskip=.25in,twoside}
+\\end{whenIntEdition}
 "
                  )
          )
@@ -4364,6 +4369,8 @@ Each of these dblock-params match a buffer-local variables.
         (insert
          (format "
 
+\\usepackage{whenenv}
+
 \\includecomment{%s-%s}
 
 \\includecomment{whenDocIsComplete}
@@ -5091,8 +5098,12 @@ Each of these dblock-params match a buffer-local variables.
 (defalias 'org-dblock-write:bx:lcnt:latex:input-file 'org-dblock-write:bx:dblock:lcnt:latex-input)
 
 (defun org-dblock-write:bx:dblock:lcnt:latex-input (params)
+  "IMPORTANT: whenOrg should come before begin <when"
   (let ((bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
-        (bx:input-file (or (plist-get params :input-file) "missing")))
+        (bx:input-file (or (plist-get params :input-file) "missing"))
+        (<when (or (plist-get params :when) nil))
+        ($whenAsStr "Always")
+        )
     (message (format "disabledP = %s" bx:disabledP))
     (if (not
          (or (equal "TRUE" bx:disabledP)
@@ -5101,25 +5112,38 @@ Each of these dblock-params match a buffer-local variables.
         (progn
           ;;; Processing Body
           (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
+          (when <when (setq $whenAsStr <when))
           (if (file-exists-p bx:input-file)
               (progn
-                (insert (format "\
-\\begin{whenOrg}
-%s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] ::  [[elisp:(org-cycle)][| ]]
-\\end{whenOrg}
 
-\\input{%s}"
-                                "*"
-                                bx:input-file
-                                bx:input-file
-                                bx:input-file
-                                )))
+                (insert
+                 (format "\
+\\begin{whenOrg}
+%s   [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] When=%s ::  [[elisp:(org-cycle)][| ]]
+\\end{whenOrg}"
+               (b:dblock:comeega|frontElement (str:capitalize-first-char "INPUT") :orgDepth 1)
+               bx:input-file
+               bx:input-file
+               $whenAsStr
+               ))
+
+                (when <when
+                  (insert (s-lex-format "
+\\begin{${<when}}"
+                                        )))
+                (insert (s-lex-format "
+\\input{${bx:input-file}}"))
+
+                (when <when
+                  (insert (s-lex-format "
+\\end{${<when}}"
+                                        )))
+                                )
             (message (format "Missing File: %s" bx:input-file))
             )
           )
       (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
       )))
-
 
 
 
@@ -5438,15 +5462,16 @@ otherwise labelInfo is inserted as label"
 ;;; This explicit definition adds  toc
 ;;;
 
-(defun org-dblock-write:bx:dblock:lcnt:latex-part (params)
-  "With :toc NU, partNu is set and a toc is generated. With :part NU only partNu is set" 
+
+(defun org-dblock-write:bx:dblock:lcnt:latex-partOLD (params)
+  "With :toc NU, partNu is set and a toc is generated. With :part NU only partNu is set"
   (let ((bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
         (bx:seg-title (or (plist-get params :seg-title) "missing"))
-        (labelInfo (or (plist-get params :label) "UnSpecified"))        
+        (labelInfo (or (plist-get params :label) "UnSpecified"))
         (bx:toc (or (plist-get params :toc) ""))
-        ($@tocDepth (or (plist-get params :tocDepth) 3))        
+        ($@tocDepth (or (plist-get params :tocDepth) 3))
         (bx:part (or (plist-get params :part) ""))
-        ($partpage (or (plist-get params :partpage) nil))       
+        ($partpage (or (plist-get params :partpage) nil))
         ($partDesc)
         )
     (message (format "disabledP = %s" bx:disabledP))
@@ -5477,10 +5502,10 @@ otherwise labelInfo is inserted as label"
                           bx:seg-title
                           bx:seg-title
                           ))
-            
+
 
             )
-             
+
 
           (when (not (string-equal bx:part ""))
             (insert (format "\
@@ -5495,6 +5520,140 @@ otherwise labelInfo is inserted as label"
                           "*"
                           bx:part
                           bx:seg-title
+                          bx:seg-title
+                          ))
+            )
+
+          (when (string-equal labelInfo "auto")
+            (setq labelInfo (str:spacesElim bx:seg-title)))
+
+          (when (not (string-equal labelInfo "UnSpecified"))
+            (insert
+             (format "
+\\label{%s}"
+                     (concat "part:" labelInfo)
+                     )))
+
+          (if (or (equal bx:toc "0") (equal bx:toc 0))
+              (setq $partDesc "This Part")
+            (setq $partDesc (format "Part %s" bx:toc))
+            )
+
+          (when $partpage
+            (insert "
+
+\\begin{latexonly}
+\\begin{presentationMode}
+\\begin{frame}
+\\partpage
+\\end{frame}
+\\end{presentationMode}
+\\end{latexonly}"
+                    )
+            )
+
+          (when (not (equal bx:toc ""))
+            (insert (format "
+
+\\begin{latexonly}
+\\begin{presentationMode}
+\\begin{frame}[fragile,plain,label=Part%s]
+\\frametitle{Outline of %s -- %s}
+"
+                            bx:toc
+                            $partDesc
+                            bx:seg-title
+                            ))
+
+            (when (equal $@tocDepth 3)
+              (insert "\
+\\tableofcontents[sectionstyle=show,subsectionstyle=show]
+")
+              )
+            (when (equal $@tocDepth 2)
+              (insert "\
+\\tableofcontents[sectionstyle=show,subsectionstyle=show,subsubsectionstyle=hide]
+")
+              )
+            (when (equal $@tocDepth 1)
+              (insert "\
+\\tableofcontents[sectionstyle=show,subsectionstyle=hide,subsubsectionstyle=hide]
+")
+              )
+
+              (insert "\
+\\end{frame}
+\\end{presentationMode}
+\\end{latexonly}"
+                      )
+              )
+
+      (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
+      ))))
+
+
+
+(defun org-dblock-write:bx:dblock:lcnt:latex-part (params)
+  "With :toc NU, partNu is set and a toc is generated. With :part NU only partNu is set" 
+  (let ((bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
+        (bx:seg-title (or (plist-get params :seg-title) "missing"))
+        (labelInfo (or (plist-get params :label) "UnSpecified"))        
+        (bx:toc (or (plist-get params :toc) ""))
+        ($@tocDepth (or (plist-get params :tocDepth) 3))        
+        (bx:part (or (plist-get params :part) ""))
+        ($partpage (or (plist-get params :partpage) nil))       
+        ($partDesc)
+        )
+    (message (format "disabledP = %s" bx:disabledP))
+    (if (not
+         (or (equal "TRUE" bx:disabledP)
+             (equal "true" bx:disabledP)))
+        (progn
+          ;;; Processing Body
+          (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
+
+          (blee:dblock:params:desc
+           'latex-mode
+           ":toc \"NU\" :tocDepth 3 :part \"NU\" :label \"auto|spec\" :partpage t"
+           )
+
+          (when (string-equal bx:part "")
+            ;;(setq bx:part bx:toc)
+
+            (insert
+             (format "\
+\\begin{whenOrg}
+*      ================
+%s   _%s_ ::  [[elisp:(org-cycle)][| ]]
+\\end{whenOrg}"
+               (b:dblock:comeega|frontElement (str:capitalize-first-char "PART") :orgDepth 1)
+               bx:seg-title
+               ))
+
+            (insert (format "
+
+\\newpage
+\\part{%s}"
+                          bx:seg-title
+                          ))
+            )
+
+          (when (not (string-equal bx:part ""))
+
+            (insert
+             (format "\
+\\begin{whenOrg}
+*      ================
+%s   _%s_ ::  [[elisp:(org-cycle)][| ]]
+\\end{whenOrg}"
+               (b:dblock:comeega|frontElement (str:capitalize-first-char "PART") :orgDepth 1)
+               bx:seg-title
+               ))
+
+            (insert (format "
+
+\\newpage
+\\part{%s}"
                           bx:seg-title
                           ))
             )

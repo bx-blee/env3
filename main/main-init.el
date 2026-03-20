@@ -73,10 +73,9 @@ and side-effects are documented here
    (if b:doom:enabled?
        (b:base:main|doomBlee-init)
      (b:base:main|pureBlee-init)
-      )
+     )
 
-   ;; NOTYET, where is the right place to put this?
-   (setq find-file-visit-truename nil)
+   (b:base:main|miscTemp)
    )
 
 
@@ -90,6 +89,49 @@ and side-effects are documented here
 | bnpa:comeega:config | main | /bisos/git/auth/bxRepos/blee/env3/libs/libs-init.el | 72 |
 
 " orgCmntEnd)
+
+
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:base:main|miscTemp" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:base:main|miscTemp>>  --  -- Actions based on =parameters= and *returnValues*  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun b:base:main|miscTemp (
+;;;#+END:
+                             )
+   " #+begin_org
+** DocStr: This is a place holder for what needs to be absorbed.
+#+end_org "
+
+   ;; (setq safe-local-variable-values nil)
+   ;; (setq enable-local-variables t)
+
+   (add-to-list 'safe-local-variable-values '(eval setq-local toc-org-max-depth 4))
+   (add-to-list 'safe-local-variable-values '(major-mode . sh-mode))
+   (add-to-list 'safe-local-variable-values '(eval bx:load-file:ifOneExists "./panelActions.el"))
+   (add-to-list 'safe-local-variable-values '(eval blee:fill-column-indicator/enable))
+   (add-to-list 'safe-local-variable-values '(eval set-fill-column 115))
+   (add-to-list 'safe-local-variable-values '(eval img-link-overlays))
+   (add-to-list 'safe-local-variable-values '(eval setq-local ~blee:dblockController "interactive"))
+   (add-to-list 'safe-local-variable-values '(eval setq-local ~blee:dblockEnabler nil))
+   (add-to-list 'safe-local-variable-values '(eval setq-local ~primaryMajorMode 'org-mode))
+   (add-to-list 'safe-local-variable-values '(eval setq-local ~selectedSubject "noSubject"))
+
+   ;; NOTYET, where is the right place to put this?
+   (setq find-file-visit-truename nil)
+   )
+
+
+(orgCmntBegin "
+** Basic Usage:
+#+BEGIN_SRC emacs-lisp
+(b:base:main|miscTemp)
+#+END_SRC
+
+#+RESULTS:
+: (eval setq-local ~primaryMajorMode 'org-mode) (eval setq-local ~selectedSubject noSubject))
+
+" orgCmntEnd)
+
 
 
 
@@ -134,12 +176,20 @@ and side-effects are documented here
    (require 'legacy-init)
    (b:base:legacy|init)
 
+        ;;;
+        ;;; Blee's default Browser is chrome
+        ;;;
+   (setq browse-url-browser-function 'browse-url-chrome)
+
    (require 'realms-user-init)
    (b:base:realms-user|init)
 
    (when nil ;; b:doom:enabled?
      (load-file "/bisos/blee/env3/themes/blee-dark-1-theme.el")
      (enable-theme 'blee-dark-1))
+
+   (unless (display-graphic-p)
+      (xterm-mouse-mode 1))
    )
 
 (orgCmntBegin "
@@ -195,12 +245,26 @@ and side-effects are documented here
    (require 'legacy-init)
    (b:base:legacy|init)
 
+`       ;;;
+        ;;; Blee's default Browser is chrome
+        ;;;
+   (setq browse-url-browser-function 'browse-url-chrome)
+
    (require 'realms-user-init)
    (b:base:realms-user|init)
+
+        ;;;
+        ;;; Blee's default Browser is chrome
+        ;;; NOTYET, this should have happened before b:base:realms-user|init
+        ;;;
+   (setq browse-url-browser-function 'browse-url-chrome)
 
    (when nil ;; b:doom:enabled?
      (load-file "/bisos/blee/env3/themes/blee-dark-1-theme.el")
      (enable-theme 'blee-dark-1))
+
+   (unless (display-graphic-p)
+      (xterm-mouse-mode 1))
    )
 
 (orgCmntBegin "

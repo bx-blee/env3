@@ -518,17 +518,20 @@ and side-effects are documented here
 #+end_org "
   (let* (
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
-         (<outLevel (letGet$outLevel 5)) (<model (letGet$model))
+         ;; (<outLevel (letGet$outLevel 5))
+         (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
          (<frameType (or (plist-get <params :type) "UnSpecified"))
          (<frameTitle (or (plist-get <params :title) "UnSpecified"))
          (<frameLabel (or (plist-get <params :label) "UnSpecified"))
+         (<outLevel (or (plist-get <params :orgDepth) 5))
          (<comment (or (plist-get <params :comment) ""))
          ($frontStr (b:dblock:comeega|frontElement (s-lex-format "${<frameType}") :orgDepth <outLevel))
+         ;;($frontStr (b:dblock:comeega|frontElement (s-lex-format "${<frameType}") :orgDepth 1))
          ($backStr (b:dblock:comeega|eolControls))
          )
 
-    (insert (s-lex-format "${$frontStr} Label=${<frameLabel} ${<frameTitle} ${<comment}\n"))))
+    (insert (s-lex-format "${$frontStr} outLevel=${<outLevel} Label=${<frameLabel} ${<frameTitle} ${<comment}\n"))))
 
 
 (orgCmntBegin "

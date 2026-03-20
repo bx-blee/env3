@@ -18,6 +18,13 @@
 
 (require 'easymenu)
 
+(require 'compile-time-function-name)
+
+;; (require 'apps-gptel-menu)
+(require 'b:aiplus::aidermacs:menu)
+(require 'b:aiplus::gptel:menu)
+
+(require 'b:open-in::menu)
 
 (require 'apps-calc-menu)
 (require 'apps-epa-menu)
@@ -65,6 +72,22 @@ As such what happens below is exactly what is necessary and no more."
 	,(s-- 7)
 	,(s-- 8)
 	))
+
+
+    (b:aiplus:gptel:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (b:aiplus:gptel:canned:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (b:aiplus:gptel:translate:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (b:aiplus:aidermacs:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (b:open-in:menu:plugin|install
+     apps:menu:global (s-- 3))
 
     (apps:calc:menu:plugin|install
      apps:menu:global (s-- 3))

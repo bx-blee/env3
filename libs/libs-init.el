@@ -77,6 +77,7 @@ and side-effects are documented here
 
      (setq b:pkgsProfile:collection:default b:pkgsProfile:collection:blee3)
      (setq b:pkgsProfile:orphan 'b:pkgsProfile:blee3:orphan)
+     (setq b:pkgsProfile:adopted 'b:pkgsProfile:blee3:adopted)
      (setq b:pkgsProfile:native 'b:pkgsProfile:blee3:native)
      (b:pkgsProfile:collection|prepare)
      (b:pkgsProfile:collection:straight--lockfile-read-all|advice-add)
@@ -100,8 +101,12 @@ and side-effects are documented here
    (require 'bnpa:comeega)
    (bnpa:comeega|fullUpdate)
 
-   (require 'bnpa:bidi-menu)
-   (b:npa:bidi-menu|fullUpdate)
+   ;; (require 'bnpa:bidi-menu)
+   ;; (b:npa:bidi-menu|fullUpdate)
+
+   (require 'bnpa:blee-menus)
+   (b:npa:blee-menus|fullUpdate)
+
 
    (require 'bnpa:bisos)
    (bnpa:bisos|fullUpdate)
@@ -118,10 +123,10 @@ and side-effects are documented here
 
    ;; (require 'bnpa:chatGptInv)
    ;; (b:npa:chatGptInv|fullUpdate)
-   (when b:g:dev:mode?
-     (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatgpt.el")
-     (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatGptInv-menu.el")
-     )
+   ;; (when b:g:dev:mode?
+   ;;   (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatgpt.el")
+   ;;   (load-file "/bisos/git/bxRepos/blee/chatGptInv/chatGptInv-menu.el")
+   ;;   )
 
    ;; (require 'bnpa:mtdt)
    ;; (b:npa:mtdt|fullUpdate)
@@ -134,6 +139,11 @@ and side-effects are documented here
      (load-file "/bisos/git/bxRepos/blee/blee-menus/bidi-menu.el")
      (load-file "/bisos/git/bxRepos/blee/blee-menus/b:var:custom:menu.el")
      ;; (load-file "/bisos/git/bxRepos/blee/mtdt-mailing/b:eval-file.el")
+     ;;
+     ;; MB 2025 org-msg is needed in mtdt-mailings
+     ;;
+     (b:pkg:straight|install 'org-msg)
+     ;;
      ;;
      (load-file "/bisos/git/bxRepos/blee/mtdt/b:mtdt:assemble:menu.el")
      ;;(load-file "/bisos/git/bxRepos/blee/mtdt/mtdt-if.el")

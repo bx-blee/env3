@@ -62,12 +62,12 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
 " orgCmntEnd)
 ;;;#+END:
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:frame:content:image/filePath" :advice ("bx:dblock:control|wrapper")
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:frame:content:video/filePath" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:frame:content:image/filePath>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:frame:content:video/filePath>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:frame:content:image/filePath :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:frame:content:image/filePath (<params)
+(advice-add 'org-dblock-write:b:lcnt:frame:content:video/filePath :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:frame:content:video/filePath (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]]
@@ -78,7 +78,7 @@ Content of a frame based
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
-          (<imageFile (or (plist-get <params :imageFile) ""))
+          (<videoPath (or (plist-get <params :videoPath) ""))
           (<comment (or (plist-get <params :comment) ""))
           )
      (bxPanel:params$effective)
@@ -86,8 +86,8 @@ Content of a frame based
      (defun helpLine () "default controls" )
      (defun outCommentPreContent ())
      (defun bodyContentPlus ())
-     (defun bodyContent () (b:lcnt:frame:content:image:inComment/common <params))
-     (defun outCommentPostContent () (b:lcnt:frame:content:image/filePath <params))
+     (defun bodyContent () (b:lcnt:frame:content:video:inComment/common <params))
+     (defun outCommentPostContent () (b:lcnt:frame:content:video/filePath <params))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -96,11 +96,11 @@ Content of a frame based
        )))
 
 
-;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:frame:content:image:inComment/common" :advice ()
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:frame:content:video:inComment/common" :advice ()
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:frame:content:image:inComment/common>>   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:frame:content:video:inComment/common>>  --  -- Actions based on =parameters= and *returnValues*  [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(defun b:lcnt:frame:content:image:inComment/common (
+(defun b:lcnt:frame:content:video:inComment/common (
 ;;;#+END:
                                                    <params)
   " #+begin_org
@@ -111,13 +111,13 @@ and side-effects are documented here
          (<governor (letGet$governor)) (<extGov (letGet$extGov))
          (<outLevel (letGet$outLevel 5)) (<model (letGet$model))
          (<style (letGet$style "openBlank" "closeBlank"))
-         (<imageFile (or (plist-get <params :imageFile) ""))
+         (<videoPath (or (plist-get <params :videoPath) ""))
          (<comment (or (plist-get <params :comment) ""))
-         ($frontStr (b:dblock:comeega|frontElement (s-lex-format "IMAGE") :orgDepth <outLevel))
+         ($frontStr (b:dblock:comeega|frontElement (s-lex-format "VIDEO") :orgDepth <outLevel))
          ($backStr (b:dblock:comeega|eolControls))
          )
 
-    (insert (s-lex-format "${$frontStr} ${<imageFile} --- ${<comment}\n"))))
+    (insert (s-lex-format "${$frontStr} ${<videoPath} --- ${<comment}\n"))))
 
 
 (orgCmntBegin "
@@ -128,11 +128,11 @@ and side-effects are documented here
 " orgCmntEnd)
 
 
-;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:frame:content:image/filePath" :advice ()
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:frame:content:video/filePath" :advice ()
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:frame:content:image/filePath>>   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:frame:content:video/filePath>>  --  -- Actions based on =parameters= and *returnValues*  [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(defun b:lcnt:frame:content:image/filePath (
+(defun b:lcnt:frame:content:video/filePath (
 ;;;#+END:
                                             <params)
   " #+begin_org
@@ -141,17 +141,17 @@ and side-effects are documented here
 #+end_org "
 
   (let* (
-         (<imageFile (or (plist-get <params :imageFile) ""))
+         (<videoPath (or (plist-get <params :videoPath) ""))
          (<comment (or (plist-get <params :comment) ""))
          (<fileNameEncoded (or (plist-get <params :fileNameEncoded) ""))
          ($resolutionImageFile nil)
          )
 
-    (defun resolutionImageFile (<imageFile)
+    (defun resolutionImageFile (<videoPath)
       (let* (
-             ($result <imageFile)
-             ($mediumImageFile (s-concat (f-no-ext <imageFile) "-medium." (f-ext <imageFile)))
-             ; ($mediumImageFile (s-concat (f-no-ext <imageFile) "-small." (f-ext <imageFile)))
+             ($result <videoPath)
+             ($mediumImageFile (s-concat (f-no-ext <videoPath) "-medium." (f-ext <videoPath)))
+             ; ($mediumImageFile (s-concat (f-no-ext <videoPath) "-small." (f-ext <videoPath)))
              )
         (when (file-exists-p $mediumImageFile)
           (setq $result $mediumImageFile))
@@ -159,7 +159,7 @@ and side-effects are documented here
 
     ;; (resolutionImageFile "/lcnt/lgcc/mohsen/permanent/photos/shabeYaldaPhotos/image/2023/20231221-191811.jpg")
 
-    (setq $resolutionImageFile (resolutionImageFile <imageFile))
+    (setq $resolutionImageFile (resolutionImageFile <videoPath))
 
     (insert (s-lex-format "\n
 \\begin{presentationMode}
@@ -182,7 +182,7 @@ and side-effects are documented here
     (insert (s-lex-format "
 ${<comment}
 <div class=\"center\">
-<img src=\"${<imageFile}\" height=\"450\">
+<img src=\"${<videoPath}\" height=\"450\">
 </div>"))
 
     (insert "
@@ -199,7 +199,7 @@ ${<comment}
     \\begin{center}")
 
     (insert (s-lex-format "
-      \\includegraphics[width=\\textwidth]{${<imageFile}}"))
+      \\includegraphics[width=\\textwidth]{${<videoPath}}"))
 
     ;;; BUG: insert-file-contents did not work
 
@@ -209,7 +209,7 @@ ${<comment}
 
     (insert (format "
       \\label{fig:%s}"
-                      (fig-base-name <imageFile)))
+                      (fig-base-name <videoPath)))
 
     (insert "
     \\end{center}
@@ -221,7 +221,7 @@ ${<comment}
   \\begin{center}")
 
     (insert (s-lex-format "
-      \\includegraphics[width=\\textwidth]{${<imageFile}}"))
+      \\includegraphics[width=\\textwidth]{${<videoPath}}"))
 
     (insert "
   \\end{center}
@@ -238,7 +238,7 @@ ${<comment}
 
     (insert (format "
       \\label{fig:%s}"
-                      (fig-base-name <imageFile)))
+                      (fig-base-name <videoPath)))
 
     (insert "
   \\end{figure}
@@ -256,12 +256,12 @@ ${<comment}
 " orgCmntEnd)
 
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:image:full/filePath" :advice ("bx:dblock:control|wrapper")
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:video:full/filePath" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:image:full/filePath>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:video:full/filePath>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:image:full/filePath :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:image:full/filePath (<params)
+(advice-add 'org-dblock-write:b:lcnt:video:full/filePath :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:video:full/filePath (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]]
@@ -272,7 +272,7 @@ Content of a frame based
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
-          (<imageFile (or (plist-get <params :imageFile) ""))
+          (<videoPath (or (plist-get <params :videoPath) ""))
           (<comment (or (plist-get <params :comment) ""))
           )
      (bxPanel:params$effective)
@@ -281,7 +281,7 @@ Content of a frame based
      (defun outCommentPreContent ())
      (defun bodyContentPlus ())
      (defun bodyContent ())
-     (defun outCommentPostContent () (b:lcnt:image:full/filePath <params))
+     (defun outCommentPostContent () (b:lcnt:video:full/filePath <params))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -289,11 +289,11 @@ Content of a frame based
        (outCommentPostContent)
        )))
 
-;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:image:full/filePath" :advice ()
+;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:video:full/filePath" :advice ()
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:image:full/filePath>>   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:video:full/filePath>>  --  -- Actions based on =parameters= and *returnValues*  [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(defun b:lcnt:image:full/filePath (
+(defun b:lcnt:video:full/filePath (
 ;;;#+END:
                                             <params)
   " #+begin_org
@@ -302,13 +302,13 @@ and side-effects are documented here
 #+end_org "
 
   (let* (
-         (<imageFile (or (plist-get <params :imageFile) ""))
+         (<videoPath (or (plist-get <params :videoPath) ""))
          (<comment (or (plist-get <params :comment) ""))
          ($fileName "")
          ($fileNameEncoded "")
          )
 
-    (setq $fileName (f-no-ext (f-filename <imageFile)))
+    (setq $fileName (f-no-ext (f-filename <videoPath)))
     (setq $fileNameEncoded (shell-command-to-string (concat "uri@Encode.sh " $fileName)))
 
     (setq <params (plist-put <params ':seg-title (s-lex-format "${$fileNameEncoded}")))
@@ -318,7 +318,7 @@ and side-effects are documented here
 
     (setq <params (plist-put <params ':type "Frame:begin-plain"))
     (setq <params (plist-put <params ':options "plain"))
-    (setq <params (plist-put <params ':audio "labeled"))
+    ;; NO Audio for Video (setq <params (plist-put <params ':audio "labeled"))
     (setq <params (plist-put <params ':fragile "true"))
     (setq <params (plist-put <params ':fileNameEncoded (s-lex-format "${$fileNameEncoded}")))
     (setq <params (plist-put <params ':label (s-lex-format "${$fileNameEncoded}")))
@@ -326,7 +326,9 @@ and side-effects are documented here
 
      (b:lcnt:pres:commonDblock:outComment/begin <params)
 
-     (b:lcnt:frame:content:image/filePath <params)
+     (b:lcnt:pres:commonDblock:outComment:mm/body <params)
+
+     ;;(b:lcnt:frame:content:video/filePath <params)
 
     (insert "
 \\end{frame}")
@@ -349,7 +351,7 @@ Content of a frame based
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
-          (<imageFile (or (plist-get <params :imageFile) ""))
+          (<videoPath (or (plist-get <params :videoPath) ""))
           (<comment (or (plist-get <params :comment) ""))
           )
      (bxPanel:params$effective)
@@ -381,7 +383,7 @@ and side-effects are documented here
 #+end_org "
 
   (let* (
-         (<imageFile (or (plist-get <params :imageFile) ""))
+         (<videoPath (or (plist-get <params :videoPath) ""))
          (<comment (or (plist-get <params :comment) ""))
          ($fileName "")
          ($fileNameEncoded "")
@@ -390,7 +392,7 @@ and side-effects are documented here
          ($dateTime "")
          )
 
-    (setq $fileName (f-no-ext (f-filename <imageFile)))
+    (setq $fileName (f-no-ext (f-filename <videoPath)))
     ;;(setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo ${$fileName} | latexencode")))
     ;;(setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo -n ${$fileName} | /bisos/venv/py3/adopted/bin/latexencode")))
     (setq $fileNameEncoded (shell-command-to-string (s-lex-format "echo -n ${$fileName} | latexencode")))
@@ -487,111 +489,11 @@ and side-effects are documented here
     (loop-for-each $eachLine $fileLines
       (when (not (string= $eachLine ""))
         (insert (s-lex-format "\n%%% Processing:  ${$eachLine}"))
-        (b:lcnt:photo:full/filePath `(:imageFile ,$eachLine :comment "Photo From Camera List"))))))
-
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:album:any:list/fromFile.el" :advice ("bx:dblock:control|wrapper")
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:album:any:list/fromFile.el>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(advice-add 'org-dblock-write:b:lcnt:album:any:list/fromFile.el :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:lcnt:album:any:list/fromFile.el (<params)
-;;;#+END:
-   " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]]
-Content of a frame based
-
-#+end_org "
-   (let* (
-          (<governor (letGet$governor)) (<extGov (letGet$extGov))
-          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
-          (<style (letGet$style "openBlank" "closeBlank"))
-          (<albumFile (or (plist-get <params :albumFile) ""))
-          ;; (<resolution (or (plist-get <params :resolution) "default"))
-          (<comment (or (plist-get <params :comment) ""))
-          )
-     (bxPanel:params$effective)
-
-     (defun helpLine () "default controls" )
-     (defun outCommentPreContent ())
-     (defun bodyContentPlus ())
-     (defun bodyContent ()
-       (let* (
-              ($frontStr (b:dblock:comeega|frontElement (s-lex-format "ALBUM") :orgDepth <outLevel))
-              ($backStr (b:dblock:comeega|eolControls))
-              )
-         (insert (s-lex-format
-                "${$frontStr} ~${<comment}~ _Processing Dblock b:lcnt:album:any:list/fromFile.el ${<albumFile}_\n"))))
-     (defun outCommentPostContent () (b:lcnt:album:any:list/fromFile.el <params))
-
-     (progn  ;; Actual Invocations
-       (outCommentPreContent)
-       (bx:invoke:withStdArgs$bx:dblock:governor:process)
-       (outCommentPostContent)
-       )))
-
-
-;;;#+BEGIN:  b:elisp:defs/defun :defName "b:lcnt:album:any:list/fromFile.el" :advice ()
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:lcnt:album:any:list/fromFile.el>>   [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(defun b:lcnt:album:any:list/fromFile.el (
-;;;#+END:
-                                       <params)
-  " #+begin_org
-** DocStr: Actions based on =parameters= and *returnValues*
-and side-effects are documented here
-#+end_org "
-
-  (let* (
-         (<albumFile (or (plist-get <params :albumFile) ""))
-         (<comment (or (plist-get <params :comment) ""))
-         (<resolution (plistGetOrDef <params :resolution "default"))
-         ($sexps)
-         )
-    (setq b:lcnt:photo:resolution <resolution)
-    (setq $sexps (b:file:read/asSexp <albumFile))
-    (loop-for-each $eachSexp $sexps
-      (insert (s-lex-format "\n%%% Processing:  ${$eachSexp}"))
-      (eval $eachSexp)
-                  )))
-
-
-;;;#+BEGIN:  b:elisp:defs/defun :defName "b:file:read/asSexp" :advice ()
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<b:file:read/asSexp>>   [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(defun b:file:read/asSexp (
-;;;#+END:
-                           <fileName)
-  " #+begin_org
-** DocStr:
-https://emacs.stackexchange.com/questions/33586/how-to-read-elisp-file-into-s-expression
-#+end_org "
- (let
-     ((sexps '())
-      (sexp)
-      (buf (find-file-noselect <fileName)))
-   (with-current-buffer buf
-     (goto-char (point-min))
-     (ignore-errors
-       (while (setq sexp (read buf))
-         (message "%s" sexp)
-         (push sexp sexps))))
-   (kill-buffer buf)
-   (reverse sexps)))
-
-
-(orgCmntBegin "
-** Basic Usage:
-#+BEGIN_SRC emacs-lisp
-(b:file:read/asSexp \"someFile\")
-#+END_SRC
-" orgCmntEnd)
-
+        (b:lcnt:photo:full/filePath `(:videoPath ,$eachLine :comment "Photo From Camera List"))))))
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
-(provide 'dblock-comeega-latex-image)
+(provide 'dblock-comeega-latex-video)
 ;;;#+END:
 
 

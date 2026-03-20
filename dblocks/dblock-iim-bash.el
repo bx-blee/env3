@@ -233,12 +233,12 @@ _CommentEnd_
      (format "FILE=\"\n*  /This File/ :: %s \n\"\n" buffer-file-name))
     (insert "if [ \"${loadFiles}\" == \"\" ] ; then\n")
     (insert
-     (format "    /opt/public/osmt/bin/%s -l $0 \"$@\" \n" bx:types))
+     ;;(format "    /opt/public/osmt/bin/%s -l $0 \"$@\" \n" bx:types))
+     (format "    /bisos/core/lcnt/bin/%s -l $0 \"$@\" \n" bx:types))
     (insert "    exit $?
 fi")
     ;;(insert "# }}} DBLOCK-seed-spec")
     ))
-
 
 (defun org-dblock-write:bx:bsip:bash:seed-spec (params)
   (let ((bx:types (or (plist-get params :types) ""))

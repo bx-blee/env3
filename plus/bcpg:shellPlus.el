@@ -100,18 +100,18 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  (b:pkg:straight|install 'multishell)
 ;;;#+END:
 
-;;;#+BEGINNOT:  b:elisp:pkg/install :outLevel 2 :pkgsType "native" :pkgName "multishell" :pkgDesc "pkgDesc"
-(orgCmntBegin "
-** [[elisp:(show-all)][(>]]  =component= ~multishell~ *pkgDesc* [[elisp:(org-shifttab)][<)]] E|
-" orgCmntEnd)
- (if b:g:dev:mode?
-      (b:pkg:straight|profiledInstall
-       b:pkgsProfile:native
-       '(fshell :local-repo "/bisos/git/bxRepos/blee/fshell"))
-    (b:pkg:straight|profiledInstall
-       b:pkgsProfile:native
-     '(fshell :type git :host github :repo "bx-blee/fshell")))
-;;;#+END:
+;; ;;;#+BEGINNOT:  b:elisp:pkg/install :outLevel 2 :pkgsType "native" :pkgName "multishell" :pkgDesc "pkgDesc"
+;; (orgCmntBegin "
+;; ** [[elisp:(show-all)][(>]]  =component= ~multishell~ *pkgDesc* [[elisp:(org-shifttab)][<)]] E|
+;; " orgCmntEnd)
+;;  (if b:g:dev:mode?
+;;       (b:pkg:straight|profiledInstall
+;;        b:pkgsProfile:native
+;;        '(fshell :local-repo "/bisos/git/bxRepos/blee/fshell"))
+;;     (b:pkg:straight|profiledInstall
+;;        b:pkgsProfile:native
+;;      '(fshell :type git :host github :repo "bx-blee/fshell")))
+;; ;;;#+END:
 
    )
 
@@ -124,7 +124,7 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  (b:log|entry (b:func$entry))
 ;;;#+END:
 
- (require 'fshell)
+ ;; (require 'fshell)
 
   (setq explicit-shell-file-name		"/bin/bash")
   (setq      shell-command-switch			"-c")

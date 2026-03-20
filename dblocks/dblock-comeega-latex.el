@@ -57,6 +57,13 @@ A library of dblock for b:elisp:file/xxx comeega-file-elements.
 " orgCmntEnd)
 ;;;#+END:
 
+;;;#+BEGIN: b:prog:felem/genericMarker :frontMarker "Generic" :mainMarker "Generic Poly Marker DBlock" :comment "Can be used in LaTeX, Elisp, etc"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Generic    [[elisp:(outline-show-subtree+toggle)][||]]  /Marker:/ Generic Poly Marker DBlock -- Can be used in LaTeX, Elisp, etc  [[elisp:(org-cycle)][| ]]
+
+" orgCmntEnd)
+;;;#+END:
+
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "LaTeX Master File Elements" :extraInfo "b:lcnt:matex:felem:"
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _LaTeX Master File Elements_: |]]  b:lcnt:matex:felem:  [[elisp:(org-shifttab)][<)]] E|
@@ -850,7 +857,7 @@ excludecomment{whenOrg}
          (when (or (equal <bxLangs "en") (equal <bxLangs "en+fa"))
            (insert "\\documentclass[ignorenonframetext]{beamer}"))
          ;; FARSI
-         (when (equal bx:langs "fa+en")
+         (when (equal <bxLangs "fa+en")
            (insert "\\documentclass[ignorenonframetext]{bidibeamer}")))
 
         ((s-equals? <bxClass "bookcover")
@@ -1071,6 +1078,7 @@ Expects certain file-local variables to have been set
           (<style (letGet$style "openBlank" "closeBlank"))
           (<comment (or (plist-get <params :comment) ""))
           (<whenIncludeOnly (or (plist-get <params :whenIncludeOnly) nil))
+          (<always (or (plist-get <params :always) nil))
           )
      (bxPanel:params$effective)
 
@@ -1087,6 +1095,10 @@ Expects certain file-local variables to have been set
              ))
 
      (defun outCommentPostContent ()
+       (when <always
+         (insert "\n\\begin{appendices}")
+         )
+       (unless <always
        (when <whenIncludeOnly
          (insert "\n\\begin{whenIncludeOnly}"))
        (unless <whenIncludeOnly
@@ -1096,6 +1108,7 @@ Expects certain file-local variables to have been set
          (insert "\n\\end{whenIncludeOnly}"))
        (unless <whenIncludeOnly
          (insert "\n\\end{whenNotIncludeOnly}"))
+       )
        )
 
      (progn  ;; Actual Invocations
@@ -1122,6 +1135,7 @@ Expects certain file-local variables to have been set
           (<style (letGet$style "openBlank" "closeBlank"))
           (<comment (or (plist-get <params :comment) ""))
           (<whenIncludeOnly (or (plist-get <params :whenIncludeOnly) nil))
+          (<always (or (plist-get <params :always) nil))
           )
      (bxPanel:params$effective)
 
@@ -1138,6 +1152,10 @@ Expects certain file-local variables to have been set
              ))
 
      (defun outCommentPostContent ()
+       (when <always
+         (insert "\n\\end{appendices}")
+         )
+       (unless <always
        (when <whenIncludeOnly
          (insert "\n\\begin{whenIncludeOnly}"))
        (unless <whenIncludeOnly
@@ -1147,6 +1165,7 @@ Expects certain file-local variables to have been set
          (insert "\n\\end{whenIncludeOnly}"))
        (unless <whenIncludeOnly
          (insert "\n\\end{whenNotIncludeOnly}"))
+       )
        )
 
      (progn  ;; Actual Invocations
@@ -1309,14 +1328,24 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (let* (
               ($docDirection (get 'bx:lcnt:info:base 'docDirection))
               ($docStage (get 'bx:lcnt:info:base 'docStage))
+              ($lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+              ($lcnt-type (get 'bx:lcnt:info:base 'type))
               )
 
          (message (s-lex-format "docDir and Stage ${$docDirection} ${$docStage}"))
 
+        (insert (s-lex-format
+                  "\n
+\\usepackage{whenenv}
+
+\\includecomment{${$lcnt-type}-${$lcnt-lcntNu}}
+"
+                  ))
+
          (when
           (string-equal <docWhenType "isComplete")
            (insert (s-lex-format
-                  "\n
+                  "
 \\includecomment{whenIsBook}         % With Chapters
 \\excludecomment{whenIsArticle}      % Without Chapters
 
@@ -1522,6 +1551,54 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (outCommentPostContent)
        )))
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/buildEnvs" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/buildEnvs>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/buildEnvs :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/buildEnvs (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Inserts build.tex of curBuild (if any) inside of dblock.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "whenBldEnv"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} From ./LCNT-Info/Builds/buildEnvs.tex~"))
+             (insert (s-lex-format " ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (let* (
+              ($lcntInfoBuildEnvsFile (concat default-directory "LCNT-INFO/Builds/buildEnvs.tex"))
+              )
+         (when (f-exists? $lcntInfoBuildEnvsFile)
+           (insert "\n")
+           (insert-file-contents $lcntInfoBuildEnvsFile))
+         (unless (f-exists? $lcntInfoBuildEnvsFile)
+           (insert (s-lex-format "\n%%% Missing ${$lcntInfoBuildEnvsFile}")))
+         ))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/whenCurBuild" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -1566,9 +1643,17 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
 
      (defun outCommentPostContent ()
        (when (equal <when "main")
-         (when $curBuild:buildTex
-           (insert "\n")
-           (insert-file-contents $curBuild:buildTex))))
+         (if-when $curBuild:buildTex
+           (if-when (f-exists? $curBuild:buildTex)
+             (insert "\n")
+             (insert-file-contents $curBuild:buildTex))
+           (if-unless (f-exists? $curBuild:buildTex)
+             (insert (s-lex-format "\n%%% Missing ${$curBuild:buildTex}")))
+           )
+         (if-unless $curBuild:buildTex
+           (insert (s-lex-format "\n%%% Missing ${bx:lcnt:curBuild:base}/build.tex")))
+         )
+       )
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -2817,7 +2902,26 @@ Expects certain file-local variables to have been set
          (insert (s-lex-format "
 %%%%% Problem -- Unknwon bibProvider=${<bibProvider}"))))
          (insert (s-lex-format "\n
-%HEVEA\\bibliographystyle{plain}")))
+%HEVEA\\bibliographystyle{plain}"))
+
+       (cond
+        ((s-equals? <bibProvider "biblatex")
+         (insert (s-lex-format "
+\\excludecomment{whenBibProviderIsBibtex}
+\\includecomment{whenBibProviderIsBiblatex}
+"
+                               )))
+        ((s-equals? <bibProvider "bibtex")
+         (insert (s-lex-format "
+\\includecomment{whenBibProviderIsBibtex}
+\\excludecomment{whenBibProviderIsBiblatex}
+"
+                               )))
+        (t
+         (insert (s-lex-format "
+%%%%% Problem -- Unknwon bibProvider=${<bibProvider}"))))
+
+         )
 
 
      (progn  ;; Actual Invocations
@@ -2893,6 +2997,7 @@ Expects certain file-local variables to have been set
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
+          (<bxClass (or (plist-get <params :bxClass) "book"))
           (<comment (or (plist-get <params :comment) ""))
           )
      (bxPanel:params$effective)
@@ -2910,7 +3015,8 @@ Expects certain file-local variables to have been set
              ))
 
      (defun outCommentPostContent ()
-       (insert "\n\n\\frontmatter%\n"))
+       (when (s-equals? <bxClass "book")
+         (insert "\n\n\\frontmatter%\n")))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
@@ -2967,7 +3073,12 @@ ${$frontStr} Table Of Contents:: pageBreak=${<pageBreak} shortToc=${<shortToc} t
        (insert "
 
 \\begin{whenPaper6x9}
+\\begin{whenUsEdition}
 \\begin{adjustwidth}{-0.1in}{-0.1in}   % Used to be 0.25
+\\end{whenUsEdition}
+\\begin{whenIntEdition}
+\\begin{adjustwidth}{-0.005in}{-0.005in}   % Used to be 0.25
+\\end{whenIntEdition}
 \\end{whenPaper6x9}
 
 \\begin{latexonly}
@@ -3291,7 +3402,7 @@ We have not identified sources when the facts involved are not in
 dispute and when the relevant information can easily be found.
 
 \\begin{whenPaper6x9}
-    \\begin{adjustwidth}{+0.1in}{+0.1in}
+    \\begin{adjustwidth}{+0.15in}{+0.05in}
 \\end{whenPaper6x9}
 
 \\printendnotes

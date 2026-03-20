@@ -105,8 +105,8 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (interactive)
 
   (if b:doom:enabled?
-      (setq frame-title-format (list (format "%%b – Doom-Blee 3.1-E-%s @ %s" emacs-version system-name)))
-    (setq frame-title-format (list (format "%%b – Pure-Blee 3.1-E-%s @ %s" emacs-version system-name)))
+      (setq frame-title-format (list (format "%%b – Doom-Blee 3.1-E-%s @ %s [PID: %d]" emacs-version system-name (emacs-pid))))
+    (setq frame-title-format (list (format "%%b – Pure-Blee 3.1-E-%s @ %s [PID: %d]" emacs-version system-name (emacs-pid))))
     )
 
   (setq-default bidi-display-reordering t)         ; Blee wants to be bidi-aware

@@ -98,7 +98,7 @@
      ((string-equal <realm "site")
       (setq $markup "/")
       )
-     ((string-equal <realm "usageEnv")
+     ((string-equal <realm "usage-env")
       (setq $markup "*")
       )
      ((string-equal <realm "platform")
@@ -119,11 +119,11 @@
    "site"
    "projs"
    "platform"
-   "usageEnv"
+   "usage-env"
    ))
 
 ;;;
-;;; (bx:realm:bpoId|fromHomeGet "usageEnv")
+;;; (bx:realm:bpoId|fromHomeGet "usage-env")
 ;;; bx:realm:bpoId|fromHomeGet
 (defun bx:realm:bpoId|fromHomeGet (<realm)
   "Return realm:bpoId based on <realm."
@@ -152,11 +152,11 @@
                   (setq $bpoId (file-truename $selectedRealmBaseDir))
                   )
               (progn
-                (insert (format "** Missing selectedRealmBaseDir %s\n" $selectedRealmBaseDir))
+                (message (format "** Missing selectedRealmBaseDir %s\n" $selectedRealmBaseDir))
                 )
               )
           (progn
-            (insert (format "** Missing realmBaseDir %s\n" $realmBaseDir))
+            (message (format "** Missing realmBaseDir %s\n" $realmBaseDir))
             )
           )
         (when $missing
@@ -165,6 +165,48 @@
         )
     $bpoId
     )))
+
+;;;
+;;; (bx:realm:bpoId|fromPlatformGet "site")
+;;; bx:realm:bpoId|fromHomeGet
+(defun bx:realm:bpoId|fromPlatformGet (<realm)
+  "Return realm:bpoId based on <realm."
+  (let* (
+         ($bpoId nil)
+         ($missing t)
+         ($selectedRealmBaseDir nil)
+         )
+    (cond
+     ((member <realm (bx:realms|listGet))
+      (progn)
+      )
+     (t
+      (error (format "unexpected %s" <realm))
+      ))
+    (cond
+     ((string= <realm "usage-env")
+      (message "usage-env NotYet implemented")
+      )
+     ((string= <realm "site")
+      (setq $selectedRealmBaseDir "/bisos/site")
+      (if (file-directory-p $selectedRealmBaseDir)
+          (progn
+            (setq $missing nil)
+            ;;(setq $bpoId (file-truename $selectedRealmBaseDir))
+            (setq $bpoId $selectedRealmBaseDir)
+            )
+        (progn
+          (message (format "** Missing selectedRealmBaseDir %s\n" $selectedRealmBaseDir))
+          )
+        ))
+      ((string= <realm "platform")
+       (insert "Unimplemented Platform")
+       )
+      (t
+       (error (s-lex-format "Unexpected <realm=${<realm}"))
+       ))
+      $bpoId
+    ))
 
 ;;; bx:realm:bpoId|panelsBaseGet
 (defun  bx:realm:bpoId|panelsBaseGet (<bpoIdBase)
@@ -175,7 +217,8 @@
          )
     (if (file-directory-p $baseDir)
         (progn
-          (setq $realmPanelsBase (file-truename $baseDir))
+          ;;(setq $realmPanelsBase (file-truename $baseDir))
+          (setq $realmPanelsBase $baseDir)
           )
       (progn
         (insert (format "Missing realmPanelsBaseGet %s\n" $baseDir))
@@ -189,16 +232,18 @@
 Content of <segName + .org  is the name of file, under <realmPanelsBase, mirroring `current-buffer`
 location that will be returned as string."
   (let* (
-         ($cwd (expand-file-name "."))
+         ($cwd (file-truename (expand-file-name ".")))
          ($realmExtensionBase)
          ($extensionFileName)
          )
+    ;; (insert (s-lex-format "${<realmPanelsBase} ${$cwd}\n"))
     (when <realmPanelsBase
       (setq $realmExtensionBase
             (replace-regexp-in-string
              "/bisos/git/auth/bxRepos/blee-binders"
              <realmPanelsBase
              $cwd))
+    ;; (insert (s-lex-format "${$realmExtensionBase}\n"))
       (setq $extensionFileName
             (f-join $realmExtensionBase
                     (concat <segName ".org")))
@@ -219,14 +264,14 @@ location that will be returned as string."
                     (buffer-string)))
           )))))
 
-(defun bxPanel:lineDeliminator|top (<realm)
+(defun bxPanel:lineDeliminator|top%% (<realm)
   "Based on <realm, create a topLineDeliminator.
 <realm could be one of collective|site|platform|bue"
   (let* (
         ($markup "")
         )
     (setq $markup ($realm:markup|get <realm))
-    
+
     (insert
      (format
       "%s"
@@ -234,7 +279,7 @@ location that will be returned as string."
       (make-string 32 ? )
       ;;(make-string 30 ?=)
       ))
-    
+
     (insert
      (format
       "[[elisp:(org-cycle)][| %s%s%s |]]"
@@ -251,7 +296,38 @@ location that will be returned as string."
     ))
 
 
-(defun bxPanel:lineDeliminator|bottom (<realm)
+(defun bxPanel:lineDeliminator|top (<realm)
+  "Based on <realm, create a topLineDeliminator.
+<realm could be one of collective|site|platform|bue"
+  (let* (
+        ($markup "")
+        ($frontOfLine (make-string 5 cfw:fchar-horizontal-line))
+        ($backOfLine (make-string 5 cfw:fchar-horizontal-line))
+        ($realmUpcase (upcase <realm))
+        )
+    (setq $markup ($realm:markup|get <realm))
+    
+    (insert
+     (format
+      "%s"
+      ;;(blee:panel:outLevelStr @outLevel)
+      (make-string 32 ? )
+      ;;(make-string 30 ?=)
+      ))
+    
+    (insert
+     (s-lex-format
+      "[[elisp:(org-cycle)][| ${$markup}${$frontOfLine} ${$realmUpcase} Realm Extension ${$backOfLine}${$markup} |]]"))
+
+    (insert
+     (format
+      "%s\n"
+      (make-string 25 ? )
+      ))
+    ))
+
+
+(defun bxPanel:lineDeliminator|bottom%% (<realm)
   "Based on <realm, create a topLineDeliminator.
 <realm could be one of collective|site|platform|bue"
   (let* (
@@ -269,6 +345,26 @@ location that will be returned as string."
       $markup
       (make-string 25 ? )      
     ))))
+
+(defun bxPanel:lineDeliminator|bottom (<realm)
+  "Based on <realm, create a topLineDeliminator.
+<realm could be one of collective|site|platform|bue"
+  (let* (
+        ($markup "")
+        )
+    (setq $markup ($realm:markup|get <realm))
+    (insert
+     (format
+      "%s%s%s%s%s%s"
+      (blee:panel:outLevelStr @outLevel)
+      (make-string 32 ? )
+      ;;(make-string 30 ?=)
+      $markup
+      (make-string 45 cfw:fchar-horizontal-line)
+      $markup
+      (make-string 25 ? )
+    ))))
+
 
 (defun bxPanel:lineDeliminator|one (<realm)
   "Based on <realm, create a topLineDeliminator.
@@ -293,7 +389,7 @@ location that will be returned as string."
 (defun org-dblock-write:bxPanel:realms:user|extend  (<params)
   "Creates terse links for navigation surrounding current panel in treeElem."
   (let* (
-        ($realm "usageEnv")
+        ($realm "usage-env")
         )
     (bxPanel:realms|extend $realm <params)))
 
@@ -342,7 +438,7 @@ Otherwise, these would go inside of a dblock and mess things up."
          (<style (letGet$style "openTerseNoNl" "closeContinue"))
          ;;
          (<bpoId (or (plist-get <params :bpoId) "auto"))
-         (<segName (or (plist-get <params :segName) "general"))  
+         (<segName (or (plist-get <params :segName) "realmInsert"))
          ($homeDir (expand-file-name "~"))
          )
 
@@ -368,17 +464,22 @@ Otherwise, these would go inside of a dblock and mess things up."
         (when (string= <bpoId "auto")
           (setq $bpoIdBase (bx:realm:bpoId|fromHomeGet <realm)))
         (when (not $bpoIdBase)
-          (message (s-lex-format "Warning: Missing bpoId=${<bpoId} -- bpoIdBase=${$bpoIdBase}")))
+          (setq $bpoIdBase (bx:realm:bpoId|fromPlatformGet <realm))
+          (when (not $bpoIdBase)
+            (message (s-lex-format "Warning: Missing bpoId=${<bpoId} -- bpoIdBase=${$bpoIdBase}"))))
         (when $bpoIdBase
           (cond
-           ((string= <realm "usageEnv")
+           ((string= <realm "usage-env")
             (setq $realmPanelsBase (bx:realm:bpoId|panelsBaseGet $bpoIdBase))
             (message (s-lex-format "bpoIdBase=${$bpoIdBase} ${$realmPanelsBase}"))
             (bx:realm:bpoId:panelExtension|insert $realmPanelsBase <segName)
             (bxPanel:lineDeliminator|bottom <realm)
             )
            ((string= <realm "site")
-            (insert "Unimplemented Site")
+            (setq $realmPanelsBase (bx:realm:bpoId|panelsBaseGet $bpoIdBase))
+            (message (s-lex-format "bpoIdBase=${$bpoIdBase} ${$realmPanelsBase}"))
+            (bx:realm:bpoId:panelExtension|insert $realmPanelsBase <segName)
+            (bxPanel:lineDeliminator|bottom <realm)
             )
            ((string= <realm "platform")
             (insert "Unimplemented Platform")
@@ -428,7 +529,7 @@ Otherwise, these would go inside of a dblock and mess things up."
           )
 
         (cond
-         ((string= <realm "usageEnv")
+         ((string= <realm "usage-env")
           (if $bpoIdBase
               (progn
                 (setq $realmPanelsBase (bx:realm:bpoId|panelsBaseGet $bpoIdBase))

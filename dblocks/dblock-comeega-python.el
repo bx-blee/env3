@@ -141,8 +141,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
             )
         (insert
          (s-lex-format "
-import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['${$moduleName}'], }
+if 'csInfo' not in globals(): import typing ; csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['loadAs'], }
 csInfo['version'] = '${$version}'
 csInfo['status']  = '${<status}'
 csInfo['panel'] = '${$moduleName}-Panel.org'
@@ -176,6 +175,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<noCmndEntry (or (plist-get <params :noCmndEntry) "examples"))
          (<extraParamsHook (or (plist-get <params :extraParamsHook) "g_paramsExtraSpecify"))
          (<importedCmndsModules (or (plist-get <params :importedCmndsModules)  "g_importedCmndsModules"))
+         (<ignoreUnknownParams (or (plist-get <params :ignoreUnknownParams)  "False"))
+         (<isSeed (or (plist-get <params :isSeed)  nil))
          )
     (bxPanel:params$effective)
 
@@ -190,6 +191,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (s-lex-format "${$frontStr} =g_csMain= (${<csInfo}, _${<noCmndEntry}_, ${<extraParamsHook}, ${<importedCmndsModules})"))))
 
     (defun outCommentPostContent ()
+      (if-unless <isSeed
         (insert
          (s-lex-format "
 
@@ -198,10 +200,25 @@ if __name__ == '__main__':
         csInfo=${<csInfo},
         noCmndEntry=${<noCmndEntry},  # specify a Cmnd name
         extraParamsHook=${<extraParamsHook},
+        ignoreUnknownParams=${<ignoreUnknownParams},  # True is for Uploaded Modules
         importedCmndsModules=${<importedCmndsModules},
     )
 "
                        )))
+      (else-when <isSeed
+        (insert
+         (s-lex-format "
+
+cs.main.g_csMain(
+        csInfo=${<csInfo},
+        noCmndEntry=${<noCmndEntry},  # specify a Cmnd name
+        extraParamsHook=${<extraParamsHook},
+        ignoreUnknownParams=${<ignoreUnknownParams},
+        importedCmndsModules=${<importedCmndsModules},
+)
+"
+                       )))
+      )
 
     (progn  ;; Actual Invocations
       (outCommentPreContent)
@@ -252,6 +269,217 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (outCommentPostContent)
       )))
 
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/uploadLoader" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/uploadLoader>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/uploadLoader :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/uploadLoader (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Upload Loader~ Setup Loader"))))
+
+    (defun outCommentPostContent ())
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csxuSeeded" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csxuSeeded>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csxuSeeded :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csxuSeeded (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Seeded CSXU~ Import plantedCsu"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+from bisos.csSeed import seedsLib
+if seedsLib.seededCsxuInfo.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', seedsLib.seededCsxuInfo.plantOfThisSeed, __file__, __name__)
+"
+                            )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csmuSeeded" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csmuSeeded>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csmuSeeded :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csmuSeeded (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Seeded CSMU~ Import plantedCsu"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+from bisos.b import cmndsSeed
+if b.cs.G.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', b.cs.G.plantOfThisSeed, __file__, __name__)\
+"
+                            )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csxuSeeded" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csxuSeeded>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csxuSeeded :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csxuSeeded (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Seeded CSXU~ Import plantedCsu"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+from bisos.csSeed import seedsLib
+if seedsLib.seededCsxuInfo.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', seedsLib.seededCsxuInfo.plantOfThisSeed, __file__, __name__)\
+"
+                            )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csmuSeeded" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csmuSeeded>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csmuSeeded :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csmuSeeded (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Seeded CSMU~ Import plantedCsu"))))
+
+    (defun outCommentPostContent ()
+      (insert (s-lex-format "
+from bisos.b import cmndsSeed
+if b.cs.G.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', b.cs.G.plantOfThisSeed, __file__, __name__)\
+"
+                            )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csuListProc" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csuListProc>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
@@ -271,6 +499,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<csuImports (or (plist-get <params :csuImports) nil))
          (<csuParams (or (plist-get <params :csuParams) nil))
          (<csmuParams (or (plist-get <params :csmuParams) nil))
+         (<csxuParams (or (plist-get <params :csxuParams) nil))
          ($csuListLength)
          )
     (bxPanel:params$effective)
@@ -292,7 +521,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
              )
       (insert
          (s-lex-format
-          "${$frontStr} =Process CSU List= with /${$csuListLength}/ in csuList pyImports=${<pyImports} csuImports=${<csuImports} csuParams=${<csuParams}"))))
+          "${$frontStr} ~Process CSU List~ with /${$csuListLength}/ in csuList pyImports=${<pyImports} csuImports=${<csuImports} csuParams=${<csuParams}"))))
 
     (defun outCommentPostContent ()
       (defun pyImportsProcEach (<each)
@@ -302,7 +531,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                ($butlast (butlast $csuAsStrList))
                ($joinedButlast (s-join "." $butlast))
                )
-          (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n"))))
+          (unless (s-equals? <each "plantedCsu")
+            (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n")))))
 
       (when <pyImports
         (insert "\n\n")
@@ -311,20 +541,31 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
         (insert "\n"))
 
       (when <csuImports
-        (insert "\ncsuList = [")
+        (insert "csuList = [")
         (loop-for-each $each b:py:cs:csuList
-          (insert (s-lex-format " \'${$each}\',")))
+          (insert (s-lex-format " \'${$each}\',"))
+          )
         (insert " ]\n")
+        (when (member "plantedCsu" b:py:cs:csuList)
+          (insert (s-lex-format "
+if b.cs.G.plantOfThisSeed is None:
+    csuList.remove('plantedCsu')
+"
+                              )))
         (insert (s-lex-format "
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
 "
-                              )))
+                              ))
+        )
 
       (when <csuParams
         (insert (s-lex-format "
 def g_extraParams():
     csParams = cs.param.CmndParamDict()"))
         (when <csmuParams
+          (insert (s-lex-format "
+    commonParamsSpecify(csParams)")))
+        (when <csxuParams
           (insert (s-lex-format "
     commonParamsSpecify(csParams)")))
         (insert (s-lex-format "
@@ -337,6 +578,102 @@ def g_extraParams():
       (outCommentPreContent)
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent))))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/csuListImportPlus" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/csuListImportPlus>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/csuListImportPlus :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/csuListImportPlus (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pyImports (or (plist-get <params :pyImports) nil))
+         (<csuImports (or (plist-get <params :csuImports) nil))
+         (<csuParams (or (plist-get <params :csuParams) nil))
+         (<csxuParams (or (plist-get <params :csxuParams) nil))
+         ($csuListLength)
+         )
+    (bxPanel:params$effective)
+
+    (progn ;; This results in sets b:py:cs:csuList
+      (blee:ppmm:mode-push major-mode)
+      (bap:org/switch-to-org-mode)
+      (blee:org:code-block/above-run)
+      (blee:ppmm:mode-pop))
+
+    (setq $csuListLength (length b:py:cs:csuList))
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Process CSU List~ with /${$csuListLength}/ in csuList pyImports=${<pyImports} csuImports=${<csuImports} csuParams=${<csuParams}"))))
+
+    (defun outCommentPostContent ()
+      (defun pyImportsProcEach (<each)
+        (let* (
+               ($csuAsStrList (s-split "\\." <each))
+               ($last (first (last $csuAsStrList)))
+               ($butlast (butlast $csuAsStrList))
+               ($joinedButlast (s-join "." $butlast))
+               )
+          (unless (s-equals? <each "plantedCsu")
+            (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n")))))
+
+      (when <pyImports
+        (insert "\n\n")
+        (loop-for-each $each b:py:cs:csuList
+          (pyImportsProcEach $each))
+        (insert "\n"))
+
+      (when <csuImports
+        (insert "csuList = [")
+        (loop-for-each $each b:py:cs:csuList
+          (insert (s-lex-format " \'${$each}\',"))
+          )
+        (insert " ]\n")
+        (when (member "plantedCsu" b:py:cs:csuList)
+          (insert (s-lex-format "
+if seedsLib.seededCsxuInfo.plantOfThisSeed is None:
+    csuList.remove('plantedCsu')
+"
+                              )))
+        (insert (s-lex-format "
+g_importedCmndsModules = cs.csuList_importedModules(csuList)
+"
+                              ))
+        )
+
+      (when <csuParams
+        (insert (s-lex-format "
+def g_extraParams():
+    csParams = cs.param.CmndParamDict()"))
+        (when <csxuParams
+          (insert (s-lex-format "
+    commonParamsSpecify(csParams)")))
+        (insert (s-lex-format "
+    cs.csuList_commonParamsSpecify(csuList, csParams)
+    cs.argsparseBasedOnCsParams(csParams)
+"
+                              ))))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
 
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:orgItem/basic" :advice ("bx:dblock:control|wrapper")
@@ -421,8 +758,6 @@ def g_extraParams():
       (outCommentPostContent))))
 
 
-
-
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:main/exposedSymbols" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:main/exposedSymbols>> ~advice=(bx:dblock:control|wrapper)~  [[elisp:(org-cycle)][| ]]
@@ -473,6 +808,51 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
           (exposedSymbolsEach $each))
         ;; (insert "\n"))
       ))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:main/outcomeReportControl" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:main/outcomeReportControl>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:main/outcomeReportControl :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:main/outcomeReportControl (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<cmnd (or (plist-get <params :cmnd) nil))
+         (<ro (or (plist-get <params :ro) nil))
+
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} ~Invokation's Outcome Reporting Control~ with /cmnd=${<cmnd}/ /ro=${<ro}/ "))))
+
+    (defun outCommentPostContent ()
+      "Placeholder -- has not been implemented yet. <cmnd and <ro are ignored below."
+      (insert (s-lex-format "
+# cs.invOutcomeReportControl(cmnd=True, ro=True)\
+"
+                            )))
 
     (progn  ;; Actual Invocations
       (outCommentPreContent)
@@ -560,6 +940,55 @@ pyLibPure
       (outCommentPreContent)
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent))))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:framework/exceptionImports" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:framework/exceptionImports>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:framework/exceptionImports :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:framework/exceptionImports (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+pyLibPure
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<comment (or (plist-get <params :comment) nil))
+         ($classification)
+         )
+    (bxPanel:params$effective)
+
+    (when (not (bound-and-true-p b:dblockControls))
+      (blee:ppmm:mode-push major-mode)
+      (bap:org/switch-to-org-mode)
+      (blee:org:code-block/bufferParams)
+      (blee:ppmm:mode-pop))
+
+    (setq $classification (get 'b:dblockControls 'py3:cs:Classification))
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement "CsFrmWrk"))
+             )
+      (insert
+         (s-lex-format
+          "${$frontStr} *Imports* =BISOS Enhanced Exceptions="))))
+
+    (defun outCommentPostContent ()
+      (insert "\nfrom bisos.b import enhancedExceptions"))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent))))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:cs:file/dblockControls" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -694,12 +1123,18 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (insert (s-lex-format "]\n"))
 
       (insert (s-lex-format "\
-        if not (curParsDictValue := currentsConfig.curParsGetAsDictValue_wOp(_parNamesList, outcome=cmndOutcome).results): return(cmndOutcome)\n"))
+        if (curParsDictValue := currentsConfig.curParsGetAsDictValue_wOp(_parNamesList, outcome=cmndOutcome).results):\n"))
 
       (loop-for-each $each <curParsList
-          (insert (s-lex-format "        cur_${$each} = curParsDictValue['${$each}']\n")))
+          (insert (s-lex-format "            cur_${$each} = curParsDictValue['${$each}']\n")))
 
       (insert (s-lex-format "\
+        else:\n"))
+
+      (loop-for-each $each <curParsList
+          (insert (s-lex-format "            cur_${$each} = \"MISSING CURs\"\n")))
+
+      (insert (s-lex-format "
         def cur_examples():
             cs.examples.execInsert(execLine='bx-currents.cs')
             cs.examples.execInsert(execLine='bx-currents.cs -i usgCursParsGet')
@@ -992,6 +1427,92 @@ with open(__file__) as f:
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun  :defName "org-dblock-write:b:py3:cs:seed/withWhich" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:cs:seed/withWhich>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:cs:seed/withWhich :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:cs:seed/withWhich (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] :plantingModel \"internal\" :outLevel 1
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<derived (or (plist-get <params :derived) ""))
+         (<seedName (or (plist-get <params :seedName) ""))
+         (<plantingModel (or (plist-get <params :plantingModel) "external"))
+         )
+
+    (when (s-equals? <plantingModel "external")
+      (setq <outLevel 2))
+
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement (s-lex-format "seedName = ~${<seedName}~")))
+             ($backStr (b:dblock:comeega|eolControls))
+             )
+             (insert (s-lex-format "${$frontStr} <<${<seedName}>> "))
+
+             (insert (s-lex-format " ${$backStr}"))
+             ))
+
+    (defun outCommentPostContent ()
+      (cond
+       ((s-equals? <plantingModel "internal")
+        (insert (s-lex-format "
+import shutil
+import os
+import sys
+
+seedName = '${<seedName}'
+seedPath = shutil.which(seedName)
+if seedPath is None:
+    print(f'sys.exit() --- which found nothing for {seedName} --- Aborting')
+    sys.exit()
+
+__file__ = os.path.abspath(seedPath)
+with open(__file__) as f:
+    exec(compile(f.read(), __file__, 'exec'))
+"
+                              )))
+       ((s-equals? <plantingModel "external")
+        (insert (s-lex-format "
+    import shutil
+    import os
+    import sys
+
+    seedName = '${<seedName}'
+    seedPath = shutil.which(seedName)
+    if seedPath is None:
+        print(f'sys.exit() --- which found nothing for {seedName} --- Aborting')
+        sys.exit()
+
+    __file__ = os.path.abspath(seedPath)
+    with open(__file__) as f:
+        code = compile(f.read(), __file__, 'exec')
+        exec(code, globals())
+"
+                              )))
+       (t
+        (error (s-lex-format "Bad Usage -- plantingModel=${<plantingModel}")))
+       ))
+
+
+   (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun  :defName "org-dblock-write:b:py3:cs/reRunAsRoot" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -1390,8 +1911,10 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
          (<style (letGet$style "openBlank" "closeBlank"))
          (<className (or (plist-get <params :className) ""))
          (<classType (or (plist-get <params :classType) ""))
-         (<comment (or (plist-get <params :comment) ""))
          (<superClass (or (plist-get <params :superClass) ""))
+         (<decorate (or (plist-get <params :deco) ""))
+         (<comment (or (plist-get <params :comment) ""))
+
          )
     (bxPanel:params$effective)
 
@@ -1420,8 +1943,13 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
 
     (defun outCommentPostContent ()
       ""
-      (insert
-       (format "\nclass %s(%s):" <className <superClass))
+      (if-when (string= <decorate "")
+        (insert
+         (format "\nclass %s(%s):" <className <superClass)))
+      (if-unless (string= <decorate "")
+        (insert (s-lex-format
+                "\n${<decorate}\nclass ${<className}(${<superClass}):"
+                )))
       )
 
     (progn  ;; Actual Invocations
@@ -1429,6 +1957,129 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:class/singleton" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:class/singleton>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:class/singleton :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:class/singleton (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 2)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement
+                         (s-lex-format "Singleton Class Enforcer") :orgDepth <outLevel))
+             ($eolStr (b:dblock:comeega|eolControls))
+             )
+      (insert
+         (s-lex-format "${$frontStr} "))
+      (if (not (string= <comment ""))
+          (insert (s-lex-format " =${<comment}=")))
+
+      (insert (s-lex-format " ${$eolStr}"))
+      ))
+
+    (defun outCommentPostContent ()
+      ""
+      (insert (s-lex-format "
+    _instance = None
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance\
+ "
+        )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:func/processArgsAndStdinResults" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:func/processArgsAndStdinResults>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:func/processArgsAndStdinResults :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:func/processArgsAndStdinResults (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($frontStr (b:dblock:comeega|frontElement
+                         (s-lex-format "processArgsAndStdin") :orgDepth <outLevel))
+             ($eolStr (b:dblock:comeega|eolControls))
+             )
+     (insert
+      (s-lex-format "${$frontStr} "))
+
+      (if (not (string= <comment ""))
+          (insert (s-lex-format " =${<comment}=")))
+
+      (insert (s-lex-format " ${$eolStr}"))
+      ))
+
+    (defun outCommentPostContent ()
+      ""
+      (insert
+       (s-lex-format "
+        results = []
+
+        if not pyStdinArgs:
+            pyStdinArgs = b_io.stdin.readAsList()
+
+        def processArgsAndStdin():
+            cliArgs = self.cmndArgsGet(\"0&9999\", cmndArgsSpecDict, argsList)
+            effectiveArgs = cliArgs + pyStdinArgs
+            if len(effectiveArgs) == 0:
+                b_io.eh.critical_usageError(
+                   \"Missing Input: One of cliArgs, stdin or pyArgs; should be .\"
+                )
+            for each in effectiveArgs:
+                result = processEachArg(each)
+                results.append(result)
+
+        processArgsAndStdin()"
+      )))
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:func/processArgsAndStdin" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
@@ -1565,12 +2216,57 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (outCommentPostContent)
       )))
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/scripts" :advice ("bx:dblock:control|wrapper")
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/dataFiles" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/scripts>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/dataFiles>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:py3:pypi/scripts :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:py3:pypi/scripts (<params)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/dataFiles :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/dataFiles (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<license (or (plist-get <params :license) "lh-agpl3-LICENSE.txt"))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (insert (s-lex-format "\ndata_files = [ \n"))
+      ;;; Current module ' ' fails on Windows. We now use ''
+      (insert (s-lex-format "('',  ["))
+      (unless (string= <license "")
+        (insert (s-lex-format "'${<license}', ")))
+      (insert (s-lex-format "'_description.org', 'README.rst']),\n"))
+      (insert (s-lex-format "]"))
+      )
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
+(defalias 'org-dblock-write:b:py3:pypi/scripts 'org-dblock-write:b:py3:pypi:setup/scripts)
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/scripts" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/scripts>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/scripts :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/scripts (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
@@ -1604,12 +2300,14 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       )))
 
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/requires" :advice ("bx:dblock:control|wrapper")
+(defalias 'org-dblock-write:b:py3:pypi/requires 'org-dblock-write:b:py3:pypi:setup/requires)
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/requires" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/requires>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/requires>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:py3:pypi/requires :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:py3:pypi/requires (<params)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/requires :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/requires (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
@@ -1635,9 +2333,11 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (if-unless <requirements
         (insert (s-lex-format "\nrequires = [ \n"))
         (insert (shell-command-to-string
-                 "pypiProc.sh -i namespaceRequires"))
+                 "pypiProc.sh -i namespaceRequires 2> /dev/null"))
         (loop-for-each $each <extras
           (insert (s-lex-format "\"${$each}\",\n")))
+        (insert (s-lex-format "\"setuptools==75.8.0\",\n"))
+        (insert (s-lex-format "\"wheel==0.38.4\",\n"))
         (insert (s-lex-format "]"))
         )
       (else-when <requirements
@@ -1647,11 +2347,13 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                )
           ;; readin the file and process it.
           (setq $linesList (s-split "\n" (f-read <requirements) t))
-          (insert (s-lex-format "\nrequires = [ \n"))
+          (insert (s-lex-format "\nrequires = [\n"))
           (dolist ($eachLine $linesList)
             (setq $item (nth 0 (s-split "=" $eachLine)))
             (insert (s-lex-format "'${$item}',\n"))
             )
+          (insert (s-lex-format "\"setuptools==75.8.0\",\n"))
+          (insert (s-lex-format "\"wheel==0.38.4\",\n"))
           (insert (s-lex-format "]"))
           )))
 
@@ -1662,12 +2364,234 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       )))
 
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/nextVersion" :advice ("bx:dblock:control|wrapper")
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/pkgName" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/nextVersion>> ~advice=(bx:dblock:control|wrapper)~ --   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/pkgName>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:py3:pypi/nextVersion :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:py3:pypi/nextVersion (<params)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/pkgName :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/pkgName (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pkgName (or (plist-get <params :pkgName) nil))
+         (<pkgNameSpace (or (plist-get <params :pkgNameSpace) nil))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($pkgNameSpace "bisos")
+             )
+
+       (when <pkgNameSpace
+         (setq $pkgNameSpace <pkgNameSpace))
+
+       (if-when <pkgName
+         (insert (s-lex-format "
+import setuptools
+import re
+
+def pkgName():
+        return '${$pkgNameSpace}.${<pkgName}'
+"
+                               ))
+         )
+
+       (if-unless <pkgName
+         (insert (s-lex-format "
+import setuptools
+import re
+import inspect
+import pathlib
+
+def pkgName():
+    ''' From this eg., filepath=.../bisos-pip/PkgName/py3/setup.py, extract PkgName. '''
+    filename = inspect.getframeinfo(inspect.currentframe()).filename
+    grandMother = pathlib.Path(filename).resolve().parent.parent.name
+    return f'${$pkgNameSpace}.{grandMother}'
+"
+                               ))
+         )
+
+       (insert (s-lex-format "
+def description():
+    ''' Extract title from ./_description.org which is expected to have a #+title: line. '''
+    try:
+        with open('./_description.org') as file:
+            while line := file.readline():
+                if match := re.search(r'^#\\+title: (.*)',  line.rstrip()):
+                    return match.group(1)
+            return 'MISSING TITLE in ./_description.org'
+    except IOError:
+        return  'ERROR: Could not read ./_description.org file.'
+
+def longDescription():
+    ''' Read README.rst as a string. '''
+    fileName = './README.rst'
+    try:
+        with open(fileName) as file:
+           result = file.read()
+        return result
+    except IOError:
+        return  f'ERROR: Could not read {fileName} file.'
+"
+                             ))
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/projectToml" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/projectToml>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/projectToml :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/projectToml (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<setuptoolsVer (or (plist-get <params :setuptoolsVer) nil))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($setuptoolsVer "NA")
+             )
+
+        (if-when <setuptoolsVer
+          (setq $setuptoolsVer <setuptoolsVer))
+        (else-unless <setuptoolsVer
+          (setq $setuptoolsVer "75.8.0"))
+
+        (insert (s-lex-format "
+[build-system]
+requires = [\"setuptools==${$setuptoolsVer}\"]
+build-backend = \"setuptools.build_meta\"
+"
+                                ))
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/version" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/version>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/version :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/version (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<forLocal (or (plist-get <params :forLocal) nil))
+         (<forPypi (or (plist-get <params :forPypi) nil))
+         (<constant (or (plist-get <params :constant) nil))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($resultVersion)
+             ($forLocalVersion)
+             ($forPypiVersion)
+             ($existedComment)
+             ($constant "NA")
+             )
+
+        (setq $forLocalVersion (string-trim (shell-command-to-string (s-lex-format
+              "pypiProc.sh -i verForSetup forLocal 2> /dev/null"))))
+
+        (setq $forPypiVersion (string-trim (shell-command-to-string (s-lex-format
+              "pypiProc.sh -i verForSetup forPypi 2> /dev/null"))))
+
+        (cond
+         (<constant
+          (setq $resultVersion <constant)
+          (setq $constant <constant))
+
+         (<forLocal
+          (setq $resultVersion $forLocalVersion))
+
+         (<forPypi
+          (setq $resultVersion $forPypiVersion))
+
+         (t
+          (setq $resultVersion (string-trim (shell-command-to-string (s-lex-format
+              "pypiProc.sh -i verForSetup 2> /dev/null")))))
+         )
+
+        (if (f-exists? "./pypiUploadVer")
+            (setq $existedComment "./pypiUploadVer EXISTED")
+          (setq $existedComment "./pypiUploadVer DID NOT exist")
+          )
+
+        (insert (s-lex-format "
+# ${$existedComment} -- forPypiVersion=${$forPypiVersion} -- forLocalVersion=${$forLocalVersion} -- constant=${$constant}
+def pkgVersion():
+        return '${$resultVersion}'
+"
+                                ))
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/nextVersionObsoleted" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/nextVersionObsoleted>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:py3:pypi/nextVersionObsoleted :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi/nextVersionObsoleted (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
@@ -1730,13 +2654,98 @@ def pkgVersion():
       (outCommentPostContent)
       )))
 
+(defalias 'org-dblock-write:b:py3:pypi/setupFuncArgs 'org-dblock-write:b:py3:pypi:setup/funcArgs)
 
-;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi/setupFuncArgs" :advice ("bx:dblock:control|wrapper")
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:py3:pypi:setup/funcArgs" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi/setupFuncArgs>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:py3:pypi:setup/funcArgs>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
-(advice-add 'org-dblock-write:b:py3:pypi/setupFuncArgs :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:b:py3:pypi/setupFuncArgs (<params)
+(advice-add 'org-dblock-write:b:py3:pypi:setup/funcArgs :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:py3:pypi:setup/funcArgs (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pkgName (or (plist-get <params :pkgName) "--auto--"))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($pkgName (string-trim (shell-command-to-string (s-lex-format
+                "./setup.py --name 2> /dev/null"
+                ))))
+             ($pkgNameString (s-lex-format "'${$pkgName}'"))
+             )
+      (if-when (string= <pkgName "--auto--")
+        (if-when (f-exists? "./pypiUploadVer")
+          (setq $pkgNameQuoted (s-lex-format "'${$pkgName}'"))          
+          )
+        (else-unless (f-exists? "./pypiUploadVer")
+          (setq $pkgNameQuoted (s-lex-format "pkgName()"))          
+          )
+        )   
+      (else-unless (string= <pkgName "--auto--")
+        (unless (string= <pkgName "")
+          (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))))
+      (insert (s-lex-format "
+setuptools.setup(
+    name=${$pkgNameQuoted},  # ${$pkgNameString}
+    version=pkgVersion(),
+    packages=setuptools.find_packages(),
+    scripts=scripts,
+    data_files=data_files,
+    include_package_data=True,
+    zip_safe=False,
+    author='Mohsen Banan',
+    author_email='libre@mohsen.1.banan.byname.net',
+    maintainer='Mohsen Banan',
+    maintainer_email='libre@mohsen.1.banan.byname.net',
+    license='AGPL',
+    description=description(),
+    long_description=longDescription(),
+    install_requires=requires,
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: GNU Affero General Public License v3',
+        'Operating System :: POSIX',
+        'Programming Language :: Python',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        ]
+    )
+"
+        ;;;   url='http://www.by-star.net/PLPC/180047',
+        ;;;   download_url='http://www.by-star.net/PLPC/180047',
+                              ))
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:org:pypi:readme/pkgDocumentation" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:org:pypi:readme/pkgDocumentation>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:org:pypi:readme/pkgDocumentation :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:org:pypi:readme/pkgDocumentation (<params)
 ;;;#+END:
    " #+begin_org
 ** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
@@ -1768,38 +2777,23 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
         (setq $pkgNameQuoted "pkgName()"))
       (else-unless (string= <pkgName "--auto--")
         (unless (string= <pkgName "")
-          (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))))
-      (insert (s-lex-format "
-setuptools.setup(
-    name=${$pkgNameQuoted},
-    version=pkgVersion(),
-    packages=setuptools.find_packages(),
-    scripts=scripts,
-    #data_files=data_files,
-    include_package_data=True,
-    zip_safe=False,
-    author='Mohsen Banan',
-    author_email='libre@mohsen.1.banan.byname.net',
-    maintainer='Mohsen Banan',
-    maintainer_email='libre@mohsen.1.banan.byname.net',
-    url='http://www.by-star.net/PLPC/180047',
-    license='AGPL',
-    description=description(),
-    long_description=longDescription(),
-    download_url='http://www.by-star.net/PLPC/180047',
-    install_requires=requires,
-    classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU Affero General Public License v3',
-        'Operating System :: POSIX',
-        'Programming Language :: Python',
-        'Topic :: Software Development :: Libraries',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-        ]
-    )
+          (setq $pkgName <pkgName)
+          (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))
+          )
+        )
+      (if-when (string= (file-name-nondirectory (buffer-file-name)) "README.org")
+        (insert (s-lex-format "
+# PYPI Documentation Comes Here in _description.org")))
+
+      (if-unless (string= (file-name-nondirectory (buffer-file-name)) "README.org")
+        (insert (s-lex-format "
+* Package Documentation At Github
+
+The information below is a subset of the full of documentation for this bisos-pip package.
+More complete documentation is available at: https://github.com/bisos-pip/${$pkgName}
 "
-                              ))
+                              )))
+
         ))
 
     (progn  ;; Actual Invocations
@@ -1807,6 +2801,76 @@ setuptools.setup(
       ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:org:pypi:readme/topControls" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:org:pypi:readme/topControls>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:org:pypi:readme/topControls :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:org:pypi:readme/topControls (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 3)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         (<pkgName (or (plist-get <params :pkgName) ""))
+         (<comment (or (plist-get <params :comment) ""))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () "default controls" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ())
+
+    (defun outCommentPostContent ()
+      ""
+      (let* (
+             ($pkgName (string-trim (shell-command-to-string (s-lex-format
+                "./setup.py --name 2> /dev/null"
+                ))))
+             ($pkgNameQuoted (s-lex-format "'${$pkgName}'"))
+             ($thisDir (file-name-directory (buffer-file-name)))
+             ($fullPath)
+             )
+      (if-when (string= <pkgName "--auto--")
+        (setq $pkgNameQuoted "pkgName()"))
+      (else-unless (string= <pkgName "--auto--")
+        (unless (string= <pkgName "")
+          (setq $pkgName <pkgName)
+          (setq $pkgNameQuoted (s-lex-format "'${<pkgName}'"))
+          )
+        )
+      (setq $fullPath (s-lex-format "${$thisDir}py3/panels/bisos.${$pkgName}/_nodeBase_/fullUsagePanel-en.org"))
+      (if-when (string= (file-name-nondirectory (buffer-file-name)) "README.org")
+        (insert (s-lex-format "
+|----------------------+------------------------------------------------------------------|
+| ~Blee Panel Controls~: | [[elisp:(show-all)][Show-All]] : [[elisp:(org-shifttab)][Overview]] : [[elisp:(progn (org-shifttab) (org-content))][Content]] : [[elisp:(delete-other-windows)][(1)]] : [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]] : [[elisp:(save-buffer)][Save]]  : [[elisp:(kill-buffer)][Quit]]  : [[elisp:(bury-buffer)][Bury]] |
+| ~Panel Links~:         | [[file:./py3/panels/bisos.${$pkgName}/_nodeBase_/fullUsagePanel-en.org][Repo Blee Panel]] --  [[file:${$fullPath}][Blee Panel]]                                                |
+| ~See Also~:            | [[https://pypi.org/project/bisos.${$pkgName}][At PYPI]] : [[https://github.com/bisos-pip/pycs][bisos.PyCS]]                                             |
+|----------------------+------------------------------------------------------------------|
+"
+                              )))
+
+      (if-unless (string= (file-name-nondirectory (buffer-file-name)) "README.org")
+        (insert (s-lex-format "
+# TopControls don't apply to pypi.org documentation.
+"
+                              )))
+
+        ))
+
+    (progn  ;; Actual Invocations
+      ;; (outCommentPreContent)
+      ;; (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
 
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil

@@ -408,18 +408,37 @@ closeBlank -- Nothing at all
 (defun org-dblock-update-buffer-bx ()
   "Previously was done with switching to org-mode"
   (interactive)
-  (when (equal major-mode 'org-mode)
-    (org-dblock-update 1)
-    (show-all)
-    )
-  (unless (equal major-mode 'org-mode)
-    ;;(call-interactively 'blee:buf:re-major-mode)
-    (blee:buf:re-major-mode)  
-    ;;(org-mode)
-    (org-update-all-dblocks-bx)
-    (show-all)
-    )
+    (let (
+          ($enable-local-variables enable-local-variables)
+          ($enable-local-eval enable-local-eval)
+          )
+      (setq enable-local-variables :safe)
+      (setq enable-local-eval t)
+      (message (s-lex-format "DEBUG ZZZ enable-local-variables=${enable-local-variables} enable-local-eval=${enable-local-eval}"))
+      (when (equal major-mode 'org-mode)
+        (org-dblock-update 1)
+        (show-all)
+        )
+      (unless (equal major-mode 'org-mode)
+        ;; (lsp-mode -1)  ;; 2025 Needs Testing
+        ;; (call-interactively 'blee:buf:re-major-mode)
+        (blee:buf:re-major-mode)
+        (org-update-all-dblocks-bx)
+        (show-all)
+        )
+      (setq enable-local-variables $enable-local-variables)
+      (setq enable-local-eval $enable-local-eval)
+      )
   )
+
+(defun org-dblock-update-re-major-mode ()
+  ""
+  (interactive)
+  (org-dblock-mode-comment-regexp-bx)
+  (org-dblock-update)
+  (show-all)
+  )
+
 
 (defun blee:buf:re-major-mode ()
   "Previously was done with switching to org-mode"
@@ -572,8 +591,8 @@ Relevant defvar-local definitions are made in blee-org-panel.el
 	 (message (format "Set to: %s -  ####+BEGIN..." major-mode))
 	 )
 	(t
-	 (setq org-dblock-start-re "^.*####\\+BEGIN:[ 	]+\\(\\S-+\\)\\([ 	]+\\(.*\\)\\)?")
-	 (setq org-dblock-end-re "^.*####\\+END\\([: 	
+	 (setq org-dblock-start-re "^.*#\\+BEGIN:[ 	]+\\(\\S-+\\)\\([ 	]+\\(.*\\)\\)?")
+	 (setq org-dblock-end-re "^.*#\\+END\\([:
 \n]\\|$\\)")
 	 (message (format "major-mode: %s - dblock re unchanged" major-mode))
 	 ))
@@ -674,11 +693,11 @@ Relevant defvar-local definitions are made in blee-org-panel.el
   (add-hook 'org-mode-hook
 	    '(lambda ()
 	       (setq org-dblock-start-re 
-		     "^.*####\\+BEGIN:[ 	]+\\(\\S-+\\)\\([ 	]+\\(.*\\)\\)?")
+		     "^.*#\\+BEGIN:[ 	]+\\(\\S-+\\)\\([ 	]+\\(.*\\)\\)?")
 	       (setq org-dblock-end-re 
-		     "^.*####\\+END\\([: 	
+		     "^.*#\\+END\\([:
 \n]\\|$\\)")
-	       (message (format "Set to: %s -  ####+BEGIN..." major-mode))
+	       (message (format "Set to: %s - NOT4  ####+BEGIN -- %s" major-mode org-dblock-start-re))
 	       ))
   (add-hook 'org-msg-edit-mode-hook
 	    '(lambda ()

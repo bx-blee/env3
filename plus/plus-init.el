@@ -66,6 +66,7 @@ and side-effects are documented here
    (require 'bcpg:orgPlus)
    (bcpg:orgPlus|fullUpdate)
 
+   ;;; MB 20250831
    (require 'bcpg:magitPlus)
    (bcpg:magitPlus|fullUpdate)
 
@@ -81,11 +82,38 @@ and side-effects are documented here
    (require 'bcpg:calendarPlus)
    (bcpg:calendarPlus|fullUpdate)
 
+   (require 'bcpg:lspPlus)
+   (bcpg:lspPlus|fullUpdate)
+
    (require 'bcpg:gpgPlus)
    (bcpg:gpgPlus|fullUpdate)
 
-   ;; (require 'bcpg:subedPlus)
-   ;; (bcpg:subedPlus|fullUpdate)
+   ;;; (require 'bcpg:subedPlus)
+   ;;; (bcpg:subedPlus|fullUpdate)
+
+   (require 'bcpg:aidermacsPlus)
+   (bcpg:aidermacsPlus|fullUpdate)
+
+   (require 'bcpg:gptelPlus)
+   (bcpg:gptelPlus|fullUpdate)
+
+   (require 'bnpa:aiplus)
+   (b:npa:aiplus|fullUpdate)
+
+   (require 'bcpg:copilotPlus)
+   (bcpg:copilotPlus|fullUpdate)
+
+   (require 'bcpg:rgPlus)
+   (bcpg:rgPlus|fullUpdate)
+
+   (require 'bcpg:consultPlus)
+   (bcpg:consultPlus|fullUpdate)
+
+   (require 'bcpg:bashPlus)
+   (bcpg:bashPlus|fullUpdate)
+
+   (require 'bnpa:open-in)
+   (b:npa:open-in|fullUpdate)
 
    )
 

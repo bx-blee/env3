@@ -83,12 +83,11 @@
   (define-key global-map [(f3) (c) (o) ] 'bystar:mail:compose:from-office)
   (define-key global-map [(f3) (c) (d) ] 'bystar:mail:compose:from-desk)
   (define-key global-map [(f3) (c) (f) ] 'bystar:mail:compose:from-friend)
-  (define-key global-map [(f3) (c) (c) ] 'bystar:mail:compose:panel)
+  (define-key global-map [(f3) (c) (c) ] 'b:mtdt:mailings/framedComposeWithSelected)
+  (define-key global-map [(f3) (c) (p) ] 'bystar:mail:compose:panel)
 
   (define-key global-map [(f3) (s)] nil)
-  (define-key global-map [(f3) (s) (s) ] 'b:mtdt:compose/popupMenu)
-
-  (defun b:mtdt:compose/popupMenu () (interactive) (popup-menu (symbol-value (b:mtdt:menu:define|derivedMailingInvoke))))
+  (define-key global-map [(f3) (s) (s) ] 'b:mtdt:menu:mailing:popup/derivedMailingInvoke)
 
   ;;;
   ;;; Compose Email In Alt Language
@@ -105,6 +104,10 @@
   (define-key global-map [(f3) (\?)  ] 'bystar:mail:send:menu:global-kbd-help)
   (define-key global-map [(f3) (H)  ] 'bystar:mail:send:menu:global-kbd-help)
   )
+
+;;; (b:mtdt:mailings|framedComposeWithFns b:mtdt:mailings:selected)
+;;; (b:mtdt:mailings|framedComposeWithFns b:mtdt:mailings:selected)
+;;; NOTYET (b:mtdt:mailings|framedExtComposeWithFns b:mtdt:mailings:selected)
 
 
 ;; (bystar:mail:send:menu:global-kbd-help)

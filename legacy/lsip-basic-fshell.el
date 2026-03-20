@@ -495,19 +495,18 @@ If no dot, return nil."
 	  (progn
 	    (message "Creating buffer `*LSIP* %s'..." host)
 	    (sit-for 1)
-	    ;; fshell was: (setq base-buffer (shell t)) ; create new shell
-            (setq base-buffer (shell base-buffer-name))
+	    (setq base-buffer (shell t)) ; create new shell
 	    (sleep-for 3)		; give time for the shell process to start...
-	    ;; (rename-buffer base-buffer-name)
+	    (rename-buffer base-buffer-name)
 	    (lsip-setup-host-buffer (current-buffer))
 	    (message "Base buffer \"%s\" created for host %s." (buffer-name (current-buffer)) host)
 	    (current-buffer)
 	    ))
       ;; if new-buffer-p, create a new one, else return the base buffer
       (cond (new-buffer-p
-	     ;; (shell t)
-	     ;; (sleep-for 3)
-	     (shell (generate-new-buffer-name (format "%s [%s]" base-buffer-name
+	     (shell t)
+	     (sleep-for 3)
+	     (rename-buffer (generate-new-buffer-name (format "%s [%s]" base-buffer-name
 							      new-buffer-name-suffix)))
 	     (lsip-setup-host-buffer (current-buffer))
 	     (message "New buffer \"%s\" created for host %s." (buffer-name (current-buffer)) host)
@@ -525,10 +524,9 @@ If no dot, return nil."
 	  (progn
 	    (message "Creating buffer `*LSIP* %s'..." host)
 	    (sit-for 1)
-	    ;; fshell was: (setq base-buffer (shell t)) ; create new shell
-            (setq base-buffer (shell base-buffer-name))
+	    (setq base-buffer (shell t)) ; create new shell
 	    (sleep-for 3)		; give time for the shell process to start...
-	    ;; (rename-buffer base-buffer-name)
+	    (rename-buffer base-buffer-name)
 	    ;; modify command to use rsh if not on local host or if switching user is specified
 	    (if (not (or (string-equal (lsip-fqdn-host host) (lsip-fqdn-host (system-name)))
 			     (string-equal (lsip-fqdn-host host) "localhost")))

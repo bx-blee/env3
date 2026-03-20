@@ -879,19 +879,29 @@ Sections are specified as :outLevel 1,n
                                )))
         )
       (cond
+       ((string= @panelType "privPanel")
+        (insert (s-lex-format "
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _  ${@panelType}--${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+"
+               )))
+       ((s-contains? "/realmPanels/" (buffer-file-name))
+        (insert (s-lex-format "
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   realPanels--${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+"
+               )))
        ((s-starts-with? "/bisos/" (buffer-file-name))
         (insert (s-lex-format "
-${$star}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _   ${@title}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
+${$star}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _   bisos--${@title}   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
 "
                )))
        ((s-starts-with? "/bxo/" (buffer-file-name))
         (insert (s-lex-format "
-${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   ${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   bxo--${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
 "
                )))
        (t
         (insert (s-lex-format "
-${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   Unknown${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
+${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http://www.freeprotocols.org]]_ _   Unknown--${@title}   [[img-link:file:/bisos/blee/env/images/privateBlackLock-50.png][http://www.by-star.net]]
 "
                )))
         )
@@ -2098,9 +2108,15 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
       (insert
        (format
         "%s \
- [[elisp:(org-cycle)][|#Control|]] :: [[elisp:(blee:bnsm:menu-back)][Back]] [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]] [[elisp:(save-buffer)][Save]] [[elisp:(kill-buffer)][Quit]] [[elisp:(bury-buffer)][Bury]]  [[elisp:(magit)][Magit]]  [[elisp:(org-cycle)][| ]]
+ [[elisp:(org-cycle)][|#Control|]] :: [[elisp:(blee:bnsm:menu-back)][Back]] [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]] [[elisp:(save-buffer)][Save]] [[elisp:(kill-buffer)][Quit]] [[elisp:(bury-buffer)][Bury]] [[elisp:(magit)][Magit]] [[elisp:(call-interactively 'b:rg:panels/all)][rg:panels/all]]  [[elisp:(org-cycle)][| ]]
 "
         "*"
+        ))
+      (insert
+       (s-lex-format
+        "** \
+ RipGrep:: [[elisp:(rg-menu)][rg-menu]] ||
+"
         ))
       (insert
        (format
@@ -2244,7 +2260,7 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
   (let (
         (@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
         (@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-        (@style (or (plist-get @params :style) "closeBlank")) ;; souroundings style
+        (@style (or (plist-get @params :style) "openCloseBlank")) ;; souroundings style
         (@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
         ;;
         (@panelsList (or (plist-get @params :panelType) "bxPanel"))
@@ -2263,11 +2279,12 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
       )
 
     (defun bodyContent ()
+      (when (string= @panelsList "bxPanel")
       (insert
        (format
         "%s    [[elisp:(org-cycle)][| *= Org-Mode Local Params: =* | ]]\n"
         (blee:panel:frontControl @outLevel :inDblock "yes")
-        ))
+        )))
 
       (insert
        (format "\
@@ -2320,11 +2337,13 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
   (let (
         (@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
         (@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-        (@style (or (plist-get @params :style) "closeBlank")) ;; souroundings style
+        (@style (or (plist-get @params :style) "openCloseBlank")) ;; souroundings style
         (@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
         ;;
         (@primMode (or (plist-get @params :primMode) (symbol-name major-mode)))
-        (@latexMasters (or (plist-get @params :latexMasters) nil))      
+        (@latexMasters (or (plist-get @params :latexMasters) nil))
+        ;;
+        (@panelsList (or (plist-get @params :panelType) "bxPanel"))
         ;;
         ($commentStartStr)
         ($primModeSymb)
@@ -2340,11 +2359,12 @@ ${$star}   [[img-link:file:/bisos/blee/env/images/privateRedHand-50.jpeg][http:/
       )
 
     (defun bodyContent ()
+      (when (string= @panelsList "bxPanel")
       (insert
        (format
         "%s    [[elisp:(org-cycle)][| *= Emacs Local Params: =* | ]]\n"
         (blee:panel:frontControl @outLevel :inDblock "yes")
-        ))
+        )))
 
       (setq $primModeSymb (intern @primMode))
 
@@ -2534,7 +2554,7 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
              )
         (bx:dblock:global:moded:insert-begin major-mode :outLevel <outLevel)
         (insert (s-lex-format
-                 "${$frontStr} *Disabled Function: ${<name}* ${$eolStr}\n"))
+                 "${$frontStr} *${<name}* ${$eolStr}"))
         (bx:dblock:global:moded:insert-end major-mode :outLevel <outLevel)
         ))
 

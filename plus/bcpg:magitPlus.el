@@ -99,7 +99,16 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 " orgCmntEnd)
  (b:pkg:straight|install 'magit)
 ;;;#+END:
-   )
+
+;;;#+BEGIN:  b:elisp:pkg/install :outLevel 2 :pkgsType "component" :pkgName "git-timemachine" :pkgDesc ""
+(orgCmntBegin "
+  =component= ~git-timemachine~ **
+" orgCmntEnd)
+ (b:pkg:straight|install 'git-timemachine)
+;;;#+END:
+
+ ) ;;; bcpg:magitPlus:install|update
+
 
 ;;;#+BEGIN: b:elisp:pkg:config/main :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "magitPlus"
 (orgCmntBegin "
