@@ -366,6 +366,64 @@ Expects certain file-local variables to have been set
        (outCommentPostContent)
        )))
 
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/origPageMarker" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/origPageMarker>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/origPageMarker :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/origPageMarker (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<pageName (or (plist-get <params :pageName) ""))
+          (<pageNumber (or (plist-get <params :pageNumber) ""))
+          (<imagePdf (or (plist-get <params :image-pdf) ""))
+          (<imagePage (or (plist-get <params :image-page) ""))                    
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "~OrigPage~ "))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  )
+             (insert (s-lex-format
+   "${$frontStr} *${<pageName} ${<pageNumber} ${<imagePdf} ${<imagePage}* ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (let* (
+              ($cmntStr (b:major-mode:comment|lineStr))
+              )
+       
+         
+         (insert "\n")
+         (insert (s-lex-format "
+\\noindent\\colorbox[rgb]{0.96,0.96,0.86}{\\parbox{\\dimexpr\\linewidth-2\\fboxsep\\relax}{Original Image Page: ${<pageName} ${<pageNumber} ---
+\\hyperref[img:${<imagePdf}:page_${<imagePage}]{Page~\\pageref{img:${<imagePdf}:page_${<imagePage}}}
+ --- Online \\url{github.com:/ethymologyOfBlowback/pageNu}}}"
+                               ))
+         (insert "\n")
+         ))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "LaTeX Common File Elements" :extraInfo "b:lcnt:"
 (orgCmntBegin "
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _LaTeX Common File Elements_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
