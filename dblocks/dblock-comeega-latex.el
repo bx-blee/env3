@@ -943,13 +943,23 @@ excludecomment{whenOrg}
 ** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
 Expects certain file-local variables to have been set
 #+end_org "
+   (bx:lcnt:info:base-read)      
    (let* (
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
           (<comment (or (plist-get <params :comment) ""))
+          (<subject (or (plist-get <params :subject) ""))
+          (<keywords (or (plist-get <params :keywords) ""))
+          (<author (or (plist-get <params :author) ""))
+          ($lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+          ($lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+          ($lcnt-author1 (get 'bx:lcnt:info:base 'author1))          
           )
      (bxPanel:params$effective)
+
+     (when (not (string-equal <author ""))
+       (setq $lcnt-author1 <author))
 
      (defun helpLine () "default controls" )
      (defun outCommentPreContent ())
@@ -960,16 +970,16 @@ Expects certain file-local variables to have been set
                   ($eolStr (b:dblock:comeega|eolControls))
                   )
              (insert (s-lex-format
-                      "${$frontStr} ~PDF Meta Data --- NOTYET, incomplete~ -- ${<comment} ${$eolStr}\n"))
+                      "${$frontStr} ~PDF MetaData~ ${$lcnt-author1} ${$lcnt-shortTitle} -- ${<comment} ${$eolStr}\n"))
              ))
 
      (defun outCommentPostContent ()
        (insert (s-lex-format "
 \\AfterPreamble{\\hypersetup{
-  pdfauthor={Mohsen Banan},
-  pdftitle={Nature of Polyexistentials},
-  pdfsubject={Intellectual Property},
-  pdfkeywords={IP},
+  pdfauthor={${$lcnt-author1}},
+  pdftitle={${$lcnt-shortTitle}},
+  pdfsubject={${<subject}},
+  pdfkeywords={${<keywords}},
   pdfproducer={lcnt},
   pdfcreator={lcntpdf}
 }}")))
