@@ -651,7 +651,7 @@ Expects certain file-local variables to have been set
                           "${$frontStr} ${$whenCondMsg} ~Include File~  file:${<includeFile}"))
                (insert (s-lex-format
                         "${$frontStr} ${$whenCondMsg} _MISSING_ ~Include File~  file:${<includeFile}")))
-             (insert (s-lex-format " ${$eolStr}\n"))))
+             (insert (s-lex-format " {$eolStr}\n"))))
 
      (defun outCommentPostContent ()
        (if (file-exists-p <includeFile)

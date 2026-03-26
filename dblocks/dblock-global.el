@@ -911,7 +911,7 @@ surround is for panel decoration."
 
 (defun bx:latex:insert-end-comment ()
   ""
-  (insert "\
+  (insert "
 \\end{whenOrg}"
           )
   )

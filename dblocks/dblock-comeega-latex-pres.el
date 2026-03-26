@@ -1058,6 +1058,103 @@ and side-effects are documented here
     ))
 
 
+
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "dblock Create a Title Page" :extraInfo "b:lcnt:"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _dblock Create a Title Page_: |]]  b:lcnt:  [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+;;;#+END:
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:pres:title/lcntInfo" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:pres:title/lcntInfo>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:pres:title/lcntInfo :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:pres:title/lcntInfo (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]]  Create a Beamer Title Page
+#+end_org "
+   (bx:lcnt:info:base-read)
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 0)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          ;;; Below was copy-pasted -- some are likely unused.
+        (coverPage (or (plist-get <params :coverPage) "UnSpecified"))
+        (bx:form (or (plist-get <params :form) ""))
+        (lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+        (lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+        (lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+        (lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+        (lcnt-date (get 'bx:lcnt:info:base 'date))
+        (lcnt-type (get 'bx:lcnt:info:base 'type))
+        (lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+        (lcnt-version (get 'bx:lcnt:info:base 'version))
+        (lcnt-url (get 'bx:lcnt:info:base 'url))
+        (lcnt-author1 (get 'bx:lcnt:info:base 'author1))
+        (lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+        (lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
+        (lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
+        (bufferFileName (file-name-nondirectory buffer-file-name))
+
+          )
+     (bxPanel:params$effective)
+
+     (setq <params (plist-put <params ':type "FrmCntnt-Video"))
+
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ())
+     (defun outCommentPostContent ()
+
+        (insert (s-lex-format "
+\\title[${lcnt-mainTitle}]
+{${lcnt-mainTitle}}\n"))
+
+      (if (not (string-equal lcnt-subTitle ""))
+          (insert (format "
+\\subtitle[%s]
+{%s}\n" lcnt-subTitle lcnt-subTitle)))
+
+      ;;;(if (not (string-equal lcnt-subSubTitle ""))
+        ;;;  (insert (format "%s\\\\\n" lcnt-subSubTitle)))
+
+      (insert (format "
+\\author[%s]
+{%s\\\\
+Email: \\href{%s}{%s}\\\\
+}
+" lcnt-authorName1 lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
+
+      (insert (format "
+\\institute[%s-%s]
+{\\href{%s}{%s}}
+"   lcnt-type lcnt-lcntNu lcnt-url lcnt-url))
+
+      (insert (format "
+\\date[%s]
+{%s}
+" lcnt-date lcnt-date))
+;;;{%s\\\\Varbatim Copying Permitted}
+
+      (insert (format "
+\\subject{%s}
+" lcnt-shortTitle))
+
+      )
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
+
+
+
 (orgCmntBegin "
 ** Basic Usage:
 #+BEGIN_SRC emacs-lisp
