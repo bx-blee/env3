@@ -382,8 +382,10 @@ Expects certain file-local variables to have been set
 (defun org-dblock-write:b:lcnt:latex/origPageMarker (<params)
 ;;;#+END:
    " #+begin_org
-** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
-Expects certain file-local variables to have been set
+** [[elisp:(org-cycle)][| DocStr |]] Insert a page break marker indicating page number and links.
+NOTYET: The URL Link should be Online <at github> for files that are properly redacted.
+and Online at github <undredacted> <redacted>.
+The files that are unredacted can be determined based on image-pdf value.
 #+end_org "
    (let* (
           (<governor (letGet$governor)) (<extGov (letGet$extGov))
@@ -414,13 +416,11 @@ Expects certain file-local variables to have been set
        (let* (
               ($cmntStr (b:major-mode:comment|lineStr))
               )
-       
-         
          (insert "\n")
          (insert (s-lex-format "
 \\noindent\\colorbox[rgb]{0.96,0.96,0.86}{\\parbox{\\dimexpr\\linewidth-2\\fboxsep\\relax}{Original Image Page: ${<pageName} ${<pageNumber} ---
 \\hyperref[img:${<imagePdf}:page_${<imagePage}]{Page~\\pageref{img:${<imagePdf}:page_${<imagePage}}}
- --- Online \\url{github.com:/ethymologyOfBlowback/pageNu}}}"
+ --- Online \\href{https://github.com/etymologyOfBlowback/cia-docs/blob/main/mb-unredacted/${<imagePdf}/page_${<imagePage}.png}{at github}}}"
                                ))
          (insert "\n")
          ))
@@ -430,6 +430,59 @@ Expects certain file-local variables to have been set
        (bx:invoke:withStdArgs$bx:dblock:governor:process)
        (outCommentPostContent)
        )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex/origCiaFootnote" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex/origCiaFootnote>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex/origCiaFootnote :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex/origCiaFootnote (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Run lcntProc with info obtained in this file.
+Expects certain file-local variables to have been set
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<pageName (or (plist-get <params :pageName) ""))
+          (<pageNumber (or (plist-get <params :pageNumber) ""))
+          (<imagePdf (or (plist-get <params :image-pdf) ""))
+          (<imagePage (or (plist-get <params :image-page) ""))
+          )
+     (bxPanel:params$effective)
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "~OrigFootnote~ "))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  ($thisFile (f-filename (buffer-file-name)))
+                  )
+             (insert (s-lex-format
+   "${$frontStr} *${<pageName} ${<pageNumber} ${<imagePdf} ${<imagePage}* ${$eolStr}\n"))
+             ))
+
+     (defun outCommentPostContent ()
+       (let* (
+              ($cmntStr (b:major-mode:comment|lineStr))
+              )
+         (insert "\n")
+         ;;; (insert (s-lex-format "------- Footnote Page: ${<pageName} ${<pageNumber} --------\\\\"
+         (insert (s-lex-format "---------- Footnote:  -----------\\\\"
+                               ))
+         ))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
 
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "LaTeX Common File Elements" :extraInfo "b:lcnt:"
 (orgCmntBegin "
