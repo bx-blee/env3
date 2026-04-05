@@ -2442,6 +2442,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
           (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
           (<style (letGet$style "openBlank" "closeBlank"))
           (<comment (or (plist-get <params :comment) ""))
+          (<options (or (plist-get <params :options) "toc,page"))
           )
      (bxPanel:params$effective)
 
@@ -2461,7 +2462,7 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
                       "${$frontStr} usepackage(appendix) -- ${<comment} ${$eolStr}\n"))))
 
      (defun outCommentPostContent ()
-       (insert (s-lex-format "\n\\usepackage[toc,page]{appendix}")))
+       (insert (s-lex-format "\n\\usepackage[${<options}]{appendix}")))
 
      (progn  ;; Actual Invocations
        (outCommentPreContent)
