@@ -395,9 +395,11 @@ The files that are unredacted can be determined based on image-pdf value.
           (<pageName (or (plist-get <params :pageName) ""))
           (<pageNumber (or (plist-get <params :pageNumber) ""))
           (<imagePdf (or (plist-get <params :image-pdf) ""))
-          (<imagePage (or (plist-get <params :image-page) ""))                    
+          (<imagePage (or (plist-get <params :image-page) ""))
+          ($shortImagePdf)
           )
      (bxPanel:params$effective)
+     (setq $shortImagePdf (s-chop-prefix "iran-cia-" <imagePdf))
 
      (defun helpLine () "default controls" )
      (defun outCommentPreContent ())
@@ -419,6 +421,7 @@ The files that are unredacted can be determined based on image-pdf value.
          (insert "\n")
          (insert (s-lex-format "
 \\noindent\\colorbox[rgb]{0.96,0.96,0.86}{\\parbox{\\dimexpr\\linewidth-2\\fboxsep\\relax}{Original Image Page: ${<pageName} ${<pageNumber} ---
+File: ${$shortImagePdf} ---
 \\hyperref[img:${<imagePdf}:page_${<imagePage}]{Page~\\pageref{img:${<imagePdf}:page_${<imagePage}}}
  --- Online \\href{https://github.com/etymologyOfBlowback/cia-docs/blob/main/mb-unredacted/${<imagePdf}/page_${<imagePage}.png}{at github}}}"
                                ))
@@ -2469,6 +2472,51 @@ works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
        (bx:invoke:withStdArgs$bx:dblock:governor:process)
        (outCommentPostContent)
        )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgEnumitem" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:lcnt:latex:preamble/pkgEnumitem>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:lcnt:latex:preamble/pkgEnumitem :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:lcnt:latex:preamble/pkgEnumitem (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Used only in main tex. Relies on includeOnlyList which
+works with LCNT-INFO/Builds/includeOnly/includeOnlyList.
+#+end_org "
+   (let* (
+          (<governor (letGet$governor)) (<extGov (letGet$extGov))
+          (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+          (<style (letGet$style "openBlank" "closeBlank"))
+          (<comment (or (plist-get <params :comment) ""))
+          (<options (or (plist-get <params :options) "shortlabels"))
+          )
+     (bxPanel:params$effective)
+
+     ;; (setq $includeOnlyList '("./common/aboutThisDoc"))
+     ;; (setq $includeOnlyList '())
+     (setq $includeOnlyList (b:lcnt:info:includeOnly/listGet))
+
+     (defun helpLine () "default controls" )
+     (defun outCommentPreContent ())
+     (defun bodyContentPlus ())
+     (defun bodyContent ()
+           (let* (
+                  ($frontStr (b:dblock:comeega|frontElement "pkgEnumitm"))
+                  ($eolStr (b:dblock:comeega|eolControls))
+                  )
+             (insert (s-lex-format
+                      "${$frontStr} usepackage(enumitem) -- ${<comment} ${$eolStr}\n"))))
+
+     (defun outCommentPostContent ()
+       (insert (s-lex-format "\n\\usepackage[${<options}]{enumitem}")))
+
+     (progn  ;; Actual Invocations
+       (outCommentPreContent)
+       (bx:invoke:withStdArgs$bx:dblock:governor:process)
+       (outCommentPostContent)
+       )))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:lcnt:latex:preamble/pkgIndex" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
