@@ -476,7 +476,7 @@ Expects certain file-local variables to have been set
               )
          (insert "\n")
          ;;; (insert (s-lex-format "------- Footnote Page: ${<pageName} ${<pageNumber} --------\\\\"
-         (insert (s-lex-format "---------- Footnote:  -----------\\\\"
+         (insert (s-lex-format "\\noindent\\makebox[0.5\\textwidth][l]{\\hrulefill{} Footnote: \\hrulefill}\\\\"
                                ))
          ))
 
