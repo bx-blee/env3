@@ -80,6 +80,19 @@
   ;; F12
   )
 
+(defun blee-underline-region ()
+  "Surround the current region with LaTeX \\underline{}."
+  (interactive)
+  (if (region-active-p)
+      (let ((start (region-beginning))
+            (end (region-end)))
+        (goto-char end)
+        (insert "}")
+        (goto-char start)
+        (insert "\\underline{"))
+    (message "No region selected")))
+
+
 ;; (eoe-kbd-basic)
 (defun eoe-kbd-basic ()
   (interactive)
@@ -99,7 +112,7 @@
   ;; F2  -- Mail Reading
   (define-key global-map [(f2)] nil)
 
-  (define-key global-map [(f2) (f2) ] 'gif-screencast-stop)
+  (define-key global-map [(f2) (f2) ] 'blee-underline-region)
 
   (define-key global-map [(f2) (s) ] 'gif-screencast-start-or-stop)  ;; Start
   (define-key global-map [(f2) (p) ] 'gif-screencast-toggle-pause) ;; Pause
