@@ -137,9 +137,23 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  (b:pkg:straight|install 'org-roam-bibtex)
 ;;;#+END:
 
+(b:pkg:straight|profiledInstall
+            b:pkgsProfile:adopted
+            '(org-contrib
+              :type git
+              :host github
+              :repo "emacsmirror/org-contrib"))
+
+(b:pkg:straight|profiledInstall
+            b:pkgsProfile:adopted
+            '(ox-taskjuggler
+              :type git
+              :host github
+              :repo "h-oll/ox-taskjuggler"))
 
  (require 'org)
  (require 'org-img-link)
+ (require 'ox-taskjuggler)
 
  )
 
