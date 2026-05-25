@@ -167,6 +167,7 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 ;;;#+END:
  ;; Configuration Material Comes Here
  (xtn:org:link:img-link/activate)
+ (require 'bx-taskjuggler)
  )
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
