@@ -63,6 +63,9 @@
 and side-effects are documented here
 #+end_org "
 
+   (require 'bcpg:vtermPlus)
+   (bcpg:vtermPlus|fullUpdate)
+
    (require 'bcpg:orgPlus)
    (bcpg:orgPlus|fullUpdate)
 
@@ -96,6 +99,9 @@ and side-effects are documented here
 
    (require 'bcpg:gptelPlus)
    (bcpg:gptelPlus|fullUpdate)
+
+   (require 'bcpg:claudePlus)
+   (bcpg:claudePlus|fullUpdate)
 
    (require 'bnpa:aiplus)
    (b:npa:aiplus|fullUpdate)

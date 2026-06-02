@@ -110,8 +110,11 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 #+end_org "
  (b:log|entry (b:func$entry))
 ;;;#+END:
+   ;;; NOTYET --- load-file is a temp hack. 
+   (load-file "/bisos/git/bxRepos/blee/aiplus/b:aiplus::claude-ide:menu.el")
    (require 'b:aiplus::pkg)
   )
+
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'bnpa:aiplus)

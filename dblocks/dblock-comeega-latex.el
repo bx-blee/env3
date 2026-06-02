@@ -3310,6 +3310,7 @@ Expects certain file-local variables to have been set
           (<style (letGet$style "openBlank" "closeBlank"))
           (<comment (or (plist-get <params :comment) ""))
           (<figFile (or (plist-get <params :figFile) ""))
+          (<float (or (plist-get <params :float) ""))
           (<sec (or (plist-get <params :sec) "")) ;; Can be used to determine outlevel
           ($figTitle (shell-command-to-string
                      (format "echo -n $( cat %s )"
@@ -3357,9 +3358,10 @@ Expects certain file-local variables to have been set
 
       (b:ins$fmt$ "\\begin{frame}[plain]{${$figTitle}}\n")
 
-      (insert "\\begin{figure}
-\\begin{center}
-")
+      (if (string-empty-p <float)
+          (insert "\\begin{figure}\n")
+        (insert (format "\\begin{figure}[%s]\n" <float)))
+      (insert "\\begin{center}\n")
 
       (b:ins$fmt$ "\\includegraphics[width=108mm,height=76mm,keepaspectratio]{${$figFileSansExt}}\n")
 
@@ -3373,9 +3375,10 @@ Expects certain file-local variables to have been set
       (insert "
 \\begin{whenFormatIsArticle}\n")
 
-      (insert "\\begin{figure}
-\\begin{center}
-")
+      (if (string-empty-p <float)
+          (insert "\\begin{figure}\n")
+        (insert (format "\\begin{figure}[%s]\n" <float)))
+      (insert "\\begin{center}\n")
 
       (b:ins$fmt$ "\\includegraphics[width=\\textwidth]{${$figFileSansExt}}\n")
 

@@ -23,6 +23,7 @@
 ;; (require 'apps-gptel-menu)
 (require 'b:aiplus::aidermacs:menu)
 (require 'b:aiplus::gptel:menu)
+(require 'b:aiplus::claude-ide:menu)
 
 (require 'b:open-in::menu)
 
@@ -84,6 +85,9 @@ As such what happens below is exactly what is necessary and no more."
      apps:menu:global (s-- 3))
 
     (b:aiplus:aidermacs:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (b:aiplus:claude-ide:menu:plugin|install
      apps:menu:global (s-- 3))
 
     (b:open-in:menu:plugin|install
