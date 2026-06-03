@@ -66,6 +66,9 @@ and side-effects are documented here
    (require 'bcpg:vtermPlus)
    (bcpg:vtermPlus|fullUpdate)
 
+   (require 'bcpg:eatPlus)
+   (bcpg:eatPlus|fullUpdate)
+
    (require 'bcpg:orgPlus)
    (bcpg:orgPlus|fullUpdate)
 
