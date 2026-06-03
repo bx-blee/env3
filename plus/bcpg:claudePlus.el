@@ -131,7 +131,9 @@ Yes" orgCmntEnd)
 #+end_org "
  (b:log|entry (b:func$entry))
 ;;;#+END:
-  "Configure claude-code for use with OpenAI and gpt-4o."
+  "Configure claude-code package settings, hooks, and integrations."
+
+  (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
 
   ;; --- Terminal & Display ---
   ;; (setq claude-code-program "claude")                        ; path to Claude executable

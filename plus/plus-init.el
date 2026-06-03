@@ -106,6 +106,9 @@ and side-effects are documented here
    (require 'bcpg:claudePlus)
    (bcpg:claudePlus|fullUpdate)
 
+   (require 'bcpg:monetPlus)
+   (bcpg:monetPlus|fullUpdate)
+
    (require 'bnpa:aiplus)
    (b:npa:aiplus|fullUpdate)
 

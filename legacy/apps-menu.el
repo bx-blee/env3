@@ -25,7 +25,9 @@
 (require 'b:aiplus::gptel:menu)
 ;; (require 'b:aiplus::claude-ide:menu)
 (require 'b:aiplus::claude-code:menu)
+(require 'b:aiplus::monet:menu)
 (require 'b:vterm::launch:menu)
+(require 'b:eat::launch:menu)
 
 (require 'b:open-in::menu)
 
@@ -92,7 +94,13 @@ As such what happens below is exactly what is necessary and no more."
     (b:aiplus:claude-code:menu:plugin|install
      apps:menu:global (s-- 3))
 
+    (b:aiplus:monet:menu:plugin|install
+     apps:menu:global (s-- 3))
+
     (b:vterm:launch:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (b:eat:launch:menu:plugin|install
      apps:menu:global (s-- 3))
 
     (b:open-in:menu:plugin|install
