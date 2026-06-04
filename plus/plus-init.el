@@ -63,11 +63,17 @@
 and side-effects are documented here
 #+end_org "
 
+   (require 'bcpg:inheritenvPlus)
+   (bcpg:inheritenvPlus|fullUpdate)
+
    (require 'bcpg:vtermPlus)
    (bcpg:vtermPlus|fullUpdate)
 
    (require 'bcpg:eatPlus)
    (bcpg:eatPlus|fullUpdate)
+
+   (require 'bcpg:ghostelPlus)
+   (bcpg:ghostelPlus|fullUpdate)
 
    (require 'bcpg:orgPlus)
    (bcpg:orgPlus|fullUpdate)
