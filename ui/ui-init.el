@@ -63,7 +63,6 @@
 and side-effects are documented here
 #+end_org "
 
-
    )
 
 (orgCmntBegin "
