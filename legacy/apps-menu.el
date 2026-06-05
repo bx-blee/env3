@@ -97,10 +97,13 @@ As such what happens below is exactly what is necessary and no more."
     (b:aiplus:monet:menu:plugin|install
      apps:menu:global (s-- 3))
 
-    (b:vterm:launch:menu:plugin|install
+    (b:ghostel:launch:menu:plugin|install
      apps:menu:global (s-- 3))
 
     (b:eat:launch:menu:plugin|install
+     apps:menu:global (s-- 3))
+
+    (b:vterm:launch:menu:plugin|install
      apps:menu:global (s-- 3))
 
     (b:open-in:menu:plugin|install

@@ -135,63 +135,9 @@ Yes" orgCmntEnd)
 
   (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
 
-(unless (fboundp 'font-has-char-p)
-  (defun font-has-char-p (font character)
-    "Polyfill for Emacs 28 to check if FONT can display CHARACTER."
-    (condition-case nil
-        (let ((glyphs (font-get-glyphs font 0 1 (string character))))
-          (and glyphs
-               (vectorp glyphs)
-               (> (length glyphs) 0)
-               (not (null (aref glyphs 0)))))
-      (error nil))))
-
-  ;; --- Terminal & Display ---
-  ;; (setq claude-code-program "claude")                        ; path to Claude executable
-  ;; (setq claude-code-program-switches nil)                    ; extra CLI args list
-  ;; (setq claude-code-sandbox-program nil)                     ; path to sandbox binary
-  ;; Terminal backend: ghostel requires Emacs 30+; fall back to eat otherwise.
-  ;; ('eat is the upstream default; 'vterm is also available.)
-  ;; (setq claude-code-terminal-backend
-  ;;       (if (>= emacs-major-version 30) 'ghostel 'eat))
+  (bcpg:claude-codePlus:back|28)
 
  (setq claude-code-terminal-backend 'ghostel)
-
-
-  ;; (setq claude-code-term-name "xterm-256color")              ; terminal type
-  ;; (setq claude-code-startup-delay 0.1)                       ; init delay in seconds
-
-  ;; --- Ghostel API compatibility shim ---
-  ;; claude-code.el's ghostel backend was written against an older ghostel
-  ;; API.  The installed dakra/ghostel tracks read-only state in the
-  ;; buffer-local symbol `ghostel--input-mode' (semi-char | char | copy |
-  ;; emacs) and exits via `ghostel-readonly-exit'.  It defines neither
-  ;; `ghostel--copy-mode-active' nor `ghostel-copy-mode-exit', which
-  ;; claude-code.el references --- so reading `ghostel--copy-mode-active'
-  ;; raised a void-variable error during redisplay (window resize).
-  ;; Redefine the three affected methods against the current API.  This is
-  ;; version-independent; it matters whenever the ghostel backend is used.
-  (with-eval-after-load 'claude-code
-    (require 'ghostel)
-
-    (cl-defmethod claude-code--term-in-read-only-p ((_backend (eql ghostel)))
-      "Check if ghostel terminal is in read-only (copy/emacs) mode."
-      (and (boundp 'ghostel--input-mode)
-           (memq ghostel--input-mode '(copy emacs))))
-
-    (cl-defmethod claude-code--term-read-only-mode ((_backend (eql ghostel)))
-      "Switch ghostel terminal to read-only (copy) mode."
-      (claude-code--ensure-ghostel)
-      (unless (memq ghostel--input-mode '(copy emacs))
-        (ghostel-copy-mode)))
-
-    (cl-defmethod claude-code--term-interactive-mode ((_backend (eql ghostel)))
-      "Switch ghostel terminal back to interactive mode."
-      (claude-code--ensure-ghostel)
-      (when (memq ghostel--input-mode '(copy emacs))
-        (ghostel-readonly-exit)
-        ;; Re-setup keymap since readonly exit restores the saved keymap.
-        (claude-code--term-setup-keymap 'ghostel))))
 
   ;; --- Buffer & Interaction ---
   ;; (setq claude-code-large-buffer-threshold 100000)           ; chars before confirm on send
@@ -251,6 +197,61 @@ Yes" orgCmntEnd)
   ;;   ; C-c c S  claude-code-start-sandbox
 
   )
+
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 1 :title "bcpg:claude-codePlus:back|28" :extraInfo "Emacs 28 compatibility"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:claude-codePlus:back|28>>  --  Emacs 28 compatibility  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+;;;#+END:
+(defun bcpg:claude-codePlus:back|28 ()
+   " #+begin_org
+** DocStr: Emacs 28 backward-compatibility layer for claude-codePlus.
+   Does nothing when the running Emacs major version is not 28.
+#+end_org "
+  (unless (= emacs-major-version 28)
+    (cl-return-from bcpg:claude-codePlus:back|28))
+
+  (unless (fboundp 'font-has-char-p)
+    (defun font-has-char-p (font character)
+      "Polyfill for Emacs 28 to check if FONT can display CHARACTER."
+      (condition-case nil
+          (let ((glyphs (font-get-glyphs font 0 1 (string character))))
+            (and glyphs
+                 (vectorp glyphs)
+                 (> (length glyphs) 0)
+                 (not (null (aref glyphs 0)))))
+        (error nil))))
+
+  ;; --- Ghostel API compatibility shim ---
+  ;; claude-code.el's ghostel backend was written against an older ghostel
+  ;; API.  The installed dakra/ghostel tracks read-only state in the
+  ;; buffer-local symbol `ghostel--input-mode' (semi-char | char | copy |
+  ;; emacs) and exits via `ghostel-readonly-exit'.  It defines neither
+  ;; `ghostel--copy-mode-active' nor `ghostel-copy-mode-exit', which
+  ;; claude-code.el references --- so reading `ghostel--copy-mode-active'
+  ;; raised a void-variable error during redisplay (window resize).
+  ;; Redefine the three affected methods against the current API.
+  (with-eval-after-load 'claude-code
+    (require 'ghostel)
+
+    (cl-defmethod claude-code--term-in-read-only-p ((_backend (eql ghostel)))
+      "Check if ghostel terminal is in read-only (copy/emacs) mode."
+      (and (boundp 'ghostel--input-mode)
+           (memq ghostel--input-mode '(copy emacs))))
+
+    (cl-defmethod claude-code--term-read-only-mode ((_backend (eql ghostel)))
+      "Switch ghostel terminal to read-only (copy) mode."
+      (claude-code--ensure-ghostel)
+      (unless (memq ghostel--input-mode '(copy emacs))
+        (ghostel-copy-mode)))
+
+    (cl-defmethod claude-code--term-interactive-mode ((_backend (eql ghostel)))
+      "Switch ghostel terminal back to interactive mode."
+      (claude-code--ensure-ghostel)
+      (when (memq ghostel--input-mode '(copy emacs))
+        (ghostel-readonly-exit)
+        ;; Re-setup keymap since readonly exit restores the saved keymap.
+        (claude-code--term-setup-keymap 'ghostel)))))
 
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'bcpg:claudePlus)

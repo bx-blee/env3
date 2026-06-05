@@ -116,8 +116,39 @@ Yes" orgCmntEnd)
             '(ghostel :type git :host github :repo "dakra/ghostel")))
             )
 
+     (bcpg:ghostelPlus:terminfo|install)
+
      )
 
+
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "ghostelPlus Facilities" :extraInfo "terminfo"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _ghostelPlus Facilities_: |]]  terminfo  [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+;;;#+END:
+
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:ghostelPlus:terminfo|install>>  --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(defun bcpg:ghostelPlus:terminfo|install ()
+   " #+begin_org
+** DocStr: Install xterm-ghostty terminfo entry via tic if not already present.
+Checks ~/.terminfo/x/xterm-ghostty before running tic to avoid redundant installs.
+#+end_org "
+  (b:log|entry (b:func$entry))
+  (let* ((terminfo-target (expand-file-name "~/.terminfo/x/xterm-ghostty"))
+         (terminfo-src (expand-file-name
+                        "etc/terminfo/xterm-ghostty.terminfo"
+                        (straight--repos-dir "ghostel"))))
+    (if (file-exists-p terminfo-target)
+        (message "xterm-ghostty terminfo already installed, skipping.")
+      (if (not (file-exists-p terminfo-src))
+          (message "ghostelPlus: terminfo source not found: %s" terminfo-src)
+        (let ((result (call-process "tic" nil "*ghostel-tic*" nil "-x" terminfo-src)))
+          (if (= result 0)
+              (message "xterm-ghostty terminfo installed successfully.")
+            (message "ghostelPlus: tic failed (exit %d), see *ghostel-tic* buffer." result))))))
+  )
 
 ;;;#+BEGIN: b:elisp:pkg:config/main :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "ghostelPlus"
 (orgCmntBegin "
@@ -145,6 +176,7 @@ Yes" orgCmntEnd)
   ;; --- Terminal Type ---
   ;; (setq ghostel-term "xterm-ghostty")                        ; advertises ghostty caps (synced output, etc.)
   ;;   ; set to "xterm-256color" to fall back to a generic terminal
+  (setq ghostel-term "xterm-256color")  ;;;  terminfo is not properly installed through straight
 
   ;; --- Scrollback ---
   ;; (setq ghostel-max-scrollback (* 5 1024 1024))              ; bytes (~5,000 rows at 80 cols); materialized for isearch
