@@ -203,7 +203,7 @@ Yes" orgCmntEnd)
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:claude-codePlus:back|28>>  --  Emacs 28 compatibility  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
 ;;;#+END:
-(defun bcpg:claude-codePlus:back|28 ()
+(cl-defun bcpg:claude-codePlus:back|28 ()
    " #+begin_org
 ** DocStr: Emacs 28 backward-compatibility layer for claude-codePlus.
    Does nothing when the running Emacs major version is not 28.
