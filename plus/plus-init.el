@@ -133,6 +133,8 @@ and side-effects are documented here
    (require 'bnpa:open-in)
    (b:npa:open-in|fullUpdate)
 
+   (menu-bar-mode)
+
    )
 
 (orgCmntBegin "
