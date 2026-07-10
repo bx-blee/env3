@@ -138,7 +138,7 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
     (defun outCommentPreContent ())
     (defun bodyContentPlus ())
     (defun bodyContent ()
-      (insert (s-lex-format "* *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version\n"))
+      (insert (s-lex-format "* *[[elisp:(org-cycle)][| Particulars |]]* :: This File, Authors, version\n"))
       (insert (s-lex-format "** This File: ${buffer-file-name}\n"))
       (insert (s-lex-format "** File True Name: ${$f-canonical}\n"))
       (loop-for-each $each <authors
@@ -151,6 +151,58 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
       (bx:invoke:withStdArgs$bx:dblock:governor:process)
       (outCommentPostContent)
       )))
+
+;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:ai:file/particulars" :advice ("bx:dblock:control|wrapper")
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  dblockDfn  [[elisp:(outline-show-subtree+toggle)][||]]  <<org-dblock-write:b:ai:file/particulars>> ~(bx:dblock:control|wrapper)~ --  --   [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(advice-add 'org-dblock-write:b:ai:file/particulars :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:b:ai:file/particulars (<params)
+;;;#+END:
+   " #+begin_org
+** [[elisp:(org-cycle)][| DocStr |]] Process dblock args
+Based on outCommentPreContent, bodyContent and outCommentPostContent.
+#+end_org "
+  (let* (
+         (<governor (letGet$governor)) (<extGov (letGet$extGov))
+         (<outLevel (letGet$outLevel 1)) (<model (letGet$model))
+         (<style (letGet$style "openBlank" "closeBlank"))
+         ($f-canonical (f-canonical buffer-file-name))
+         ($buffer-dir-name (f-dirname  buffer-file-name))
+         )
+    (bxPanel:params$effective)
+
+    (defun helpLine () ":authors (\"pathToAuthorFile\")" )
+    (defun outCommentPreContent ())
+    (defun bodyContentPlus ())
+    (defun bodyContent ()
+      (let* (
+             ($ai-general-path (expand-file-name "AI-Activity.org" $buffer-dir-name))
+             ($activity (when (file-symlink-p $ai-general-path)
+                          (f-filename (f-dirname (file-truename $ai-general-path)))))
+             ($companion-files '("AI-AGENTS.org" "AI-WORKFLOW.org" "AI-Activity.org"
+                                 "AI-DevStatus.org" "README.org"))
+             ($present-companions
+              (seq-filter (lambda (f)
+                            (file-exists-p (expand-file-name f $buffer-dir-name)))
+                          $companion-files))
+             )
+        (insert (s-lex-format "* AI Working Context\n"))
+        (insert (s-lex-format "  Working Directory: ${$buffer-dir-name}\n"))
+        (insert (s-lex-format "  File: ${$f-canonical}\n"))
+        (when $activity
+          (insert (s-lex-format "  Activity: ${$activity}\n")))
+        (when $present-companions
+          (insert (format "  Companion Docs: %s\n" (mapconcat 'identity $present-companions ", ")))
+          )))
+    (defun outCommentPostContent ())
+
+    (progn  ;; Actual Invocations
+      (outCommentPreContent)
+      (bx:invoke:withStdArgs$bx:dblock:governor:process)
+      (outCommentPostContent)
+      )))
+
 
 ;;;#+BEGIN:  b:elisp:defs/dblockDefun :defName "org-dblock-write:b:prog:file/orgTopControls" :advice ("bx:dblock:control|wrapper")
 (orgCmntBegin "
