@@ -2352,6 +2352,8 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
             (setq $item (nth 0 (s-split "=" $eachLine)))
             (insert (s-lex-format "'${$item}',\n"))
             )
+          (loop-for-each $each <extras
+            (insert (s-lex-format "\"${$each}\",\n")))
           (insert (s-lex-format "\"setuptools==75.8.0\",\n"))
           (insert (s-lex-format "\"wheel==0.38.4\",\n"))
           (insert (s-lex-format "]"))
