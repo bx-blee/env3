@@ -81,9 +81,13 @@
   (define-key global-map [(f7) (x)] 'comintPlus-sendInput)
   (define-key global-map [(f7) (e)] 'comintPlus-editInput)
 
-
   ;;;  Recent File
   (define-key global-map [(f7) (r)] 'my-open-recent-file)
+
+;;;  AI -- Artificial Inteligence -- Claude Code
+  (define-key global-map [(f7) (a)] nil)
+  (define-key global-map [(f7) (a) (a)] 'claude-code-transient)
+
 
   ;;;  Buffers
   (define-key global-map [(f7) (b)] nil)
