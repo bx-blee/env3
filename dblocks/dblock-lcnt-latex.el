@@ -1990,9 +1990,13 @@ Subject:   & This Matter\\\\
 \\newenvironment{bidiSepAfterHevea}{}{}
 
 \\usepackage{bystarpersian}   % Defines: \\newfontfamily{\\persian}, \\newcommand{\\farsi}, \\newenvironment{faPar},{fa}
-\\usepackage{bystararticle}   % Defines: \\excludecomment{presentationMode} \\newcommand{\\pnote}
 "
             )
+    (unless (equal <class "art")
+      (insert "
+\\usepackage{bystararticle}   % Defines: \\excludecomment{presentationMode} \\newcommand{\\pnote}
+"
+            ))
     ))
 
 

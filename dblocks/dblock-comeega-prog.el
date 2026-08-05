@@ -15,8 +15,9 @@
 
 ;;;#+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 (orgCmntBegin "
-* *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/auth/bxRepos/blee/env3/dblocks/dblock-comeega-prog.el
+* *[[elisp:(org-cycle)][| Particulars |]]* :: This File, Authors, version
+** This File: /bisos/blee/env3/dblocks/dblock-comeega-prog.el
+** File True Name: /bisos/git/auth/bxRepos/blee/env3/dblocks/dblock-comeega-prog.el
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 " orgCmntEnd)
 ;;;#+END:
