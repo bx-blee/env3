@@ -532,7 +532,9 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                ($joinedButlast (s-join "." $butlast))
                )
           (unless (s-equals? <each "plantedCsu")
-            (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n")))))
+            (if (s-blank? $joinedButlast)
+                (insert (s-lex-format "import ${$last}\n"))
+              (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n"))))))
 
       (when <pyImports
         (insert "\n\n")
@@ -630,7 +632,9 @@ Based on outCommentPreContent, bodyContent and outCommentPostContent.
                ($joinedButlast (s-join "." $butlast))
                )
           (unless (s-equals? <each "plantedCsu")
-            (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n")))))
+            (if (s-blank? $joinedButlast)
+                (insert (s-lex-format "import ${$last}\n"))
+              (insert (s-lex-format "from ${$joinedButlast} import ${$last}\n"))))))
 
       (when <pyImports
         (insert "\n\n")
