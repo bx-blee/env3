@@ -170,6 +170,9 @@ Skipped when the buffer already has a message (amend, git commit -t, a reword).
       (goto-char (point-min))
       (insert-file-contents $msgFile)
       (goto-char (point-min))
+      ;; git-commit-setup marks the buffer unmodified after this hook, and with-editor does
+      ;; not save an unmodified buffer: git would then read its own empty COMMIT_EDITMSG.
+      (add-hook 'with-editor-pre-finish-hook (lambda () (set-buffer-modified-p t)) nil t)
       (setq bap:magit:claudeCommitMsg:pending $msgFile))))
 
 (defun bap:magit:claudeCommitMsg/markUsed () "
