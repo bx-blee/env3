@@ -124,6 +124,18 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  ;;(setq magit-git-standard-options
  ;; (append magit-git-standard-options '("-c") '("http.sslVerify=false")))
 
+ ;;; BISOS/Blee commit message format "69/90" (see the bx-git-commit-msg command).
+ (setq git-commit-summary-max-length 69)
+ (add-hook 'git-commit-mode-hook (lambda () (setq-local fill-column 90)))
+ ;;; Ask for confirmation at C-c C-c when the subject is over 69, not only highlight it.
+ (setq git-commit-style-convention-checks '(non-empty-second-line overlong-summary-line))
+ ;;; Abbreviated age and a 12-wide author in the log margin, so a ~60 subject fits in 90 columns.
+ (setq magit-log-margin '(t age-abbreviated magit-log-margin-width t 12))
+ ;;; Offer Claude's .git/CLAUDE_COMMIT_MSG (written by /bx-git-commit-msg) in an empty commit buffer.
+ (add-hook 'git-commit-setup-hook #'bap:magit:claudeCommitMsg/offer t)
+ (add-hook 'git-commit-post-finish-hook #'bap:magit:claudeCommitMsg/markUsed)
+
+ 
  (setq vc-follow-symlinks nil)   ;;; Following symlinks messes up /lcnt assumptions for example
 
  (setq magit-repolist-columns
@@ -139,6 +151,36 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
           ("Path"    99 magit-repolist-column-path ()))
 	)
  )
+
+
+(defvar bap:magit:claudeCommitMsg:pending nil
+  "Path of the CLAUDE_COMMIT_MSG inserted into the commit buffer being edited, or nil.")
+
+(defun bap:magit:claudeCommitMsg/offer () "
+*** In git-commit-setup-hook: offer <gitdir>/CLAUDE_COMMIT_MSG when the message is empty.
+Skipped when the buffer already has a message (amend, git commit -t, a reword).
+"
+  (setq bap:magit:claudeCommitMsg:pending nil)
+  (let* (($gitDir (and buffer-file-name (file-name-directory buffer-file-name)))
+         ($msgFile (and $gitDir (expand-file-name "CLAUDE_COMMIT_MSG" $gitDir))))
+    (when (and $msgFile
+               (file-readable-p $msgFile)
+               (not (git-commit-buffer-message))
+               (y-or-n-p "Use Claude's commit message (.git/CLAUDE_COMMIT_MSG)? "))
+      (goto-char (point-min))
+      (insert-file-contents $msgFile)
+      (goto-char (point-min))
+      (setq bap:magit:claudeCommitMsg:pending $msgFile))))
+
+(defun bap:magit:claudeCommitMsg/markUsed () "
+*** In git-commit-post-finish-hook: rename the used message to CLAUDE_COMMIT_MSG.used,
+so it is not offered again. Not run when the commit is aborted: the file then stays.
+"
+  (when (and bap:magit:claudeCommitMsg:pending
+             (file-exists-p bap:magit:claudeCommitMsg:pending))
+    (rename-file bap:magit:claudeCommitMsg:pending
+                 (concat bap:magit:claudeCommitMsg:pending ".used") t))
+  (setq bap:magit:claudeCommitMsg:pending nil))
 
 
 (defun bap:magit:magit-repository-directories/set-with-list (<list)  "
