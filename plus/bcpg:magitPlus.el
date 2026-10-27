@@ -14,7 +14,7 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: b:elisp:file/copyLeftPlus :outLevel 1
 (orgCmntBegin "
-* Libre-Halaal Software --- Part Of Blee ---  Poly-COMEEGA Format.
+* *[[elisp:(org-cycle)][| Proclamations |]]* :: Libre-Halaal Software --- Part Of Blee ---  Poly-COMEEGA Format.
 ** This is Libre-Halaal Software. © Libre-Halaal Foundation. Subject to AGPL.
 ** It is not part of Emacs. It is part of Blee.
 ** Best read and edited  with Poly-COMEEGA (Polymode Colaborative Org-Mode Enhance Emacs Generalized Authorship)
@@ -23,13 +23,14 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: b:elisp:file/authors :authors ("./inserts/authors-mb.org")
 (orgCmntBegin "
-* Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
+** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 " orgCmntEnd)
 ;;;#+END:
 
 ;;;#+BEGIN: b:elisp:file/orgTopControls :outLevel 1
 (orgCmntBegin "
-*  ~ORG-TOP-CONTROLS-COME-HERE~
+*  [[elisp:(org-cycle)][|/Controls/| ]] :: [[elisp:(org-show-subtree)][|=]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(bx:org:run-me)][Run]] | [[elisp:(bx:org:run-me-eml)][RunEml]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+** /Version Control/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]]
 " orgCmntEnd)
 ;;;#+END:
 
@@ -43,7 +44,7 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "REQUIRES" :extraInfo "Imports"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _REQUIRES_: |]]  Imports  [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _REQUIRES_: |]]  Imports  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
 ;;;#+END:
 
@@ -53,7 +54,7 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 1 :title "Variables And Constants" :extraInfo "defvar, defcustom"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_       [[elisp:(outline-show-subtree+toggle)][| *Variables And Constants:* |]]  defvar, defcustom  [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*       [[elisp:(outline-show-subtree+toggle)][| *Variables And Constants:* |]]  defvar, defcustom  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
 ;;;#+END:
 
@@ -66,18 +67,19 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :title "Common Facilities" :extraInfo "Library Candidates"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _Common Facilities_: |]]  Library Candidates  [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*     [[elisp:(outline-show-subtree+toggle)][| _Common Facilities_: |]]  Library Candidates  [[elisp:(org-shifttab)][<)]] E|
 " orgCmntEnd)
 ;;;#+END:
 
 ;;;#+BEGIN: b:elisp:pkg/fullUpdate :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "magitPlus"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:magitPlus|fullUpdate>> [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:magitPlus|fullUpdate>>  --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
 (defun bcpg:magitPlus|fullUpdate ()
- "magitPlus package adoption control."
- (b:log|entry (b:func$entry))
-  (when bcpg:magitPlus:usgEnabled?
+   " #+begin_org
+** DocStr: *magitPlus* package adoption full update template.
+#+end_org "
+ (b:log|entry (b:func$entry)) (when bcpg:magitPlus:usgEnabled?
     (bcpg:magitPlus:install|update)
     (bcpg:magitPlus:config|main)
     )
@@ -86,16 +88,18 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: b:elisp:pkg:install/update :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "magitPlus"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:magitPlus:install|update>> [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:magitPlus:install|update>>  --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
 (defun bcpg:magitPlus:install|update ()
- "magitPlus package adoption install or update template."
+   " #+begin_org
+** DocStr: magitPlus Component Package Adoption install or update template.
+#+end_org "
  (b:log|entry (b:func$entry))
 ;;;#+END:
 
 ;;;#+BEGIN:  b:elisp:pkg/install :outLevel 2 :pkgsType "component" :pkgName "magit" :pkgDesc ""
 (orgCmntBegin "
-** [[elisp:(show-all)][(>]]  =component= ~magit~ ** [[elisp:(org-shifttab)][<)]] E|
+  =component= ~magit~ **
 " orgCmntEnd)
  (b:pkg:straight|install 'magit)
 ;;;#+END:
@@ -112,10 +116,12 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
 
 ;;;#+BEGIN: b:elisp:pkg:config/main :outLevel 1 :pkgsStage "ready" :pkgAdoptionType "bcpg" :pkgName "magitPlus"
 (orgCmntBegin "
-* [[elisp:(show-all)][(>]]  =defun= <<bcpg:magitPlus:config|main>> [[elisp:(org-shifttab)][<)]] E|
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  defun      [[elisp:(outline-show-subtree+toggle)][||]]  <<bcpg:magitPlus:config|main>>  --  --   [[elisp:(org-cycle)][| ]]
 " orgCmntEnd)
 (defun bcpg:magitPlus:config|main ()
- "magitPlus package adoption config template."
+   " #+begin_org
+** DocStr: *magitPlus* package adoption config template.
+#+end_org "
  (b:log|entry (b:func$entry))
 ;;;#+END:
 
@@ -153,13 +159,26 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  )
 
 
+;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 1 :title "Claude's Commit Message" :extraInfo "Offer .git/CLAUDE_COMMIT_MSG in magit"
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*       [[elisp:(outline-show-subtree+toggle)][| *Claude's Commit Message:* |]]  Offer .git/CLAUDE_COMMIT_MSG in magit  [[elisp:(org-shifttab)][<)]] E|
+" orgCmntEnd)
+;;;#+END:
+
 (defvar bap:magit:claudeCommitMsg:pending nil
   "Path of the CLAUDE_COMMIT_MSG inserted into the commit buffer being edited, or nil.")
 
-(defun bap:magit:claudeCommitMsg/offer () "
-*** In git-commit-setup-hook: offer <gitdir>/CLAUDE_COMMIT_MSG when the message is empty.
+;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bap:magit:claudeCommitMsg/offer" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bap:magit:claudeCommitMsg/offer>>  --  -- In git-commit-setup-hook: offer <gitdir>/CLAUDE_COMMIT_MSG when the message is empty.  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(cl-defun bap:magit:claudeCommitMsg/offer (
+;;;#+END:
+                                       )
+   " #+begin_org
+** DocStr: In git-commit-setup-hook: offer <gitdir>/CLAUDE_COMMIT_MSG when the message is empty.
 Skipped when the buffer already has a message (amend, git commit -t, a reword).
-"
+#+end_org "
   (setq bap:magit:claudeCommitMsg:pending nil)
   (let* (($gitDir (and buffer-file-name (file-name-directory buffer-file-name)))
          ($msgFile (and $gitDir (expand-file-name "CLAUDE_COMMIT_MSG" $gitDir))))
@@ -175,10 +194,17 @@ Skipped when the buffer already has a message (amend, git commit -t, a reword).
       (add-hook 'with-editor-pre-finish-hook (lambda () (set-buffer-modified-p t)) nil t)
       (setq bap:magit:claudeCommitMsg:pending $msgFile))))
 
-(defun bap:magit:claudeCommitMsg/markUsed () "
-*** In git-commit-post-finish-hook: rename the used message to CLAUDE_COMMIT_MSG.used,
+;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bap:magit:claudeCommitMsg/markUsed" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bap:magit:claudeCommitMsg/markUsed>>  --  -- In git-commit-post-finish-hook: rename the used message to CLAUDE_COMMIT_MSG.used,  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(cl-defun bap:magit:claudeCommitMsg/markUsed (
+;;;#+END:
+                                          )
+   " #+begin_org
+** DocStr: In git-commit-post-finish-hook: rename the used message to CLAUDE_COMMIT_MSG.used,
 so it is not offered again. Not run when the commit is aborted: the file then stays.
-"
+#+end_org "
   (when (and bap:magit:claudeCommitMsg:pending
              (file-exists-p bap:magit:claudeCommitMsg:pending))
     (rename-file bap:magit:claudeCommitMsg:pending
