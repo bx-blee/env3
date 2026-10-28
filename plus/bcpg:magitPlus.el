@@ -140,6 +140,12 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  ;;; Offer Claude's .git/CLAUDE_COMMIT_MSG (written by /bx-git-commit-msg) in an empty commit buffer.
  (add-hook 'git-commit-setup-hook #'bap:magit:claudeCommitMsg/offer t)
  (add-hook 'git-commit-post-finish-hook #'bap:magit:claudeCommitMsg/markUsed)
+ ;;; x c: ask the latest local VS Code Claude session for that message. x was magit-reset-quickly,
+ ;;; which stays reachable as X (magit-reset). Also in magit-dispatch, next to X.
+ (define-key magit-mode-map (kbd "x") #'bap:magit:claudeDispatch)
+ (condition-case nil
+     (transient-append-suffix 'magit-dispatch "X" '("x" "Claude" bap:magit:claudeDispatch))
+   (error (message "magitPlus: magit-dispatch has no X: Claude (x) not added")))
 
  
  (setq vc-follow-symlinks nil)   ;;; Following symlinks messes up /lcnt assumptions for example
@@ -210,6 +216,38 @@ so it is not offered again. Not run when the commit is aborted: the file then st
     (rename-file bap:magit:claudeCommitMsg:pending
                  (concat bap:magit:claudeCommitMsg:pending ".used") t))
   (setq bap:magit:claudeCommitMsg:pending nil))
+
+(declare-function bap:claudeSessions/prompt "bcpg:claudePlus")
+
+;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bap:magit:claudeCommitMsg/request" :advice ()
+(orgCmntBegin "
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bap:magit:claudeCommitMsg/request>>  --  -- Send /bx-git-commit-msg <repo> to the latest local VS Code Claude session.  [[elisp:(org-cycle)][| ]]
+" orgCmntEnd)
+(cl-defun bap:magit:claudeCommitMsg/request (
+;;;#+END:
+                                             )
+   " #+begin_org
+** DocStr: Send /bx-git-commit-msg <repo> to the latest local VS Code Claude session (x c).
+Run once staging is done. Then: Enter in Claude, wait for its message, c c in magit, and
+bap:magit:claudeCommitMsg/offer offers it. The repo is given as a path, so the session need
+not be working in it.
+#+end_org "
+  (interactive)
+  (let (($repo (magit-toplevel)))
+    (unless $repo
+      (user-error "Not in a git repository"))
+    (unless (magit-anything-staged-p)
+      (user-error "Nothing staged in %s" $repo))
+    (unless (fboundp 'bap:claudeSessions/prompt)
+      (require 'bcpg:claudePlus))
+    (bap:claudeSessions/prompt (format "/bx-git-commit-msg %s" (directory-file-name $repo)))))
+
+(with-eval-after-load 'magit
+  (transient-define-prefix bap:magit:claudeDispatch ()
+    "Claude, in the local VS Code (claudeSessions.cs)."
+    ["Claude (latest local VS Code session)"
+     ("c" "Commit message for the staged changes (/bx-git-commit-msg)"
+      bap:magit:claudeCommitMsg/request)]))
 
 
 (defun bap:magit:magit-repository-directories/set-with-list (<list)  "
