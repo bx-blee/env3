@@ -42,17 +42,30 @@
 
 ;; (apps:menu-bar|install)
 (defun apps:menu-bar|install ()
-  "Primary interface."
-  (apps:menu:global|define)
-
-  (add-hook 'menu-bar-update-hook 'apps:menu-bar|update-hook)
+  "Primary interface: build the Apps menu now, and once more when Emacs is first idle."
+  ;; Not on menu-bar-update-hook: that hook runs on nearly every redisplay of the menu bar, and
+  ;; rebuilding the whole Apps menu there took over a second each time (Emacs 31.1, 2026-10-31):
+  ;; Blee became slow, with frequent GCs. apps:menu-bar|refresh rebuilds it on demand.
+  (remove-hook 'menu-bar-update-hook 'apps:menu-bar|update-hook)
+  (apps:menu-bar|refresh t)
+  (run-with-idle-timer 3 nil #'apps:menu-bar|refresh t)
   )
+
+(defun apps:menu-bar|refresh (&optional <quiet)
+  "Rebuild the Apps menu, e.g. after loading a package that adds to it.
+An error is reported, not left as a silently half-built menu. <quiet: no message on success."
+  (interactive)
+  (condition-case $err
+      (progn
+        (apps:menu:global|define)
+        (unless <quiet (message "Apps menu rebuilt")))
+    (error (message "Apps menu: rebuild failed, the menu may be incomplete: %s"
+                    (error-message-string $err)))))
 
 
 (defun apps:menu-bar|update-hook ()
-  "This is to be added to menu-bar-update-hook.
-It runs everytime any menu is invoked.
-As such what happens below is exactly what is necessary and no more."
+  "Rebuilds the whole Apps menu: too slow for menu-bar-update-hook, so not added to it.
+Kept for compatibility; use apps:menu-bar|refresh."
 
   (apps:menu:global|define)
   )

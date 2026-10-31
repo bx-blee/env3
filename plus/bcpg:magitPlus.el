@@ -137,15 +137,8 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
  (setq git-commit-style-convention-checks '(non-empty-second-line overlong-summary-line))
  ;;; Abbreviated age and a 12-wide author in the log margin, so a ~60 subject fits in 90 columns.
  (setq magit-log-margin '(t age-abbreviated magit-log-margin-width t 12))
- ;;; Offer Claude's .git/CLAUDE_COMMIT_MSG (written by /bx-git-commit-msg) in an empty commit buffer.
- (add-hook 'git-commit-setup-hook #'bap:magit:claudeCommitMsg/offer t)
- (add-hook 'git-commit-post-finish-hook #'bap:magit:claudeCommitMsg/markUsed)
- ;;; x c: ask the latest local VS Code Claude session for that message. x was magit-reset-quickly,
- ;;; which stays reachable as X (magit-reset). Also in magit-dispatch, next to X.
- (define-key magit-mode-map (kbd "x") #'bap:magit:claudeDispatch)
- (condition-case nil
-     (transient-append-suffix 'magit-dispatch "X" '("x" "Claude" bap:magit:claudeDispatch))
-   (error (message "magitPlus: magit-dispatch has no X: Claude (x) not added")))
+ ;;; Claude's commit message (x c, .git/CLAUDE_COMMIT_MSG) is in the vscode-claude Blee package:
+ ;;; b:vscode:claude:magit|config, run by bnpa:vscode-claude.
 
  
  (setq vc-follow-symlinks nil)   ;;; Following symlinks messes up /lcnt assumptions for example
@@ -163,91 +156,6 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
           ("Path"    99 magit-repolist-column-path ()))
 	)
  )
-
-
-;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 1 :title "Claude's Commit Message" :extraInfo "Offer .git/CLAUDE_COMMIT_MSG in magit"
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*       [[elisp:(outline-show-subtree+toggle)][| *Claude's Commit Message:* |]]  Offer .git/CLAUDE_COMMIT_MSG in magit  [[elisp:(org-shifttab)][<)]] E|
-" orgCmntEnd)
-;;;#+END:
-
-(defvar bap:magit:claudeCommitMsg:pending nil
-  "Path of the CLAUDE_COMMIT_MSG inserted into the commit buffer being edited, or nil.")
-
-;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bap:magit:claudeCommitMsg/offer" :advice ()
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bap:magit:claudeCommitMsg/offer>>  --  -- In git-commit-setup-hook: offer <gitdir>/CLAUDE_COMMIT_MSG when the message is empty.  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(cl-defun bap:magit:claudeCommitMsg/offer (
-;;;#+END:
-                                       )
-   " #+begin_org
-** DocStr: In git-commit-setup-hook: offer <gitdir>/CLAUDE_COMMIT_MSG when the message is empty.
-Skipped when the buffer already has a message (amend, git commit -t, a reword).
-#+end_org "
-  (setq bap:magit:claudeCommitMsg:pending nil)
-  (let* (($gitDir (and buffer-file-name (file-name-directory buffer-file-name)))
-         ($msgFile (and $gitDir (expand-file-name "CLAUDE_COMMIT_MSG" $gitDir))))
-    (when (and $msgFile
-               (file-readable-p $msgFile)
-               (not (git-commit-buffer-message))
-               (y-or-n-p "Use Claude's commit message (.git/CLAUDE_COMMIT_MSG)? "))
-      (goto-char (point-min))
-      (insert-file-contents $msgFile)
-      (goto-char (point-min))
-      ;; git-commit-setup marks the buffer unmodified after this hook, and with-editor does
-      ;; not save an unmodified buffer: git would then read its own empty COMMIT_EDITMSG.
-      (add-hook 'with-editor-pre-finish-hook (lambda () (set-buffer-modified-p t)) nil t)
-      (setq bap:magit:claudeCommitMsg:pending $msgFile))))
-
-;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bap:magit:claudeCommitMsg/markUsed" :advice ()
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bap:magit:claudeCommitMsg/markUsed>>  --  -- In git-commit-post-finish-hook: rename the used message to CLAUDE_COMMIT_MSG.used,  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(cl-defun bap:magit:claudeCommitMsg/markUsed (
-;;;#+END:
-                                          )
-   " #+begin_org
-** DocStr: In git-commit-post-finish-hook: rename the used message to CLAUDE_COMMIT_MSG.used,
-so it is not offered again. Not run when the commit is aborted: the file then stays.
-#+end_org "
-  (when (and bap:magit:claudeCommitMsg:pending
-             (file-exists-p bap:magit:claudeCommitMsg:pending))
-    (rename-file bap:magit:claudeCommitMsg:pending
-                 (concat bap:magit:claudeCommitMsg:pending ".used") t))
-  (setq bap:magit:claudeCommitMsg:pending nil))
-
-(declare-function bap:claudeSessions/prompt "bcpg:claudePlus")
-
-;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bap:magit:claudeCommitMsg/request" :advice ()
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bap:magit:claudeCommitMsg/request>>  --  -- Send /bx-git-commit-msg <repo> to the latest local VS Code Claude session.  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(cl-defun bap:magit:claudeCommitMsg/request (
-;;;#+END:
-                                             )
-   " #+begin_org
-** DocStr: Send /bx-git-commit-msg <repo> to the latest local VS Code Claude session (x c).
-Run once staging is done. Then: Enter in Claude, wait for its message, c c in magit, and
-bap:magit:claudeCommitMsg/offer offers it. The repo is given as a path, so the session need
-not be working in it.
-#+end_org "
-  (interactive)
-  (let (($repo (magit-toplevel)))
-    (unless $repo
-      (user-error "Not in a git repository"))
-    (unless (magit-anything-staged-p)
-      (user-error "Nothing staged in %s" $repo))
-    (unless (fboundp 'bap:claudeSessions/prompt)
-      (require 'bcpg:claudePlus))
-    (bap:claudeSessions/prompt (format "/bx-git-commit-msg %s" (directory-file-name $repo)))))
-
-(with-eval-after-load 'magit
-  (transient-define-prefix bap:magit:claudeDispatch ()
-    "Claude, in the local VS Code (claudeSessions.cs)."
-    ["Claude (latest local VS Code session)"
-     ("c" "Commit message for the staged changes (/bx-git-commit-msg)"
-      bap:magit:claudeCommitMsg/request)]))
 
 
 (defun bap:magit:magit-repository-directories/set-with-list (<list)  "

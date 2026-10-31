@@ -253,47 +253,6 @@ Yes" orgCmntEnd)
         ;; Re-setup keymap since readonly exit restores the saved keymap.
         (claude-code--term-setup-keymap 'ghostel)))))
 
-;;;#+BEGIN: blee:bxPanel:foldingSection :outLevel 1 :title "VS Code Claude Prompt" :extraInfo "A prompt into a local VS Code Claude session, by claudeSessions.cs"
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*       [[elisp:(outline-show-subtree+toggle)][| *VS Code Claude Prompt:* |]]  A prompt into a local VS Code Claude session, by claudeSessions.cs  [[elisp:(org-shifttab)][<)]] E|
-" orgCmntEnd)
-;;;#+END:
-
-(defvar bap:claudeSessions:program "claudeSessions.cs"
-  "The CLI (bisos.aiActivity) that finds the local VS Code Claude sessions and prompts them.")
-
-(defvar bap:claudeSessions:outBuffer "*claudeSessions*"
-  "Buffer holding the last claudeSessions.cs run's output (the commands it ran are on its stderr).")
-
-;;;#+BEGIN:  b:elisp:defs/cl-defun :defName "bap:claudeSessions/prompt" :advice ()
-(orgCmntBegin "
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  cl-defun   [[elisp:(outline-show-subtree+toggle)][||]]  <<bap:claudeSessions/prompt>>  --  -- Put <text in the input box of a local VS Code Claude session.  [[elisp:(org-cycle)][| ]]
-" orgCmntEnd)
-(cl-defun bap:claudeSessions/prompt (
-;;;#+END:
-                                     <text &optional <session)
-   " #+begin_org
-** DocStr: Put <text in the input box of a local VS Code Claude session; the user presses Enter.
-<session is a sessionId, \"new\" (a new conversation), or nil: the latest local session.
-A thin layer over =claudeSessions.cs -i prompt= (WorkPlan 20.3), which holds all the logic: a
-running session is brought to the front and the text pasted (xclip, xdotool). DISPLAY is Emacs's.
-#+end_org "
-  (interactive "sClaude prompt: ")
-  (let* ((default-directory (expand-file-name "~/"))   ; a local process, also from a TRAMP buffer
-         ($args (append (when <session (list (concat "--session=" <session)))
-                        (list "-i" "prompt" <text)))
-         $status)
-    (with-current-buffer (get-buffer-create bap:claudeSessions:outBuffer)
-      (erase-buffer))
-    (setq $status (apply #'call-process bap:claudeSessions:program nil bap:claudeSessions:outBuffer nil $args))
-    ;; A refused PyCS Cmnd still exits 0: its usage error is in the output.
-    (if (and (eql $status 0)
-             (not (with-current-buffer bap:claudeSessions:outBuffer
-                    (save-excursion (goto-char (point-min)) (search-forward "EH_Problem" nil t)))))
-        (message "Claude prompt sent: %s" <text)
-      (display-buffer bap:claudeSessions:outBuffer)
-      (user-error "claudeSessions.cs failed (see %s)" bap:claudeSessions:outBuffer))))
-
 ;;;#+BEGIN: b:elisp:file/provide :modName nil
 (provide 'bcpg:claudePlus)
 ;;;#+END:

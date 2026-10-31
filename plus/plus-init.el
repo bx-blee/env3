@@ -118,6 +118,9 @@ and side-effects are documented here
    (require 'bnpa:aiplus)
    (b:npa:aiplus|fullUpdate)
 
+   (require 'bnpa:vscode-claude)
+   (b:npa:vscode-claude|fullUpdate)
+
    (require 'bcpg:copilotPlus)
    (bcpg:copilotPlus|fullUpdate)
 
