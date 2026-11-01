@@ -330,22 +330,54 @@ closeBlank -- Nothing at all
   ")
 
 (defun org-dblock-update-file-bx ( filename )
-  "push currentMode; set mode to org; run (org-dblock-update 1); pop currentMode"
-  (interactive (list (read-file-name "File to dblock update: ") 
+  "Update the dblocks of FILENAME by its major mode (org, or COMEEGA in another language), and save.
+A buffer already visiting FILENAME is updated in place and left open; one with unsaved edits,
+or out of date with its file, is refused. Used by bx-dblock through emacsclient: called so,
+an error is returned, not taken to the debugger (whose recursive edit would hold the client).
+Returns a string: \"updated: <file>\", \"refused: ...\" or \"error: ...\"; a dblock that failed
+(org logs it and goes on) makes it \"updated, N dblock errors (see *Messages*): <file>\"."
+  (interactive (list (read-file-name "File to dblock update: ")
 		     ))
-  (global-auto-revert-mode t)
-  (save-window-excursion
-    (find-file filename)
-    (org-show-all)
-    ;;(revert-buffer :ignore-auto :noconfirm)      
-    (ignore-errors
-      (org-dblock-update-buffer-bx)
-      )
-    (save-buffer)
-    (kill-buffer)
-    )
-  (global-auto-revert-mode nil)  
-  )
+  (let* (($interactive (called-interactively-p 'interactive))
+         ($file (expand-file-name filename))
+         ($existing (find-buffer-visiting $file))
+         ($messagesStart (with-current-buffer (messages-buffer) (point-max)))
+         ($result
+          (cond
+           ((not (file-regular-p $file))
+            (format "refused: not a file: %s" $file))
+           ((and $existing (buffer-modified-p $existing))
+            (format "refused: buffer %s has unsaved edits" (buffer-name $existing)))
+           ((and $existing (not (verify-visited-file-modtime $existing)))
+            (format "refused: buffer %s is out of date with its file" (buffer-name $existing)))
+           (t
+            (let (($buf (or $existing (find-file-noselect $file))))
+              (condition-case $err
+                  (let ((debug-on-error (and $interactive debug-on-error))
+                        (debug-on-signal (and $interactive debug-on-signal)))
+                   (save-window-excursion
+                    (switch-to-buffer $buf)
+                    (org-show-all)
+                    (org-dblock-update-buffer-bx)
+                    (save-buffer)
+                    (unless $existing (kill-buffer $buf))
+                    (let (($failed (with-current-buffer (messages-buffer)
+                                     (how-many "Error during update of dynamic block"
+                                               (min $messagesStart (point-max)) (point-max)))))
+                      (if (> $failed 0)
+                          (format "updated, %d dblock errors (see *Messages*): %s" $failed $file)
+                        (format "updated: %s" $file)))))
+                (error
+                 ;; Unsaved: a buffer we opened is dropped, one that was open is restored from its file.
+                 (when (buffer-live-p $buf)
+                   (if $existing
+                       (with-current-buffer $buf (revert-buffer :ignore-auto :noconfirm))
+                     (with-current-buffer $buf (set-buffer-modified-p nil))
+                     (kill-buffer $buf)))
+                 (format "error: %s: %s" $file (error-message-string $err)))))))))
+    (when $interactive
+      (message "%s" $result))
+    $result))
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-bx-blank-file  filename ) [[elisp:(org-cycle)][| ]]
@@ -441,10 +473,18 @@ closeBlank -- Nothing at all
 
 
 (defun blee:buf:re-major-mode ()
-  "Previously was done with switching to org-mode"
+  "Re-run the buffer's major mode, so its hooks set the dblock regexps.
+A major-mode that is not a command (shellscript-mode, set by the old file-local
+\"major-mode: shellscript-mode\" of bash files) falls back to the mode auto-mode-alist
+gives the file name (sh-mode)."
   (interactive)
-  (save-excursion  
-    (blee:eval-string (format "(call-interactively '%s)" major-mode))
+  (save-excursion
+    (let (($mode (if (commandp major-mode)
+                     major-mode
+                   (or (and buffer-file-name
+                            (assoc-default buffer-file-name auto-mode-alist #'string-match))
+                       major-mode))))
+      (blee:eval-string (format "(call-interactively '%s)" $mode)))
     )
   )
 
