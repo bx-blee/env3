@@ -48,7 +48,7 @@
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'browsers:menu|update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 (defun browsers:menu|update-hook ()

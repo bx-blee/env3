@@ -25,7 +25,7 @@
      <menuDelimiter
      )
 
-    (add-hook 'menu-bar-update-hook 'web:search:menu|update-hook)
+    ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
     )
   )
 

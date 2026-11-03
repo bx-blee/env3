@@ -95,35 +95,45 @@ Kept for compatibility; use apps:menu-bar|refresh."
       (b:vscode:claude:menu:plugin|install
        apps:menu:global (s-- 3)))
 
-    (b:aiplus:gptel:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:aiplus:gptel:menu:plugin|install)
+      (b:aiplus:gptel:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
-    (b:aiplus:gptel:canned:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:aiplus:gptel:canned:menu:plugin|install)
+      (b:aiplus:gptel:canned:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
-    (b:aiplus:gptel:translate:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:aiplus:gptel:translate:menu:plugin|install)
+      (b:aiplus:gptel:translate:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
-    (b:aiplus:aidermacs:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:aiplus:aidermacs:menu:plugin|install)
+      (b:aiplus:aidermacs:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
-    (b:aiplus:claude-code:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:aiplus:claude-code:menu:plugin|install)
+      (b:aiplus:claude-code:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
-    (b:aiplus:monet:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:aiplus:monet:menu:plugin|install)
+      (b:aiplus:monet:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
-    (b:ghostel:launch:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:ghostel:launch:menu:plugin|install)
+      (b:ghostel:launch:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
-    (b:eat:launch:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:eat:launch:menu:plugin|install)
+      (b:eat:launch:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
-    (b:vterm:launch:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:vterm:launch:menu:plugin|install)
+      (b:vterm:launch:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
-    (b:open-in:menu:plugin|install
-     apps:menu:global (s-- 3))
+    (when (fboundp 'b:open-in:menu:plugin|install)
+      (b:open-in:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
     (apps:calc:menu:plugin|install
      apps:menu:global (s-- 3))

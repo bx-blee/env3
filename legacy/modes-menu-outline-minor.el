@@ -15,7 +15,7 @@
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'modes:outline-minor:menu|update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 (defun modes:outline-minor:menu|update-hook ()

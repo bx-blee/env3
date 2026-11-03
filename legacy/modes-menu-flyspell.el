@@ -15,7 +15,7 @@
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'modes:flyspell:menu|update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 (defun modes:flyspell:menu|update-hook ()

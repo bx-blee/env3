@@ -15,7 +15,7 @@
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'apps:calc:menu|update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 (defun apps:calc:menu|update-hook ()

@@ -63,7 +63,7 @@ This function is used by many menus and its args are evaluated with backquote.
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'apps:magit:menu|update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 ;; (apps:magit:menu:plugin|install modes:menu:global (s-- 6))
@@ -77,7 +77,7 @@ This function is used by many menus and its args are evaluated with backquote.
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'apps:magit:menu|update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 ;; (apps:magit:menu:plugin|install modes:menu:global (s-- 6))
@@ -91,7 +91,7 @@ This function is used by many menus and its args are evaluated with backquote.
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'apps:magit:menu|update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 ;; (apps:magit:menu:plugin|install modes:menu:global (s-- 6))
@@ -105,7 +105,7 @@ This function is used by many menus and its args are evaluated with backquote.
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'apps:magit:menu|update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 (defun apps:magit:menu|update-hook ()

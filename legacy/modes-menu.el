@@ -109,32 +109,38 @@ For use in delimiters in easy-menu-define"
     (browsers:modes:menu:plugin/install
      modes:menu:global (s-- 3))
 
-    (b:bidi:menu:plugin|install
-     modes:menu:global (s-- 3))
+    (when (fboundp 'b:bidi:menu:plugin|install)
+      (b:bidi:menu:plugin|install
+       modes:menu:global (s-- 3)))
 
     ;; (b:chatGpt:menu:plugin|install modes:menu:global (s-- 3))
 
     ;; (b:mtdt:menu:plugin|install
     ;;  modes:menu:global (s-- 4))
 
-    (b:tlm:menu:plugin|install
-     modes:menu:global (s-- 4))
+    (when (fboundp 'b:tlm:menu:plugin|install)
+      (b:tlm:menu:plugin|install
+       modes:menu:global (s-- 4)))
 
    ;; (b:mtdt:assemble:menu:plugin|install
    ;;   modes:menu:global (s-- 4))
 
 
-    (b:mtdt:menu:mailing:plugin|install
-     modes:menu:global (s-- 4))
+    (when (fboundp 'b:mtdt:menu:mailing:plugin|install)
+      (b:mtdt:menu:mailing:plugin|install
+       modes:menu:global (s-- 4)))
 
-    (b:mtdt:menu:dist:plugin|install
-     modes:menu:global (s-- 4))
+    (when (fboundp 'b:mtdt:menu:dist:plugin|install)
+      (b:mtdt:menu:dist:plugin|install
+       modes:menu:global (s-- 4)))
 
-    (b:mtdt:menu:bbdb2:plugin|install
-     modes:menu:global (s-- 4))
+    (when (fboundp 'b:mtdt:menu:bbdb2:plugin|install)
+      (b:mtdt:menu:bbdb2:plugin|install
+       modes:menu:global (s-- 4)))
 
-    (b:mtdt:menu:share:plugin|install
-     modes:menu:global (s-- 4))
+    (when (fboundp 'b:mtdt:menu:share:plugin|install)
+      (b:mtdt:menu:share:plugin|install
+       modes:menu:global (s-- 4)))
 
     (web:search:modes:menu:plugin/install
      modes:menu:global (s-- 4))

@@ -43,7 +43,7 @@ XINFs contain eXternally Integrated Applications (XIA) such as an EAF-browser.
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'nafm:menu|update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 (defun nafm:menu|update-hook ()
@@ -67,7 +67,7 @@ As such what happens below should be exactly what is necessary and no more."
   
   (interactive)
   (nafm:menu:global|define)
-  (add-hook 'menu-bar-update-hook 'nafm:menu-bar-update-hook)
+  ;; Built once: nothing on menu-bar-update-hook (it runs on nearly every redisplay).
   )
 
 
