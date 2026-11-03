@@ -91,6 +91,9 @@ Kept for compatibility; use apps:menu-bar|refresh."
 	,(s-- 8)
 	))
 
+    (when (fboundp 'b:vscode:claude:menu:plugin|install)
+      (b:vscode:claude:menu:plugin|install
+       apps:menu:global (s-- 3)))
 
     (b:aiplus:gptel:menu:plugin|install
      apps:menu:global (s-- 3))

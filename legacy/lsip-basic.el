@@ -747,4 +747,25 @@ If no dot, return nil."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Org link types for panels: the command line is the link's path.
+;;;   [[bashRun:someCmnd and options]]      as (lsip-local-run-command "someCmnd and options")
+;;;   [[bashRunHere:someCmnd and options]]  as (lsip-local-run-command-here "someCmnd and options")
+;;; Without a description the link displays as itself, e.g. bashRun:someCmnd and options.
+
+(defun lsip-org-link-bashRun-follow (path &optional _arg)
+  "Run PATH, a command line, in the *LSIP* localhost shell buffer."
+  (lsip-local-run-command (string-trim path)))
+
+(defun lsip-org-link-bashRunHere-follow (path &optional _arg)
+  "Run PATH, a command line, in the *LSIP* localhost shell buffer, from this buffer's directory."
+  (lsip-local-run-command-here (string-trim path)))
+
+(with-eval-after-load 'ol
+  (org-link-set-parameters "bashRun"
+                           :follow #'lsip-org-link-bashRun-follow
+                           :help-echo "Runs in *LSIP* localhost")
+  (org-link-set-parameters "bashRunHere"
+                           :follow #'lsip-org-link-bashRunHere-follow
+                           :help-echo "Runs in *LSIP* localhost, from this buffer's directory"))
+
 (provide 'lsip-basic)
