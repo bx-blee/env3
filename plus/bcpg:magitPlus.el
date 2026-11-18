@@ -372,6 +372,108 @@ Initiated with yasnippet at: bx-comeega-elisp-mode/begin/packageAdoption [[elisp
   (magit-list-repositories)
   )
 
+;;; gitGroups (bisos.gitist): each gitGroup's plant, <gitGroup>_gitGroup.pcs in its overview repo, writes
+;;; the repos of the gitGroup with -i gitGroup_cachedListUpdate to <base>/<gitGroup>/cachedList.<vcMode>.
+;;; Read here directly: no shell command, so a visit is immediate.
+
+(defvar bap:magit:gitGroup:cachedListsBase "/bisos/var/gitGroup"
+  "Where gitist's gitGroup_cachedListUpdate writes <gitGroup>/cachedList.<vcMode>.")
+
+(defun bap:magit:gitGroup/cachedLists () "
+*** The gitGroups that have a cached list: ((<gitGroup> . <file>) ...), sorted by name.
+One file per gitGroup: cachedList.auth, else .anon, else .other.
+"
+  (let (($result))
+    (when (file-directory-p bap:magit:gitGroup:cachedListsBase)
+      (dolist ($dir (directory-files bap:magit:gitGroup:cachedListsBase t "^[^.]"))
+        (when (file-directory-p $dir)
+          (let (($file (seq-find #'file-readable-p
+                                 (mapcar (lambda ($mode)
+                                           (expand-file-name (concat "cachedList." $mode) $dir))
+                                         '("auth" "anon" "other")))))
+            (when $file
+              (push (cons (file-name-nondirectory $dir) $file) $result))))))
+    (nreverse $result)))
+
+(defun bap:magit:gitGroup/list (<gitGroup) "
+*** The repos of <gitGroup, read from its cached list.
+"
+  (let (($file (cdr (assoc <gitGroup (bap:magit:gitGroup/cachedLists)))))
+    (unless $file
+      (error "No cached list for gitGroup %s in %s --- run %s_gitGroup.pcs -i gitGroup_cachedListUpdate"
+             <gitGroup bap:magit:gitGroup:cachedListsBase <gitGroup))
+    (with-temp-buffer
+      (insert-file-contents $file)
+      (split-string (buffer-string) "\n" t))))
+
+(defun bap:magit:gitGroup/visit (<gitGroup) "
+*** Magit's repository list for <gitGroup.
+**** Usage Examples:
+(bap:magit:gitGroup/visit \"bisos-pip\")
+"
+  (interactive
+   (list (completing-read "gitGroup: " (mapcar #'car (bap:magit:gitGroup/cachedLists)) nil t)))
+  (bap:magit:magit-repository-directories/set-with-list
+   (bap:magit:gitGroup/list <gitGroup))
+  (magit-list-repositories)
+  )
+
+(defun bap:magit:gitGroup:all/visit () "
+*** Magit's repository list for the repos of every gitGroup that has a cached list.
+"
+  (interactive)
+  (bap:magit:magit-repository-directories/set-with-list
+   (delete-dups
+    (apply #'append
+           (mapcar (lambda ($each) (bap:magit:gitGroup/list (car $each)))
+                   (bap:magit:gitGroup/cachedLists)))))
+  (magit-list-repositories)
+  )
+
+;;; A common commit message: one message for a series of commits --- e.g. the same change across the
+;;; repos of a gitGroup. Set it once (c T, or M-x bap:magit:commit:commonMsg/set); then c t in each repo.
+
+(defvar bap:magit:commit:commonMsg nil
+  "The commit message shared by a series of commits; `c t' in Magit's commit menu uses it.
+Set with `bap:magit:commit:commonMsg/set' (`c T').")
+
+(defun bap:magit:commit:commonMsg/set (<msg) "
+*** Set the common commit message. In the prompt, C-q C-j inserts a newline (subject, blank line, body).
+An empty message unsets it.
+"
+  (interactive (list (read-string "Common commit message: " bap:magit:commit:commonMsg)))
+  (setq bap:magit:commit:commonMsg (if (string-empty-p (string-trim <msg)) nil <msg))
+  (message "Common commit message: %s" (or bap:magit:commit:commonMsg "unset")))
+
+(defun bap:magit:commit:commonMsg/description () "
+*** The label of `c t': the first line of the common message, or that it is unset.
+"
+  (if bap:magit:commit:commonMsg
+      (format "Commit with common msg: %s"
+              (truncate-string-to-width (car (split-string bap:magit:commit:commonMsg "\n")) 50 nil nil "..."))
+    "Commit with common msg (unset: prompts)"))
+
+(defun bap:magit:commit/withCommonMsg () "
+*** Commit with `bap:magit:commit:commonMsg', opened in the commit buffer to confirm (C-c C-c) or edit.
+Prompts for it when unset. The commit menu's switches (-a, -n, ...) still apply.
+"
+  (interactive)
+  (unless bap:magit:commit:commonMsg
+    (call-interactively #'bap:magit:commit:commonMsg/set))
+  (unless bap:magit:commit:commonMsg
+    (user-error "No common commit message"))
+  (magit-commit-create
+   (append (list (concat "--message=" bap:magit:commit:commonMsg) "--edit")
+           (magit-commit-arguments))))
+
+(with-eval-after-load 'magit-commit
+  (unless (ignore-errors (transient-get-suffix 'magit-commit "t"))
+    (transient-append-suffix 'magit-commit "c"
+      '("t" bap:magit:commit/withCommonMsg :description bap:magit:commit:commonMsg/description)))
+  (unless (ignore-errors (transient-get-suffix 'magit-commit "T"))
+    (transient-append-suffix 'magit-commit "t"
+      '("T" "Set the common commit message" bap:magit:commit:commonMsg/set))))
+
 ;;; This function is needed as of blee 202406
 (unless (fboundp 'magit-repolist-column-dirty)
   (defun magit-repolist-column-dirty (_id)

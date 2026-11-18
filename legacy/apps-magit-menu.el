@@ -262,6 +262,11 @@ As such what happens below should be exactly what is necessary and no more."
 
     (easy-menu-add-item
      apps:magit:githubMenu nil
+     (apps:magit:menuItem:gitGroups|define)
+     (s-- 6))
+
+    (easy-menu-add-item
+     apps:magit:githubMenu nil
      (bx:menu:panelAndHelp|define
       "/bisos/git/auth/bxRepos/blee-binders/bisos-core/sync/githubSync/_nodeBase_"
       $thisFuncName
@@ -360,6 +365,28 @@ As such what happens below should be exactly what is necessary and no more."
      )))
 
 
+
+(defun apps:magit:menuItem:gitGroups|define ()
+  "Return the gitGroups submenu. Its items are computed when it is opened (:filter),
+from the cached lists in bap:magit:gitGroup:cachedListsBase (bcpg:magitPlus.el)."
+  '("BISOS-Magit gitGroups"
+    :filter apps:magit:gitGroups|menuFilter))
+
+(defun apps:magit:gitGroups|menuFilter (_items)
+  "One item per gitGroup with a cached list, then one for all of them."
+  (let (($gitGroups (bap:magit:gitGroup/cachedLists)))
+    (if (null $gitGroups)
+        (list ["No gitGroup cached lists: <gitGroup>_gitGroup.pcs -i gitGroup_cachedListUpdate"
+               ignore :active nil])
+      (append
+       (mapcar (lambda ($each)
+                 (vector (format "gitGroup %s" (car $each))
+                         `(bap:magit:gitGroup/visit ,(car $each))
+                         :help (format "Magit repository list from %s" (cdr $each))))
+               $gitGroups)
+       (list "---"
+             ["All gitGroups" (bap:magit:gitGroup:all/visit)
+              :help "Magit repository list of the repos of every gitGroup"])))))
 
 (defun apps:magit:menuItem:describe|define ()
   "Return a menuItem vector."
